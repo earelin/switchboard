@@ -1,2 +1,2 @@
-# switcher
+# Switch Panel
 Feature flag configuration server
