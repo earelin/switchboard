@@ -1,0 +1,23 @@
+management:
+  health:
+    defaults:
+      enabled: true
+    diskspace:
+      enabled: true
+    db:
+      enabled: true
+
+logging:
+  level:
+    uk:
+      co:
+        telegraph:
+          switch: DEBUG
+
+spring:
+  h2:
+    console:
+      enabled: true
+  output:
+    ansi:
+      enabled: ALWAYS
