@@ -137,7 +137,7 @@ class EnvironmentTest {
   @Test
   void twoObjectWithDifferentIdShouldHaveDifferentHashCode() {
     Environment compareObject = new Environment();
-    environment.setId(12L);
+    compareObject.setId(12L);
 
     assertNotEquals(environment.hashCode(), compareObject.hashCode());
   }
