@@ -1,4 +1,4 @@
-package uk.co.telegraph.switcher.domain;
+package uk.co.telegraph.switcher.entities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -17,9 +17,10 @@ import org.junit.jupiter.api.Test;
 
 class ApplicationTest {
 
-  private static final String APPLICATION_ID = "newsroom-dashboard";
+  private static final Long APPLICATION_ID = 25L;
+  private static final String APPLICATION_KEY = "newsroom-dashboard";
   private static final String APPLICATION_NAME = "Newsroom Dashboard";
-  private static final String APPLICATION_KEY = "K2I1JPxYp1pCWprzf4QaReiwntZXxmu4";
+  private static final String APPLICATION_SECRET = "K2I1JPxYp1pCWprzf4QaReiwntZXxmu4";
   private static final String APPLICATION_DESCRIPTION
       = "An amazing application to be feature flagged";
 
@@ -41,34 +42,37 @@ class ApplicationTest {
   @BeforeEach
   void setUp() {
     application = new Application();
+    application.setId(APPLICATION_ID);
+    application.setName(APPLICATION_NAME);
+    application.setKey(APPLICATION_KEY);
+    application.setSecret(APPLICATION_SECRET);
+    application.setDescription(APPLICATION_DESCRIPTION);
+
     validator = validatorFactory.getValidator();
   }
 
   @Test
   void shouldSetId() {
-    application.setId(APPLICATION_ID);
-
     assertEquals(APPLICATION_ID, application.getId());
   }
 
   @Test
-  void shouldSetName() {
-    application.setName(APPLICATION_NAME);
+  void shouldSetKey() {
+   assertEquals(APPLICATION_KEY, application.getKey());
+  }
 
+  @Test
+  void shouldSetName() {
     assertEquals(APPLICATION_NAME, application.getName());
   }
 
   @Test
-  void shouldsetSecretKey() {
-    application.setSecretKey(APPLICATION_KEY);
-
-    assertEquals(APPLICATION_KEY, application.getSecretKey());
+  void shouldSetSecret() {
+    assertEquals(APPLICATION_SECRET, application.getSecret());
   }
 
   @Test
   void shouldSetDescription() {
-    application.setDescription(APPLICATION_DESCRIPTION);
-
     assertEquals(APPLICATION_DESCRIPTION, application.getDescription());
   }
 
@@ -88,31 +92,16 @@ class ApplicationTest {
 
   @Test
   void shouldBeEqualToItself() {
-    application.setId(APPLICATION_ID);
-    application.setName(APPLICATION_NAME);
-    application.setSecretKey(APPLICATION_KEY);
-    application.setDescription(APPLICATION_DESCRIPTION);
-
     assertEquals(application, application);
   }
 
   @Test
   void shouldNotBeEqualToNull() {
-    application.setId(APPLICATION_ID);
-    application.setName(APPLICATION_NAME);
-    application.setSecretKey(APPLICATION_KEY);
-    application.setDescription(APPLICATION_DESCRIPTION);
-
-    assertNotEquals(null, application);
+   assertNotEquals(null, application);
   }
 
   @Test
   void shouldBeEqualToAnApplicationWithSameId() {
-    application.setId(APPLICATION_ID);
-    application.setName(APPLICATION_NAME);
-    application.setSecretKey(APPLICATION_KEY);
-    application.setDescription(APPLICATION_DESCRIPTION);
-
     Application compareObject = new Application();
     compareObject.setId(APPLICATION_ID);
 
@@ -121,15 +110,11 @@ class ApplicationTest {
 
   @Test
   void shouldNotBeEqualToAnApplicationWithADifferentId() {
-    application.setId(APPLICATION_ID);
-    application.setName(APPLICATION_NAME);
-    application.setSecretKey(APPLICATION_KEY);
-    application.setDescription(APPLICATION_DESCRIPTION);
-
     Application compareObject = new Application();
-    compareObject.setId("another-application");
+    compareObject.setId(12L);
     compareObject.setName(APPLICATION_NAME);
-    compareObject.setSecretKey(APPLICATION_KEY);
+    compareObject.setKey(APPLICATION_KEY);
+    compareObject.setSecret(APPLICATION_SECRET);
     compareObject.setDescription(APPLICATION_DESCRIPTION);
 
     assertNotEquals(compareObject, application);
@@ -137,11 +122,6 @@ class ApplicationTest {
 
   @Test
   void shouldNotBeEqualToADifferentClass() {
-    application.setId(APPLICATION_ID);
-    application.setName(APPLICATION_NAME);
-    application.setSecretKey(APPLICATION_KEY);
-    application.setDescription(APPLICATION_DESCRIPTION);
-
     String compareObject = "testing";
 
     assertNotEquals(compareObject, application);
@@ -149,21 +129,11 @@ class ApplicationTest {
 
   @Test
   void sameObjectShouldHaveSameHashCode() {
-    application.setId(APPLICATION_ID);
-    application.setName(APPLICATION_NAME);
-    application.setSecretKey(APPLICATION_KEY);
-    application.setDescription(APPLICATION_DESCRIPTION);
-
     assertEquals(application.hashCode(), application.hashCode());
   }
 
   @Test
   void twoObjectWithTheSameIdShouldHaveSameHashCode() {
-    application.setId(APPLICATION_ID);
-    application.setName(APPLICATION_NAME);
-    application.setSecretKey(APPLICATION_KEY);
-    application.setDescription(APPLICATION_DESCRIPTION);
-
     Application compareObject = new Application();
     compareObject.setId(APPLICATION_ID);
 
@@ -172,15 +142,11 @@ class ApplicationTest {
 
   @Test
   void twoObjectWithDifferentIdShouldHaveDifferentHashCode() {
-    application.setId(APPLICATION_ID);
-    application.setName(APPLICATION_NAME);
-    application.setSecretKey(APPLICATION_KEY);
-    application.setDescription(APPLICATION_DESCRIPTION);
-
     Application compareObject = new Application();
-    compareObject.setId("another-application");
+    compareObject.setId(12L);
     compareObject.setName(APPLICATION_NAME);
-    compareObject.setSecretKey(APPLICATION_KEY);
+    compareObject.setKey(APPLICATION_KEY);
+    compareObject.setSecret(APPLICATION_SECRET);
     compareObject.setDescription(APPLICATION_DESCRIPTION);
 
     assertNotEquals(application.hashCode(), compareObject.hashCode());
@@ -188,29 +154,20 @@ class ApplicationTest {
 
   @Test
   void shouldConvertToString() {
-    application.setId(APPLICATION_ID);
-    application.setName(APPLICATION_NAME);
-    application.setSecretKey(APPLICATION_KEY);
-    application.setDescription(APPLICATION_DESCRIPTION);
-
     String objectToString = application.toString();
 
     assertEquals("Application("
-        + "id=newsroom-dashboard, "
-        + "name=Newsroom Dashboard, "
-        + "secretKey=K2I1JPxYp1pCWprzf4QaReiwntZXxmu4, "
-        + "description=An amazing application to be feature flagged"
+        + "id=" + APPLICATION_ID + ", "
+        + "key=" + APPLICATION_KEY + ", "
+        + "name=" + APPLICATION_NAME + ", "
+        + "secret=" + APPLICATION_SECRET + ", "
+        + "description=" + APPLICATION_DESCRIPTION
         + ")", objectToString);
   }
 
   @Test
   void shouldValidate() {
-    application.setId(APPLICATION_ID);
-    application.setName(APPLICATION_NAME);
-    application.setSecretKey(APPLICATION_KEY);
-    application.setDescription(APPLICATION_DESCRIPTION);
-
-    Set<ConstraintViolation<Application>> violations
+   Set<ConstraintViolation<Application>> violations
         = validator.validate(application);
 
     assertTrue(violations.isEmpty());
@@ -218,10 +175,7 @@ class ApplicationTest {
 
   @Test
   void blankNameShouldNotValidate() {
-    application.setId(APPLICATION_ID);
     application.setName("   ");
-    application.setSecretKey(APPLICATION_KEY);
-    application.setDescription(APPLICATION_DESCRIPTION);
 
     Set<ConstraintViolation<Application>> violations
         = validator.validate(application);
@@ -234,12 +188,11 @@ class ApplicationTest {
   }
 
   @Test
-  void shouldNotValidateIdWithLengthMoreThan128() {
-    final String longId = "lorem-ipsum-dolor-sit-amet-consectetur-adipiscing-elit-praesent-quam"
+  void shouldNotValidateKeyBiggerThan128() {
+    final String longKey = "lorem-ipsum-dolor-sit-amet-consectetur-adipiscing-elit-praesent-quam"
         + "-tellus-consectetur-nec-neque-vel-lobortis-elementum-ex-curabitur";
 
-    application.setId(longId);
-    application.setName(APPLICATION_NAME);
+    application.setKey(longKey);
 
     Set<ConstraintViolation<Application>> violations
         = validator.validate(application);
@@ -247,16 +200,15 @@ class ApplicationTest {
     assertEquals(1, violations.size());
     ConstraintViolation<Application> violation
         = violations.iterator().next();
-    assertEquals("id", violation.getPropertyPath().toString());
-    assertEquals(longId, violation.getInvalidValue());
+    assertEquals("key", violation.getPropertyPath().toString());
+    assertEquals(longKey, violation.getInvalidValue());
   }
 
   @Test
-  void shouldNotValidateNameWithLengthMoreThan128() {
+  void shouldNotValidateNameBiggerThan128() {
     final String longName = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent"
         + " quam tellus, consectetur nec neque vel, lobortis elementum ex curabitur";
 
-    application.setId(APPLICATION_ID);
     application.setName(longName);
 
     Set<ConstraintViolation<Application>> violations

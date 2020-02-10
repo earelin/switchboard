@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import uk.co.telegraph.switcher.domain.Application;
+import uk.co.telegraph.switcher.entities.Application;
 import uk.co.telegraph.switcher.repositories.ApplicationRepository;
 
 @Service
@@ -30,7 +30,7 @@ public class ApplicationServiceImp implements ApplicationService {
   }
 
   @Override
-  public Optional<Application> findById(String id) {
+  public Optional<Application> findById(Long id) {
     return applicationRepository.findById(id);
   }
 
@@ -46,7 +46,7 @@ public class ApplicationServiceImp implements ApplicationService {
 
   @Override
   @Transactional
-  public void delete(String id) {
+  public void delete(Long id) {
     applicationRepository.deleteById(id);
   }
 }

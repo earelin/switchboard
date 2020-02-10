@@ -1,23 +1,33 @@
-package uk.co.telegraph.switcher.domain.strategy;
+package uk.co.telegraph.switcher.entities.strategy;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
-import uk.co.telegraph.switcher.domain.Application;
+import uk.co.telegraph.switcher.entities.Application;
 
 @Entity
 @Data
-public class UserGroup {
+public class UserGroup implements Serializable {
 
-  @Id
+  @Id @GeneratedValue
   private Long id;
+
   @ManyToOne
+  @NotNull
   private Application application;
+
+  @NotBlank
   private String name;
+
   @ElementCollection
   private Set<String> users = new HashSet<>();
 

@@ -1,6 +1,7 @@
-package uk.co.telegraph.switcher.domain.strategy;
+package uk.co.telegraph.switcher.entities.strategy;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import uk.co.telegraph.switcher.domain.ClientInfo;
@@ -8,13 +9,13 @@ import uk.co.telegraph.switcher.domain.ClientInfo;
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class DefaultStrategy extends Strategy {
+public class UserGroupStrategy extends Strategy {
 
-  private Boolean defaultValue;
+  @ManyToOne
+  private UserGroup userGroup;
 
   @Override
   public boolean isEnabled(ClientInfo clientInfo) {
-    return defaultValue;
+    return userGroup.hasUser(clientInfo.getUserId());
   }
-
 }

@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import uk.co.telegraph.switcher.domain.ClientInfo;
 
 class ClientInfoTest {
 
@@ -12,16 +13,6 @@ class ClientInfoTest {
   @BeforeEach
   void setUp() {
     clientInfo = new ClientInfo();
-  }
-
-  @Test
-  void shouldSetApplication() {
-    Application application = new Application();
-    application.setId("newsroom-dashboard");
-
-    clientInfo.setApplication(application);
-
-    assertEquals(application, clientInfo.getApplication());
   }
 
   @Test
@@ -36,13 +27,6 @@ class ClientInfoTest {
     clientInfo.setUserId("jcarriba");
 
     assertEquals("jcarriba", clientInfo.getUserId());
-  }
-
-  @Test
-  void shouldSetEnvironment() {
-    clientInfo.setEnvironment("prod");
-
-    assertEquals("prod", clientInfo.getEnvironment());
   }
 
 }

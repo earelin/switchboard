@@ -1,10 +1,13 @@
-package uk.co.telegraph.switcher.domain;
+package uk.co.telegraph.switcher.entities;
 
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,10 +16,16 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Environment implements Serializable {
-  @Id @ManyToOne
+  @Id @GeneratedValue
+  @EqualsAndHashCode.Include
+  private Long id;
+
+  @ManyToOne @NotNull
   private Application application;
-  @Id @Size(max = 128)
+
+  @Size(max = 32) @NotBlank
   private String key;
+
   @Column(columnDefinition = "TEXT")
   private String description;
 }

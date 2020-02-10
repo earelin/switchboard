@@ -1,8 +1,9 @@
-package uk.co.telegraph.switcher.domain;
+package uk.co.telegraph.switcher.entities;
 
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -13,14 +14,18 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Application implements Serializable {
-  @Id
+  @Id @GeneratedValue
   @EqualsAndHashCode.Include
-  @Size(max = 128)
-  private String id;
-  @NotBlank
-  @Size(max = 128)
+  private Long id;
+
+  @Size(max = 128) @NotBlank
+  private String key;
+
+  @Size(max = 128) @NotBlank
   private String name;
-  private String secretKey;
+
+  private String secret;
+
   @Column(columnDefinition = "TEXT")
   private String description;
 }
