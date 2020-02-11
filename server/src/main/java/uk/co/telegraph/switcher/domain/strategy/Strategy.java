@@ -1,4 +1,4 @@
-package uk.co.telegraph.switcher.entities.strategy;
+package uk.co.telegraph.switcher.domain.strategy;
 
 import java.io.Serializable;
 import javax.persistence.Entity;

@@ -1,4 +1,4 @@
-package uk.co.telegraph.switcher.entities.strategy;
+package uk.co.telegraph.switcher.domain.strategy;
 
 import javax.persistence.Entity;
 import lombok.Data;

@@ -6,21 +6,21 @@ import java.util.Base64;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
-public class KeyServiceImp implements KeyService {
+public class SecretsServiceImp implements SecretsService {
 
   private static final String KEY_GENERATOR = "AES";
   private static final int KEY_BIT_SIZE = 256;
 
   private final KeyGenerator keyGenerator;
 
-  public KeyServiceImp() throws NoSuchAlgorithmException {
+  public SecretsServiceImp() throws NoSuchAlgorithmException {
     keyGenerator = KeyGenerator.getInstance(KEY_GENERATOR);
     SecureRandom secureRandom = new SecureRandom();
     keyGenerator.init(KEY_BIT_SIZE, secureRandom);
   }
 
   @Override
-  public String generateKey() {
+  public String generateSecret() {
     SecretKey secretKey = keyGenerator.generateKey();
     return Base64.getEncoder()
         .encodeToString(secretKey.getEncoded());

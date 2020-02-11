@@ -1,4 +1,4 @@
-package uk.co.telegraph.switcher.entities.strategy;
+package uk.co.telegraph.switcher.domain.strategy;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -16,6 +16,6 @@ public class UserGroupStrategy extends Strategy {
 
   @Override
   public boolean isEnabled(ClientInfo clientInfo) {
-    return userGroup.hasUser(clientInfo.getUserId());
+    return userGroup.hasUser(clientInfo.getUser());
   }
 }

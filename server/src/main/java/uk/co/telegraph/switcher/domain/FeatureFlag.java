@@ -1,4 +1,4 @@
-package uk.co.telegraph.switcher.entities;
+package uk.co.telegraph.switcher.domain;
 
 import java.io.Serializable;
 import javax.persistence.Column;

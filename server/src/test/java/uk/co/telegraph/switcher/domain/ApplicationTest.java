@@ -1,4 +1,4 @@
-package uk.co.telegraph.switcher.entities;
+package uk.co.telegraph.switcher.domain;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;

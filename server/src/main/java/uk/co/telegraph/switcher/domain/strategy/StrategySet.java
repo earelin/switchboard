@@ -1,4 +1,4 @@
-package uk.co.telegraph.switcher.entities.strategy;
+package uk.co.telegraph.switcher.domain.strategy;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -10,9 +10,8 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import uk.co.telegraph.switcher.domain.strategy.StrategyAggregator;
-import uk.co.telegraph.switcher.entities.Environment;
-import uk.co.telegraph.switcher.entities.FeatureFlag;
+import uk.co.telegraph.switcher.domain.Environment;
+import uk.co.telegraph.switcher.domain.FeatureFlag;
 
 @Entity
 @Data

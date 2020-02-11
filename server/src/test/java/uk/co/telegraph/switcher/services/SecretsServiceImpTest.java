@@ -7,18 +7,18 @@ import java.security.NoSuchAlgorithmException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class KeyServiceImpTest {
+class SecretsServiceImpTest {
 
-  private KeyServiceImp keyService;
+  private SecretsServiceImp keyService;
 
   @BeforeEach
   void setUp() throws NoSuchAlgorithmException {
-    keyService = new KeyServiceImp();
+    keyService = new SecretsServiceImp();
   }
 
   @Test
-  void shouldGenerateKey() {
-    String key = keyService.generateKey();
+  void shouldGenerateSecret() {
+    String key = keyService.generateSecret();
 
     assertThat(key, matchesPattern("^[-A-Za-z0-9+/=]*$"));
   }

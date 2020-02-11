@@ -1,9 +1,7 @@
-package uk.co.telegraph.switcher.entities;
+package uk.co.telegraph.switcher.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Set;
 import javax.validation.ConstraintViolation;
@@ -58,7 +56,8 @@ class EnvironmentTest {
 
     environment.setApplication(application);
 
-    assertEquals(application, environment.getApplication());
+    assertThat(environment.getApplication())
+        .isEqualTo(application);
   }
 
   @Test
@@ -68,31 +67,36 @@ class EnvironmentTest {
 
   @Test
   void shouldSetDescription() {
-    assertEquals(ENVIRONMENT_DESCRIPTION, environment.getDescription());
+    assertThat(environment.getDescription())
+        .isEqualTo(ENVIRONMENT_DESCRIPTION);
   }
 
   @Test
   void shouldCanEqualSameClass() {
     Environment comparedObject = new Environment();
 
-    assertTrue(environment.canEqual(comparedObject));
+    assertThat(environment.canEqual(comparedObject))
+        .isTrue();
   }
 
   @Test
   void shouldNotCanEqualDifferentClass() {
     String comparedObject = "asdf";
 
-    assertFalse(environment.canEqual(comparedObject));
+    assertThat(environment.canEqual(comparedObject))
+        .isFalse();
   }
 
   @Test
   void shouldBeEqualToItself() {
-    assertEquals(environment, environment);
+    assertThat(environment)
+        .isEqualTo(environment);
   }
 
   @Test
   void shouldNotBeEqualToNull() {
-    assertNotEquals(null, environment);
+    assertThat(environment)
+        .isNotEqualTo(null);
   }
 
   @Test
@@ -100,7 +104,8 @@ class EnvironmentTest {
     Environment compareObject = new Environment();
     compareObject.setId(ENVIRONMENT_ID);
 
-    assertEquals(compareObject, environment);
+    assertThat(environment)
+        .isEqualTo(environment);
   }
 
   @Test
@@ -111,19 +116,22 @@ class EnvironmentTest {
     compareObject.setKey(ENVIRONMENT_KEY);
     compareObject.setDescription(ENVIRONMENT_DESCRIPTION);
 
-    assertNotEquals(compareObject, environment);
+    assertThat(environment)
+        .isNotEqualTo(compareObject);
   }
 
   @Test
   void shouldNotBeEqualToADifferentClass() {
     String compareObject = "testing";
 
-    assertNotEquals(compareObject, environment);
+    assertThat(environment)
+        .isNotEqualTo(compareObject);
   }
 
   @Test
   void sameObjectShouldHaveSameHashCode() {
-    assertEquals(environment.hashCode(), environment.hashCode());
+    assertThat(environment.hashCode())
+        .isEqualTo(environment.hashCode());
   }
 
   @Test
@@ -131,7 +139,8 @@ class EnvironmentTest {
     Environment compareObject = new Environment();
     compareObject.setId(ENVIRONMENT_ID);
 
-    assertEquals(environment.hashCode(), compareObject.hashCode());
+    assertThat(environment.hashCode())
+        .isEqualTo(compareObject.hashCode());
   }
 
   @Test
@@ -139,19 +148,19 @@ class EnvironmentTest {
     Environment compareObject = new Environment();
     compareObject.setId(12L);
 
-    assertNotEquals(environment.hashCode(), compareObject.hashCode());
+    assertThat(environment.hashCode())
+        .isNotEqualTo(compareObject.hashCode());
   }
 
   @Test
   void shouldConvertToString() {
-    String objectToString = environment.toString();
-
-    assertEquals("Environment("
-        + "id=" + ENVIRONMENT_ID + ", "
-        + "application=" + environment.getApplication().toString() + ", "
-        + "key=" + ENVIRONMENT_KEY + ", "
-        + "description=" + ENVIRONMENT_DESCRIPTION
-        + ")", objectToString);
+    assertThat(environment.toString())
+        .isEqualTo("Environment("
+            + "id=" + ENVIRONMENT_ID + ", "
+            + "application=" + environment.getApplication().toString() + ", "
+            + "key=" + ENVIRONMENT_KEY + ", "
+            + "description=" + ENVIRONMENT_DESCRIPTION
+            + ")");
   }
 
   @Test
@@ -159,7 +168,8 @@ class EnvironmentTest {
     Set<ConstraintViolation<Environment>> violations
         = validator.validate(environment);
 
-    assertTrue(violations.isEmpty());
+    assertThat(violations)
+        .isEmpty();
   }
 
   @Test
@@ -171,11 +181,15 @@ class EnvironmentTest {
     Set<ConstraintViolation<Environment>> violations
         = validator.validate(environment);
 
-    assertEquals(1, violations.size());
+    assertThat(violations)
+        .hasSize(1);
+
     ConstraintViolation<Environment> violation
         = violations.iterator().next();
-    assertEquals("key", violation.getPropertyPath().toString());
-    assertEquals(longKey, violation.getInvalidValue());
+    assertThat(violation.getPropertyPath().toString())
+        .isEqualTo("key");
+    assertThat(violation.getInvalidValue())
+        .isEqualTo(longKey);
   }
 
   @Test
@@ -185,11 +199,15 @@ class EnvironmentTest {
     Set<ConstraintViolation<Environment>> violations
         = validator.validate(environment);
 
-    assertEquals(1, violations.size());
+    assertThat(violations)
+        .hasSize(1);
+
     ConstraintViolation<Environment> violation
         = violations.iterator().next();
-    assertEquals("key", violation.getPropertyPath().toString());
-    assertEquals("   ", violation.getInvalidValue());
+    assertThat(violation.getPropertyPath().toString())
+        .isEqualTo("key");
+    assertThat(violation.getInvalidValue())
+        .isEqualTo("   ");
   }
 
   private Application createApplication() {

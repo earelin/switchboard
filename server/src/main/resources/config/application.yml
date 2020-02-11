@@ -1,4 +1,7 @@
 management:
+  endpoint:
+    health:
+      show-details: always
   health:
     defaults:
       enabled: true
@@ -15,6 +18,8 @@ logging:
           switch: DEBUG
 
 spring:
+  jpa:
+    open-in-view: false
   h2:
     console:
       enabled: true
