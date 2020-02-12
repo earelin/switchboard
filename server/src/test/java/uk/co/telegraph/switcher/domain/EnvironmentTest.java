@@ -17,7 +17,6 @@ class EnvironmentTest {
 
   private static final Long ENVIRONMENT_ID = 25L;
   private static final String ENVIRONMENT_KEY = "production";
-  private static final String ENVIRONMENT_DESCRIPTION = "Production environment";
 
   private static ValidatorFactory validatorFactory;
 
@@ -40,7 +39,6 @@ class EnvironmentTest {
     environment.setId(ENVIRONMENT_ID);
     environment.setApplication(createApplication());
     environment.setKey(ENVIRONMENT_KEY);
-    environment.setDescription(ENVIRONMENT_DESCRIPTION);
 
     validator = validatorFactory.getValidator();
   }
@@ -65,11 +63,6 @@ class EnvironmentTest {
     assertEquals(ENVIRONMENT_KEY, environment.getKey());
   }
 
-  @Test
-  void shouldSetDescription() {
-    assertThat(environment.getDescription())
-        .isEqualTo(ENVIRONMENT_DESCRIPTION);
-  }
 
   @Test
   void shouldCanEqualSameClass() {
@@ -100,6 +93,20 @@ class EnvironmentTest {
   }
 
   @Test
+  void shouldIsDefaultReturnTrueIfKeyIsDefault() {
+    environment.setKey(Environment.DEFAULT_ENVIRONMENT_KEY);
+
+    assertThat(environment.isDefault())
+        .isTrue();
+  }
+
+  @Test
+  void shouldIsDefaultReturnFalseIfKeyIsNotDefault() {
+    assertThat(environment.isDefault())
+        .isFalse();
+  }
+
+  @Test
   void shouldBeEqualToAnEnvironmentWithSameId() {
     Environment compareObject = new Environment();
     compareObject.setId(ENVIRONMENT_ID);
@@ -114,7 +121,6 @@ class EnvironmentTest {
     compareObject.setId(12L);
     compareObject.setApplication(createApplication());
     compareObject.setKey(ENVIRONMENT_KEY);
-    compareObject.setDescription(ENVIRONMENT_DESCRIPTION);
 
     assertThat(environment)
         .isNotEqualTo(compareObject);
@@ -158,8 +164,7 @@ class EnvironmentTest {
         .isEqualTo("Environment("
             + "id=" + ENVIRONMENT_ID + ", "
             + "application=" + environment.getApplication().toString() + ", "
-            + "key=" + ENVIRONMENT_KEY + ", "
-            + "description=" + ENVIRONMENT_DESCRIPTION
+            + "key=" + ENVIRONMENT_KEY
             + ")");
   }
 

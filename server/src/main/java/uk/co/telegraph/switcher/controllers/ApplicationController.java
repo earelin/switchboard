@@ -1,7 +1,6 @@
 package uk.co.telegraph.switcher.controllers;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.MessageSource;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-import uk.co.telegraph.switcher.controllers.dtos.ApplicationDto;
+import uk.co.telegraph.switcher.dtos.ApplicationDto;
 import uk.co.telegraph.switcher.domain.Application;
 import uk.co.telegraph.switcher.services.ApplicationService;
 

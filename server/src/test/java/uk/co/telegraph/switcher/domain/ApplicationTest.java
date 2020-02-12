@@ -17,11 +17,11 @@ import org.junit.jupiter.api.Test;
 
 class ApplicationTest {
 
-  private static final Long APPLICATION_ID = 25L;
-  private static final String APPLICATION_KEY = "newsroom-dashboard";
-  private static final String APPLICATION_NAME = "Newsroom Dashboard";
-  private static final String APPLICATION_SECRET = "K2I1JPxYp1pCWprzf4QaReiwntZXxmu4";
-  private static final String APPLICATION_DESCRIPTION
+  private static final Long ID = 25L;
+  private static final String KEY = "newsroom-dashboard";
+  private static final String NAME = "Newsroom Dashboard";
+  private static final String SECRET = "K2I1JPxYp1pCWprzf4QaReiwntZXxmu4";
+  private static final String DESCRIPTION
       = "An amazing application to be feature flagged";
 
   private static ValidatorFactory validatorFactory;
@@ -42,38 +42,32 @@ class ApplicationTest {
   @BeforeEach
   void setUp() {
     application = new Application();
-    application.setId(APPLICATION_ID);
-    application.setName(APPLICATION_NAME);
-    application.setKey(APPLICATION_KEY);
-    application.setSecret(APPLICATION_SECRET);
-    application.setDescription(APPLICATION_DESCRIPTION);
+    application.setName(NAME);
+    application.setKey(KEY);
+    application.setSecret(SECRET);
+    application.setDescription(DESCRIPTION);
 
     validator = validatorFactory.getValidator();
   }
 
   @Test
-  void shouldSetId() {
-    assertEquals(APPLICATION_ID, application.getId());
-  }
-
-  @Test
   void shouldSetKey() {
-   assertEquals(APPLICATION_KEY, application.getKey());
+   assertEquals(KEY, application.getKey());
   }
 
   @Test
   void shouldSetName() {
-    assertEquals(APPLICATION_NAME, application.getName());
+    assertEquals(NAME, application.getName());
   }
 
   @Test
   void shouldSetSecret() {
-    assertEquals(APPLICATION_SECRET, application.getSecret());
+    assertEquals(SECRET, application.getSecret());
   }
 
   @Test
   void shouldSetDescription() {
-    assertEquals(APPLICATION_DESCRIPTION, application.getDescription());
+    assertEquals(DESCRIPTION, application.getDescription());
   }
 
   @Test
@@ -101,9 +95,9 @@ class ApplicationTest {
   }
 
   @Test
-  void shouldBeEqualToAnApplicationWithSameId() {
+  void shouldBeEqualToAnApplicationWithSameKey() {
     Application compareObject = new Application();
-    compareObject.setId(APPLICATION_ID);
+    compareObject.setKey(KEY);
 
     assertEquals(compareObject, application);
   }
@@ -111,11 +105,10 @@ class ApplicationTest {
   @Test
   void shouldNotBeEqualToAnApplicationWithADifferentId() {
     Application compareObject = new Application();
-    compareObject.setId(12L);
-    compareObject.setName(APPLICATION_NAME);
-    compareObject.setKey(APPLICATION_KEY);
-    compareObject.setSecret(APPLICATION_SECRET);
-    compareObject.setDescription(APPLICATION_DESCRIPTION);
+    compareObject.setKey("other-application");
+    compareObject.setName(NAME);
+    compareObject.setSecret(SECRET);
+    compareObject.setDescription(DESCRIPTION);
 
     assertNotEquals(compareObject, application);
   }
@@ -135,7 +128,7 @@ class ApplicationTest {
   @Test
   void twoObjectWithTheSameIdShouldHaveSameHashCode() {
     Application compareObject = new Application();
-    compareObject.setId(APPLICATION_ID);
+    compareObject.setKey(KEY);
 
     assertEquals(application.hashCode(), compareObject.hashCode());
   }
@@ -143,11 +136,10 @@ class ApplicationTest {
   @Test
   void twoObjectWithDifferentIdShouldHaveDifferentHashCode() {
     Application compareObject = new Application();
-    compareObject.setId(12L);
-    compareObject.setName(APPLICATION_NAME);
-    compareObject.setKey(APPLICATION_KEY);
-    compareObject.setSecret(APPLICATION_SECRET);
-    compareObject.setDescription(APPLICATION_DESCRIPTION);
+    compareObject.setKey("other-application");
+    compareObject.setName(NAME);
+    compareObject.setSecret(SECRET);
+    compareObject.setDescription(DESCRIPTION);
 
     assertNotEquals(application.hashCode(), compareObject.hashCode());
   }
@@ -157,11 +149,10 @@ class ApplicationTest {
     String objectToString = application.toString();
 
     assertEquals("Application("
-        + "id=" + APPLICATION_ID + ", "
-        + "key=" + APPLICATION_KEY + ", "
-        + "name=" + APPLICATION_NAME + ", "
-        + "secret=" + APPLICATION_SECRET + ", "
-        + "description=" + APPLICATION_DESCRIPTION
+        + "key=" + KEY + ", "
+        + "name=" + NAME + ", "
+        + "secret=" + SECRET + ", "
+        + "description=" + DESCRIPTION
         + ")", objectToString);
   }
 

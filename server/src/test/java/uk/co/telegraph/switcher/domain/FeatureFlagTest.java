@@ -18,7 +18,7 @@ class FeatureFlagTest {
   private static final Long FEATURE_FLAG_ID = 25L;
   private static final String FEATURE_FLAG_KEY = "performance.chart";
   private static final String FEATURE_FLAG_DESCRIPTION = "Performance chart feature";
-  private static final Boolean FEATURE_FLAG_ENABLED = Boolean.FALSE;
+  private static final Boolean FEATURE_FLAG_ACTIVE = true;
 
   private static ValidatorFactory validatorFactory;
 
@@ -42,7 +42,7 @@ class FeatureFlagTest {
     featureFlag.setApplication(createApplication());
     featureFlag.setKey(FEATURE_FLAG_KEY);
     featureFlag.setDescription(FEATURE_FLAG_DESCRIPTION);
-    featureFlag.setEnabled(FEATURE_FLAG_ENABLED);
+    featureFlag.setActive(FEATURE_FLAG_ACTIVE);
 
     validator = validatorFactory.getValidator();
   }
@@ -73,7 +73,7 @@ class FeatureFlagTest {
 
   @Test
   void shouldSetEnabled() {
-    assertEquals(FEATURE_FLAG_ENABLED, featureFlag.getEnabled());
+    assertEquals(FEATURE_FLAG_ACTIVE, featureFlag.isActive());
   }
 
   @Test
@@ -115,7 +115,7 @@ class FeatureFlagTest {
     featureFlag.setApplication(createApplication());
     featureFlag.setKey(FEATURE_FLAG_KEY);
     featureFlag.setDescription(FEATURE_FLAG_DESCRIPTION);
-    featureFlag.setEnabled(FEATURE_FLAG_ENABLED);
+    featureFlag.setActive(FEATURE_FLAG_ACTIVE);
 
     assertNotEquals(compareObject, featureFlag);
   }
@@ -157,7 +157,7 @@ class FeatureFlagTest {
         + "application=" + featureFlag.getApplication().toString() + ", "
         + "key=" + FEATURE_FLAG_KEY + ", "
         + "description=" + FEATURE_FLAG_DESCRIPTION + ", "
-        + "enabled=" + FEATURE_FLAG_ENABLED
+        + "active=" + FEATURE_FLAG_ACTIVE
         + ")", objectToString);
   }
 

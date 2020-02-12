@@ -2,6 +2,9 @@ package uk.co.telegraph.switcher.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.co.telegraph.switcher.domain.Application;
@@ -18,13 +21,16 @@ public class ApplicationServiceImp implements ApplicationService {
   }
 
   @Override
-  @Transactional
-  public Application create(Application application) {
-    return applicationRepository.save(application);
+  public Application createWithDefaultEnvironment(Application application) {
+    return null;
   }
 
   @Override
-  @Transactional
+  public Application createWithEnvironments(Application application, Set<String> environments) {
+    return null;
+  }
+
+  @Override
   public Application update(Application application) {
     return null;
   }
@@ -36,12 +42,32 @@ public class ApplicationServiceImp implements ApplicationService {
 
   @Override
   public List<Application> findAll() {
-    return applicationRepository.findAllByOrderByName();
+    return null;
   }
 
   @Override
-  @Transactional
+  public Page<Application> findAllPaginated(Pageable pageable) {
+    return null;
+  }
+
+  @Override
   public void delete(Long id) {
-    applicationRepository.deleteById(id);
+
+  }
+
+  @Override
+  public void addEnvironment(Application application, String environmentKey) {
+
+  }
+
+  @Override
+  public void deleteEnvironment(Application application, String environmentKey) {
+
+  }
+
+  @Override
+  public void updateEnvironment(Application application, String environmentKey,
+      String newEnvironmentKey) {
+
   }
 }
