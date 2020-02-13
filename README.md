@@ -1,5 +1,5 @@
 # Switchboard
 
-![Switchboard photo](/media/switchboard.png)
+![Switchboard photo](/media/switchboard.jpg)
 
 Feature flag configuration server
