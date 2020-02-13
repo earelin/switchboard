@@ -1,6 +1,5 @@
 package uk.co.telegraph.switcher.domain.strategy;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,8 +8,8 @@ import uk.co.telegraph.switcher.domain.ClientInfo;
 
 @Getter
 @Setter
-@ToString
-@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 public class UserGroupStrategy extends Strategy {
 
   private UserGroup userGroup;
@@ -21,6 +20,6 @@ public class UserGroupStrategy extends Strategy {
 
   @Override
   public boolean isEnabled(ClientInfo clientInfo) {
-    return userGroup.hasUser(clientInfo.getUser());
+    return userGroup != null && userGroup.hasUser(clientInfo.getUser());
   }
 }
