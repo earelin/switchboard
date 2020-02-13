@@ -10,6 +10,9 @@ import lombok.EqualsAndHashCode;
 import uk.co.telegraph.switcher.domain.ClientInfo;
 import uk.co.telegraph.switcher.domain.Context;
 
+/**
+ * Set of strategies applicable to a particular context.
+ */
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class StrategySet {

@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.ToString;
 import uk.co.telegraph.switcher.domain.ClientInfo;
 
+/**
+ * Algorithm for calculating one feature flag status condition for a particular client.
+ */
 @Getter
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)

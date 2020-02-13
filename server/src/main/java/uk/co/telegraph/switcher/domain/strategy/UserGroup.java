@@ -5,6 +5,9 @@ import java.util.Set;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * Group of users to be used in group related strategies.
+ */
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class UserGroup {

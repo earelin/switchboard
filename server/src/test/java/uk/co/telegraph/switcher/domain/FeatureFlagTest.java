@@ -2,34 +2,28 @@ package uk.co.telegraph.switcher.domain;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import uk.co.telegraph.switcher.domain.strategy.StrategySet;
 
+@ExtendWith(MockitoExtension.class)
 class FeatureFlagTest {
 
   private static final String KEY = "performance.chart";
   private static final String DESCRIPTION = "Performance chart feature";
   private static final Boolean ACTIVE = true;
 
-  private static ValidatorFactory validatorFactory;
+  @Mock
+  private StrategySet strategySetProduction;
+
+  @Mock
+  private StrategySet strategySetTesting;
 
   private FeatureFlag featureFlag;
-  private Validator validator;
-
-  @BeforeAll
-  static void init() {
-    validatorFactory = Validation.buildDefaultValidatorFactory();
-  }
-
-  @AfterAll
-  static void finish() {
-    validatorFactory.close();
-  }
 
   @BeforeEach
   void setUp() {
@@ -37,8 +31,7 @@ class FeatureFlagTest {
     featureFlag.setKey(KEY);
     featureFlag.setDescription(DESCRIPTION);
     featureFlag.setActive(ACTIVE);
-
-    validator = validatorFactory.getValidator();
+    featureFlag.setStrategySets(generateStrategySets());
   }
 
   @Test
@@ -141,14 +134,19 @@ class FeatureFlagTest {
 
   @Test
   void shouldConvertToString() {
-    String objectToString = featureFlag.toString();
-
     assertThat(featureFlag.toString())
         .isEqualTo("FeatureFlag("
             + "key=" + KEY + ", "
             + "description=" + DESCRIPTION + ", "
             + "active=" + ACTIVE + ", "
-            + "strategySets="
+            + "strategySets=" + generateStrategySets()
             + ")");
+  }
+
+  private Map<Context, StrategySet> generateStrategySets() {
+    return Map.of(
+        new Context("production"), strategySetProduction,
+        new Context("testing"), strategySetTesting
+    );
   }
 }
