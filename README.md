@@ -1,5 +1,5 @@
-# Switch Panel
+# Switchboard
 
-![logo](/media/logo.png)
+![Switchboard photo](/media/switchboard.png)
 
 Feature flag configuration server
