@@ -1,8 +1,8 @@
 # Switchboard
 
-<p style="align-content: center;">
+<figure style="text-align: center">
   <img src="/media/switchboard.jpg" alt="Switchboard photo"/><br />
-  <small>&copy; Joseph A. Carr</small>
-</p>
+  <figcaption>&copy; Joseph A. Carr</figcaption>
+</figure>
 
 Switchboard is a [feature flag](https://martinfowler.com/articles/feature-toggles.html) configuration service.
