@@ -1,13 +1,14 @@
 package uk.co.telegraph.switcher.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static uk.co.telegraph.switcher.domain.Environment.DEFAULT_ENVIRONMENT_KEY;
 
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,8 +16,7 @@ import org.junit.jupiter.api.Test;
 
 class EnvironmentTest {
 
-  private static final Long ENVIRONMENT_ID = 25L;
-  private static final String ENVIRONMENT_KEY = "production";
+  private static final String KEY = "production";
 
   private static ValidatorFactory validatorFactory;
 
@@ -35,38 +35,28 @@ class EnvironmentTest {
 
   @BeforeEach
   void setUp() {
-    environment = new Environment();
-    environment.setId(ENVIRONMENT_ID);
-    environment.setApplication(createApplication());
-    environment.setKey(ENVIRONMENT_KEY);
+    environment = new Environment(KEY);
 
     validator = validatorFactory.getValidator();
   }
 
   @Test
-  void shouldSetId() {
-    assertEquals(ENVIRONMENT_ID, environment.getId());
+  void shouldSetKeyOnConstructor() {
+    assertThat(environment.getKey())
+        .isEqualTo(KEY);
   }
 
   @Test
-  void shouldSetApplication() {
-    Application application = createApplication();
+  void shouldGenerateADefaultEnvironment() {
+    environment = Environment.buildDefault();
 
-    environment.setApplication(application);
-
-    assertThat(environment.getApplication())
-        .isEqualTo(application);
+    assertThat(environment.isDefault())
+        .isTrue();
   }
-
-  @Test
-  void shouldSetKey() {
-    assertEquals(ENVIRONMENT_KEY, environment.getKey());
-  }
-
 
   @Test
   void shouldCanEqualSameClass() {
-    Environment comparedObject = new Environment();
+    Environment comparedObject = new Environment("other-environment");
 
     assertThat(environment.canEqual(comparedObject))
         .isTrue();
@@ -74,7 +64,7 @@ class EnvironmentTest {
 
   @Test
   void shouldNotCanEqualDifferentClass() {
-    String comparedObject = "asdf";
+    String comparedObject = "some string";
 
     assertThat(environment.canEqual(comparedObject))
         .isFalse();
@@ -94,7 +84,7 @@ class EnvironmentTest {
 
   @Test
   void shouldIsDefaultReturnTrueIfKeyIsDefault() {
-    environment.setKey(Environment.DEFAULT_ENVIRONMENT_KEY);
+    environment = new Environment(DEFAULT_ENVIRONMENT_KEY);
 
     assertThat(environment.isDefault())
         .isTrue();
@@ -107,20 +97,16 @@ class EnvironmentTest {
   }
 
   @Test
-  void shouldBeEqualToAnEnvironmentWithSameId() {
-    Environment compareObject = new Environment();
-    compareObject.setId(ENVIRONMENT_ID);
+  void shouldBeEqualToAnEnvironmentWithSameKey() {
+    Environment compareObject = new Environment(KEY);
 
     assertThat(environment)
-        .isEqualTo(environment);
+        .isEqualTo(compareObject);
   }
 
   @Test
-  void shouldNotBeEqualToAnEnvironmentWithADifferentId() {
-    Environment compareObject = new Environment();
-    compareObject.setId(12L);
-    compareObject.setApplication(createApplication());
-    compareObject.setKey(ENVIRONMENT_KEY);
+  void shouldNotBeEqualToAnEnvironmentWithADifferentKey() {
+    Environment compareObject = new Environment("other-environment");
 
     assertThat(environment)
         .isNotEqualTo(compareObject);
@@ -141,9 +127,8 @@ class EnvironmentTest {
   }
 
   @Test
-  void twoObjectWithTheSameIdShouldHaveSameHashCode() {
-    Environment compareObject = new Environment();
-    compareObject.setId(ENVIRONMENT_ID);
+  void twoObjectWithTheSameKeyShouldHaveSameHashCode() {
+    Environment compareObject = new Environment(KEY);
 
     assertThat(environment.hashCode())
         .isEqualTo(compareObject.hashCode());
@@ -151,8 +136,7 @@ class EnvironmentTest {
 
   @Test
   void twoObjectWithDifferentIdShouldHaveDifferentHashCode() {
-    Environment compareObject = new Environment();
-    compareObject.setId(12L);
+    Environment compareObject = new Environment("other-environment");
 
     assertThat(environment.hashCode())
         .isNotEqualTo(compareObject.hashCode());
@@ -162,9 +146,7 @@ class EnvironmentTest {
   void shouldConvertToString() {
     assertThat(environment.toString())
         .isEqualTo("Environment("
-            + "id=" + ENVIRONMENT_ID + ", "
-            + "application=" + environment.getApplication().toString() + ", "
-            + "key=" + ENVIRONMENT_KEY
+            + "key=" + KEY
             + ")");
   }
 
@@ -178,10 +160,10 @@ class EnvironmentTest {
   }
 
   @Test
-  void shouldNotValidateKeyWithLengthMoreThan32() {
-    final String longKey = "lorem-ipsum-dolor-sit-amet-consectetur-adipiscing-elit-praesent-quam";
+  void shouldNotValidateKeyWithLengthMoreThan64Characters() {
+    final String longKey = RandomStringUtils.random(80);
 
-    environment.setKey(longKey);
+    environment = new Environment(longKey);
 
     Set<ConstraintViolation<Environment>> violations
         = validator.validate(environment);
@@ -199,7 +181,7 @@ class EnvironmentTest {
 
   @Test
   void shouldNotValidateBlankKey() {
-    environment.setKey("   ");
+    environment = new Environment("   ");
 
     Set<ConstraintViolation<Environment>> violations
         = validator.validate(environment);
@@ -214,16 +196,4 @@ class EnvironmentTest {
     assertThat(violation.getInvalidValue())
         .isEqualTo("   ");
   }
-
-  private Application createApplication() {
-    Application application = new Application();
-    application.setId(25L);
-    application.setName("Newsroom Dashboard");
-    application.setKey("newsroom-dashboard");
-    application.setSecret("K2I1JPxYp1pCWprzf4QaReiwntZXxmu4");
-    application.setDescription("An amazing application to be feature flagged");
-
-    return application;
-  }
-
 }

@@ -1,16 +1,16 @@
 package uk.co.telegraph.switcher.domain.strategy;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import javax.validation.constraints.NotBlank;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
-public class UserGroup implements Serializable {
-  private String key;
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+public class UserGroup {
+  @EqualsAndHashCode.Include
+  private final String key;
 
-  @NotBlank
   private String name;
 
   private Set<String> users = new HashSet<>();

@@ -1,17 +1,31 @@
 package uk.co.telegraph.switcher.domain;
 
-import lombok.Data;
+import java.util.Objects;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
-@Data
+@Getter
+@ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Environment {
   public static final String DEFAULT_ENVIRONMENT_KEY = "default";
 
+  public static Environment buildDefault() {
+    return new Environment(DEFAULT_ENVIRONMENT_KEY);
+  }
+
   @EqualsAndHashCode.Include
-  private String key;
+  @NotBlank @Size(max = 64)
+  private final String key;
+
+  public Environment(String key) {
+    this.key = key;
+  }
 
   public boolean isDefault() {
-    return DEFAULT_ENVIRONMENT_KEY.equals(key);
+    return Objects.equals(key, DEFAULT_ENVIRONMENT_KEY);
   }
 }

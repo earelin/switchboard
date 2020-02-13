@@ -1,9 +1,6 @@
 package uk.co.telegraph.switcher.domain;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Set;
 import javax.validation.ConstraintViolation;
@@ -17,7 +14,6 @@ import org.junit.jupiter.api.Test;
 
 class ApplicationTest {
 
-  private static final Long ID = 25L;
   private static final String KEY = "newsroom-dashboard";
   private static final String NAME = "Newsroom Dashboard";
   private static final String SECRET = "K2I1JPxYp1pCWprzf4QaReiwntZXxmu4";
@@ -41,9 +37,8 @@ class ApplicationTest {
 
   @BeforeEach
   void setUp() {
-    application = new Application();
+    application = new Application(KEY);
     application.setName(NAME);
-    application.setKey(KEY);
     application.setSecret(SECRET);
     application.setDescription(DESCRIPTION);
 
@@ -51,109 +46,118 @@ class ApplicationTest {
   }
 
   @Test
-  void shouldSetKey() {
-   assertEquals(KEY, application.getKey());
+  void shouldSetKeyInConstruction() {
+    assertThat(application.getKey())
+        .isEqualTo(KEY);
   }
 
   @Test
   void shouldSetName() {
-    assertEquals(NAME, application.getName());
+    assertThat(application.getName())
+      .isEqualTo(NAME);
   }
 
   @Test
   void shouldSetSecret() {
-    assertEquals(SECRET, application.getSecret());
+    assertThat(application.getSecret())
+       .isEqualTo(SECRET);
   }
 
   @Test
   void shouldSetDescription() {
-    assertEquals(DESCRIPTION, application.getDescription());
+    assertThat(application.getDescription())
+        .isEqualTo(DESCRIPTION);
   }
 
   @Test
   void shouldCanEqualSameClass() {
-    Application comparedObject = new Application();
+    Application comparedObject = new Application("other-application");
 
-    assertTrue(application.canEqual(comparedObject));
+    assertThat(application.canEqual(comparedObject))
+        .isTrue();
   }
 
   @Test
   void shouldNotCanEqualDifferentClass() {
-    String comparedObject = "asdf";
+    String comparedObject = "string";
 
-    assertFalse(application.canEqual(comparedObject));
+    assertThat(application.canEqual(comparedObject))
+        .isFalse();
   }
 
   @Test
   void shouldBeEqualToItself() {
-    assertEquals(application, application);
+    assertThat(application)
+        .isEqualTo(application);
   }
 
   @Test
   void shouldNotBeEqualToNull() {
-   assertNotEquals(null, application);
+    assertThat(application)
+        .isNotEqualTo(null);
   }
 
   @Test
   void shouldBeEqualToAnApplicationWithSameKey() {
-    Application compareObject = new Application();
-    compareObject.setKey(KEY);
+    Application compareObject = new Application(KEY);
 
-    assertEquals(compareObject, application);
+    assertThat(application)
+        .isEqualTo(compareObject);
   }
 
   @Test
-  void shouldNotBeEqualToAnApplicationWithADifferentId() {
-    Application compareObject = new Application();
-    compareObject.setKey("other-application");
+  void shouldNotBeEqualToAnApplicationWithADifferentKey() {
+    Application compareObject = new Application("other-application");
     compareObject.setName(NAME);
     compareObject.setSecret(SECRET);
     compareObject.setDescription(DESCRIPTION);
 
-    assertNotEquals(compareObject, application);
+    assertThat(application)
+        .isNotEqualTo(compareObject);
   }
 
   @Test
   void shouldNotBeEqualToADifferentClass() {
     String compareObject = "testing";
 
-    assertNotEquals(compareObject, application);
+    assertThat(application)
+        .isNotEqualTo(compareObject);
   }
 
   @Test
-  void sameObjectShouldHaveSameHashCode() {
-    assertEquals(application.hashCode(), application.hashCode());
+  void sameInstanceShouldHaveSameHashCode() {
+    assertThat(application.hashCode())
+        .isEqualTo(application.hashCode());
   }
 
   @Test
-  void twoObjectWithTheSameIdShouldHaveSameHashCode() {
-    Application compareObject = new Application();
-    compareObject.setKey(KEY);
+  void twoObjectsWithTheSameKeyShouldHaveSameHashCode() {
+    Application compareObject = new Application(KEY);
 
-    assertEquals(application.hashCode(), compareObject.hashCode());
+    assertThat(application.hashCode())
+        .isEqualTo(compareObject.hashCode());
   }
 
   @Test
-  void twoObjectWithDifferentIdShouldHaveDifferentHashCode() {
-    Application compareObject = new Application();
-    compareObject.setKey("other-application");
+  void twoObjectsWithDifferentIdShouldHaveDifferentHashCode() {
+    Application compareObject = new Application("other-application");
     compareObject.setName(NAME);
     compareObject.setSecret(SECRET);
     compareObject.setDescription(DESCRIPTION);
 
-    assertNotEquals(application.hashCode(), compareObject.hashCode());
+    assertThat(application.hashCode())
+        .isNotEqualTo(compareObject.hashCode());
   }
 
   @Test
   void shouldConvertToString() {
-    String objectToString = application.toString();
-
-    assertEquals("Application("
-        + "key=" + KEY + ", "
-        + "name=" + NAME + ", "
-        + "secret=" + SECRET + ", "
-        + "description=" + DESCRIPTION
-        + ")", objectToString);
+    assertThat(application.toString())
+        .isEqualTo("Application("
+            + "key=" + KEY + ", "
+            + "name=" + NAME + ", "
+            + "secret=" + SECRET + ", "
+            + "description=" + DESCRIPTION
+            + ")");
   }
 
   @Test
@@ -161,7 +165,32 @@ class ApplicationTest {
    Set<ConstraintViolation<Application>> violations
         = validator.validate(application);
 
-    assertTrue(violations.isEmpty());
+    assertThat(violations)
+        .isEmpty();
+  }
+
+  @Test
+  void shouldNotValidateKeyBiggerThan128() {
+    final String longKey = "lorem-ipsum-dolor-sit-amet-consectetur-adipiscing-elit-praesent-quam"
+        + "-tellus-consectetur-nec-neque-vel-lobortis-elementum-ex-curabitur";
+
+    application = new Application(longKey);
+    application.setName(NAME);
+    application.setSecret(SECRET);
+    application.setDescription(DESCRIPTION);
+
+    Set<ConstraintViolation<Application>> violations
+        = validator.validate(application);
+
+    assertThat(violations)
+        .hasSize(1);
+
+    ConstraintViolation<Application> violation
+        = violations.iterator().next();
+    assertThat(violation.getPropertyPath().toString())
+        .isEqualTo("key");
+    assertThat(violation.getInvalidValue())
+        .isEqualTo(longKey);
   }
 
   @Test
@@ -171,28 +200,15 @@ class ApplicationTest {
     Set<ConstraintViolation<Application>> violations
         = validator.validate(application);
 
-    assertEquals(1, violations.size());
+    assertThat(violations)
+        .hasSize(1);
+
     ConstraintViolation<Application> violation
         = violations.iterator().next();
-    assertEquals("name", violation.getPropertyPath().toString());
-    assertEquals("   ", violation.getInvalidValue());
-  }
-
-  @Test
-  void shouldNotValidateKeyBiggerThan128() {
-    final String longKey = "lorem-ipsum-dolor-sit-amet-consectetur-adipiscing-elit-praesent-quam"
-        + "-tellus-consectetur-nec-neque-vel-lobortis-elementum-ex-curabitur";
-
-    application.setKey(longKey);
-
-    Set<ConstraintViolation<Application>> violations
-        = validator.validate(application);
-
-    assertEquals(1, violations.size());
-    ConstraintViolation<Application> violation
-        = violations.iterator().next();
-    assertEquals("key", violation.getPropertyPath().toString());
-    assertEquals(longKey, violation.getInvalidValue());
+    assertThat(violation.getPropertyPath().toString())
+        .isEqualTo("name");
+    assertThat(violation.getInvalidValue())
+        .isEqualTo("   ");
   }
 
   @Test
@@ -205,10 +221,22 @@ class ApplicationTest {
     Set<ConstraintViolation<Application>> violations
         = validator.validate(application);
 
-    assertEquals(1, violations.size());
+    assertThat(violations)
+        .hasSize(1);
+
     ConstraintViolation<Application> violation
         = violations.iterator().next();
-    assertEquals("name", violation.getPropertyPath().toString());
-    assertEquals(longName, violation.getInvalidValue());
+    assertThat(violation.getPropertyPath().toString())
+        .isEqualTo("name");
+    assertThat(violation.getInvalidValue())
+        .isEqualTo(longName);
+  }
+
+  private Set<Environment> generateEnvironments() {
+    return Set.of(
+        new Environment("development"),
+        new Environment("staging"),
+        new Environment("production")
+    );
   }
 }

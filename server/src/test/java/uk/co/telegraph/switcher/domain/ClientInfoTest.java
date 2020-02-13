@@ -1,63 +1,67 @@
 package uk.co.telegraph.switcher.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.time.ZonedDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class ClientInfoTest {
 
-  private static final String CLIENT_INFO_INSTANCE = "mac-1435643";
-  private static final String CLIENT_INFO_USER = "john.smith";
+  private static final String APPLICATION_KEY = "newsroom-dasboard";
+  private static final String ENVIRONMENT_KEY = "production";
+  private static final String INSTANCE = "mac-1435643";
+  private static final String USER = "john.smith";
+  private static final ZonedDateTime DATE_TIME = ZonedDateTime.now();
 
-  private Application application;
-  private Environment environment;
   private ClientInfo clientInfo;
 
   @BeforeEach
   void setUp() {
-    clientInfo = new ClientInfo();
-    clientInfo.setEnvironment(createEnvironment());
-    clientInfo.setInstance(CLIENT_INFO_INSTANCE);
-    clientInfo.setUser(CLIENT_INFO_USER);
+    clientInfo = ClientInfo.builder()
+        .applicationKey(APPLICATION_KEY)
+        .environmentKey(ENVIRONMENT_KEY)
+        .instance(INSTANCE)
+        .user(USER)
+        .dateTime(DATE_TIME)
+        .build();
   }
 
   @Test
-  void shouldSetEnvironment() {
-    assertThat(clientInfo.getEnvironment())
-        .isEqualTo(environment);
+  void shouldSetApplicationKeyWithBuilder() {
+    assertThat(clientInfo.getApplicationKey())
+        .isEqualTo(APPLICATION_KEY);
   }
 
   @Test
-  void shouldSetInstance() {
+  void shouldSetEnvironmentKeyWithBuilder() {
+    assertThat(clientInfo.getEnvironmentKey())
+        .isEqualTo(ENVIRONMENT_KEY);
+  }
+
+  @Test
+  void shouldSetInstanceWithBuilder() {
     assertThat(clientInfo.getInstance())
-        .isEqualTo(CLIENT_INFO_INSTANCE);
+        .isEqualTo(INSTANCE);
   }
 
   @Test
-  void shouldSetUserId() {
+  void shouldSetUserWithBuilder() {
     assertThat(clientInfo.getUser())
-        .isEqualTo(CLIENT_INFO_USER);
+        .isEqualTo(USER);
   }
 
   @Test
-  void shouldReturnApplicationIfEnvironmentIsSet() {
-    assertThat(clientInfo.getApplication())
-        .isEqualTo(application);
-  }
-
-  @Test
-  void shouldReturnNullIfEnvironmentIsNotSet() {
-    clientInfo.setEnvironment(null);
-
-    assertThat(clientInfo.getApplication())
-        .isNull();
+  void shouldSetDateTimeWithBuilder() {
+    assertThat(clientInfo.getDateTime())
+        .isEqualTo(DATE_TIME);
   }
 
   @Test
   void shouldCanEqualSameClass() {
-    ClientInfo comparedObject = new ClientInfo();
+    ClientInfo comparedObject = ClientInfo.builder()
+        .applicationKey(APPLICATION_KEY)
+        .build();
 
     assertThat(clientInfo.canEqual(comparedObject))
         .isTrue();
@@ -85,21 +89,41 @@ class ClientInfoTest {
 
   @Test
   void shouldBeEqualToAClientInfoWithSameProperties() {
-    ClientInfo compareObject = new ClientInfo();
-    compareObject.setEnvironment(createEnvironment());
-    compareObject.setInstance(CLIENT_INFO_INSTANCE);
-    compareObject.setUser(CLIENT_INFO_USER);
+    ClientInfo compareObject = ClientInfo.builder()
+        .applicationKey(APPLICATION_KEY)
+        .environmentKey(ENVIRONMENT_KEY)
+        .instance(INSTANCE)
+        .user(USER)
+        .dateTime(DATE_TIME)
+        .build();
 
     assertThat(clientInfo)
         .isEqualTo(compareObject);
   }
 
   @Test
-  void shouldNotBeEqualToAClientInfoWithDifferentUser() {
-    ClientInfo compareObject = new ClientInfo();
-    compareObject.setEnvironment(createEnvironment());
-    compareObject.setInstance(CLIENT_INFO_INSTANCE);
-    compareObject.setUser("john.snow");
+  void shouldNotBeEqualToAClientInfoWithDifferentApplicationKey() {
+    ClientInfo compareObject = ClientInfo.builder()
+        .applicationKey("other-application")
+        .environmentKey(ENVIRONMENT_KEY)
+        .instance(INSTANCE)
+        .user(USER)
+        .dateTime(DATE_TIME)
+        .build();
+
+    assertThat(clientInfo)
+        .isNotEqualTo(compareObject);
+  }
+
+  @Test
+  void shouldNotBeEqualToAClientInfoWithDifferentEnvironmentKey() {
+    ClientInfo compareObject = ClientInfo.builder()
+        .applicationKey(APPLICATION_KEY)
+        .environmentKey("development")
+        .instance(INSTANCE)
+        .user(USER)
+        .dateTime(DATE_TIME)
+        .build();
 
     assertThat(clientInfo)
         .isNotEqualTo(compareObject);
@@ -107,24 +131,41 @@ class ClientInfoTest {
 
   @Test
   void shouldNotBeEqualToAClientInfoWithDifferentInstance() {
-    ClientInfo compareObject = new ClientInfo();
-    compareObject.setEnvironment(createEnvironment());
-    compareObject.setInstance("pc-5354");
-    compareObject.setUser(CLIENT_INFO_USER);
+    ClientInfo compareObject = ClientInfo.builder()
+        .applicationKey(APPLICATION_KEY)
+        .environmentKey(ENVIRONMENT_KEY)
+        .instance("pc-1354")
+        .user(USER)
+        .dateTime(DATE_TIME)
+        .build();
 
     assertThat(clientInfo)
         .isNotEqualTo(compareObject);
   }
 
   @Test
-  void shouldNotBeEqualToAClientInfoWithDifferentEnvironment() {
-    Environment distinctEnvironment = new Environment();
-    distinctEnvironment.setId(125L);
+  void shouldNotBeEqualToAClientInfoWithDifferentUser() {
+    ClientInfo compareObject = ClientInfo.builder()
+        .applicationKey(APPLICATION_KEY)
+        .environmentKey(ENVIRONMENT_KEY)
+        .instance(INSTANCE)
+        .user("john.snow")
+        .dateTime(DATE_TIME)
+        .build();
 
-    ClientInfo compareObject = new ClientInfo();
-    compareObject.setEnvironment(distinctEnvironment);
-    compareObject.setInstance(CLIENT_INFO_INSTANCE);
-    compareObject.setUser(CLIENT_INFO_USER);
+    assertThat(clientInfo)
+        .isNotEqualTo(compareObject);
+  }
+
+  @Test
+  void shouldNotBeEqualToAClientInfoWithDifferentDate() {
+    ClientInfo compareObject = ClientInfo.builder()
+        .applicationKey(APPLICATION_KEY)
+        .environmentKey(ENVIRONMENT_KEY)
+        .instance(INSTANCE)
+        .user(USER)
+        .dateTime(DATE_TIME.plusHours(5))
+        .build();
 
     assertThat(clientInfo)
         .isNotEqualTo(compareObject);
@@ -139,40 +180,104 @@ class ClientInfoTest {
   }
 
   @Test
-  void sameObjectShouldHaveSameHashCode() {
+  void sameObjectInstanceShouldHaveSameHashCode() {
     assertThat(clientInfo.hashCode())
         .isEqualTo(clientInfo.hashCode());
   }
 
   @Test
   void twoObjectWithTheSamePropertiesShouldHaveSameHashCode() {
-    ClientInfo compareObject = new ClientInfo();
-    compareObject.setEnvironment(createEnvironment());
-    compareObject.setInstance(CLIENT_INFO_INSTANCE);
-    compareObject.setUser(CLIENT_INFO_USER);
+    ClientInfo compareObject = ClientInfo.builder()
+        .applicationKey(APPLICATION_KEY)
+        .environmentKey(ENVIRONMENT_KEY)
+        .instance(INSTANCE)
+        .user(USER)
+        .dateTime(DATE_TIME)
+        .build();
 
     assertThat(clientInfo.hashCode())
         .isEqualTo(compareObject.hashCode());
   }
 
   @Test
+  void twoObjectWithDifferentApplicationKeyShouldHaveDifferentHashCode() {
+    ClientInfo compareObject = ClientInfo.builder()
+        .applicationKey("other-application")
+        .environmentKey(ENVIRONMENT_KEY)
+        .instance(INSTANCE)
+        .user(USER)
+        .dateTime(DATE_TIME)
+        .build();
+
+    assertThat(clientInfo.hashCode())
+        .isNotEqualTo(compareObject.hashCode());
+  }
+
+  @Test
+  void twoObjectWithDifferentEnvironmentKeyShouldHaveDifferentHashCode() {
+    ClientInfo compareObject = ClientInfo.builder()
+        .applicationKey(APPLICATION_KEY)
+        .environmentKey("development")
+        .instance(INSTANCE)
+        .user(USER)
+        .dateTime(DATE_TIME)
+        .build();
+
+    assertThat(clientInfo.hashCode())
+        .isNotEqualTo(compareObject.hashCode());
+  }
+
+  @Test
+  void twoObjectWithDifferentInstanceShouldHaveDifferentHashCode() {
+    ClientInfo compareObject = ClientInfo.builder()
+        .applicationKey(APPLICATION_KEY)
+        .environmentKey(ENVIRONMENT_KEY)
+        .instance("pc-1354")
+        .user(USER)
+        .dateTime(DATE_TIME)
+        .build();
+
+    assertThat(clientInfo.hashCode())
+        .isNotEqualTo(compareObject.hashCode());
+  }
+
+  @Test
+  void twoObjectWithDifferentUserShouldHaveDifferentHashCode() {
+    ClientInfo compareObject = ClientInfo.builder()
+        .applicationKey(APPLICATION_KEY)
+        .environmentKey(ENVIRONMENT_KEY)
+        .instance(INSTANCE)
+        .user("john.snow")
+        .dateTime(DATE_TIME)
+        .build();
+
+    assertThat(clientInfo.hashCode())
+        .isNotEqualTo(compareObject.hashCode());
+  }
+
+  @Test
+  void twoObjectWithDifferentDateTimeShouldHaveDifferentHashCode() {
+    ClientInfo compareObject = ClientInfo.builder()
+        .applicationKey(APPLICATION_KEY)
+        .environmentKey(ENVIRONMENT_KEY)
+        .instance(INSTANCE)
+        .user(USER)
+        .dateTime(DATE_TIME.plusHours(5))
+        .build();
+
+    assertThat(clientInfo.hashCode())
+        .isNotEqualTo(compareObject.hashCode());
+  }
+
+  @Test
   void shouldConvertToString() {
     assertThat(clientInfo.toString())
         .isEqualTo("ClientInfo("
-            + "environment=" + environment.toString() + ", "
-            + "instance=" + CLIENT_INFO_INSTANCE + ", "
-            + "user=" + CLIENT_INFO_USER
+            + "applicationKey=" + APPLICATION_KEY + ", "
+            + "environmentKey=" + ENVIRONMENT_KEY + ", "
+            + "instance=" + INSTANCE + ", "
+            + "user=" + USER + ", "
+            + "dateTime=" + DATE_TIME.toString()
             + ")");
-  }
-
-  private Environment createEnvironment() {
-    application = new Application();
-    application.setId(25L);
-
-    environment = new Environment();
-    environment.setId(12L);
-    environment.setApplication(application);
-
-    return environment;
   }
 }

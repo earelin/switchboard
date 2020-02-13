@@ -1,10 +1,12 @@
 package uk.co.telegraph.switcher.domain.strategy;
 
 import java.util.Set;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import uk.co.telegraph.switcher.domain.Environment;
 
-@Data
+@Getter
+@Setter
 public class StrategySet {
   private Environment environment;
 

@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 
 class FeatureFlagTest {
 
-  private static final Long FEATURE_FLAG_ID = 25L;
   private static final String FEATURE_FLAG_KEY = "performance.chart";
   private static final String FEATURE_FLAG_DESCRIPTION = "Performance chart feature";
   private static final Boolean FEATURE_FLAG_ACTIVE = true;
@@ -38,27 +37,11 @@ class FeatureFlagTest {
   @BeforeEach
   void setUp() {
     featureFlag = new FeatureFlag();
-    featureFlag.setId(FEATURE_FLAG_ID);
-    featureFlag.setApplication(createApplication());
     featureFlag.setKey(FEATURE_FLAG_KEY);
     featureFlag.setDescription(FEATURE_FLAG_DESCRIPTION);
     featureFlag.setActive(FEATURE_FLAG_ACTIVE);
 
     validator = validatorFactory.getValidator();
-  }
-
-  @Test
-  void shouldSetId() {
-    assertEquals(FEATURE_FLAG_ID, featureFlag.getId());
-  }
-
-  @Test
-  void shouldSetApplication() {
-    Application application = createApplication();
-
-    featureFlag.setApplication(application);
-
-    assertEquals(application, featureFlag.getApplication());
   }
 
   @Test
@@ -103,7 +86,7 @@ class FeatureFlagTest {
   @Test
   void shouldBeEqualToAnEnvironmentWithSameId() {
     FeatureFlag compareObject = new FeatureFlag();
-    compareObject.setId(FEATURE_FLAG_ID);
+    compareObject.setKey(FEATURE_FLAG_KEY);
 
     assertEquals(compareObject, featureFlag);
   }
@@ -111,8 +94,6 @@ class FeatureFlagTest {
   @Test
   void shouldNotBeEqualToAnEnvironmentWithADifferentId() {
     FeatureFlag compareObject = new FeatureFlag();
-    featureFlag.setId(12L);
-    featureFlag.setApplication(createApplication());
     featureFlag.setKey(FEATURE_FLAG_KEY);
     featureFlag.setDescription(FEATURE_FLAG_DESCRIPTION);
     featureFlag.setActive(FEATURE_FLAG_ACTIVE);
@@ -135,7 +116,7 @@ class FeatureFlagTest {
   @Test
   void twoObjectWithTheSameIdShouldHaveSameHashCode() {
     FeatureFlag compareObject = new FeatureFlag();
-    compareObject.setId(FEATURE_FLAG_ID);
+    compareObject.setKey(FEATURE_FLAG_KEY);
 
     assertEquals(featureFlag.hashCode(), compareObject.hashCode());
   }
@@ -143,7 +124,7 @@ class FeatureFlagTest {
   @Test
   void twoObjectWithDifferentIdShouldHaveDifferentHashCode() {
     FeatureFlag compareObject = new FeatureFlag();
-    compareObject.setId(12L);
+    compareObject.setKey("other-feature-flag");
 
     assertNotEquals(featureFlag.hashCode(), compareObject.hashCode());
   }
@@ -153,22 +134,10 @@ class FeatureFlagTest {
     String objectToString = featureFlag.toString();
 
     assertEquals("FeatureFlag("
-        + "id=" + FEATURE_FLAG_ID + ", "
-        + "application=" + featureFlag.getApplication().toString() + ", "
         + "key=" + FEATURE_FLAG_KEY + ", "
         + "description=" + FEATURE_FLAG_DESCRIPTION + ", "
-        + "active=" + FEATURE_FLAG_ACTIVE
+        + "active=" + FEATURE_FLAG_ACTIVE + ", "
+        + "strategySets="
         + ")", objectToString);
-  }
-
-  private Application createApplication() {
-    Application application = new Application();
-    application.setId(25L);
-    application.setName("Newsroom Dashboard");
-    application.setKey("newsroom-dashboard");
-    application.setSecret("K2I1JPxYp1pCWprzf4QaReiwntZXxmu4");
-    application.setDescription("An amazing application to be feature flagged");
-
-    return application;
   }
 }
