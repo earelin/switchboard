@@ -23,7 +23,7 @@ class ApplicationDtoTest {
     applicationDto.setName(NAME);
     applicationDto.setSecret(SECRET);
     applicationDto.setDescription(DESCRIPTION);
-    applicationDto.setEnvironments(ENVIRONMENTS);
+    applicationDto.setContexts(ENVIRONMENTS);
   }
 
   @Test
@@ -52,7 +52,7 @@ class ApplicationDtoTest {
 
   @Test
   void shouldSetEnvironments() {
-    assertThat(applicationDto.getEnvironments())
+    assertThat(applicationDto.getContexts())
         .isEqualTo(ENVIRONMENTS);
   }
 

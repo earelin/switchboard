@@ -232,11 +232,11 @@ class ApplicationTest {
         .isEqualTo(longName);
   }
 
-  private Set<Environment> generateEnvironments() {
+  private Set<Context> generateEnvironments() {
     return Set.of(
-        new Environment("development"),
-        new Environment("staging"),
-        new Environment("production")
+        new Context("development"),
+        new Context("staging"),
+        new Context("production")
     );
   }
 }

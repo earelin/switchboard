@@ -36,8 +36,8 @@ class UserGroupStrategyTest {
   void shouldReturnIsEnabledFalseIfUserGroupIsNotSet() {
     userGroupStrategy.setUserGroup(null);
     ClientInfo clientInfo = ClientInfo.builder()
-      .applicationKey("newsroom-dashboard")
-      .environmentKey("production")
+      .application("newsroom-dashboard")
+      .context("production")
       .instance("pc-3456")
       .dateTime(ZonedDateTime.now())
       .user("gandalf")
@@ -50,8 +50,8 @@ class UserGroupStrategyTest {
   @Test
   void shouldReturnIsEnabledTrueIfUserGroupContainsClientInfoUser() {
     ClientInfo clientInfo = ClientInfo.builder()
-        .applicationKey("newsroom-dashboard")
-        .environmentKey("production")
+        .application("newsroom-dashboard")
+        .context("production")
         .instance("pc-3456")
         .dateTime(ZonedDateTime.now())
         .user("gandalf")
@@ -64,8 +64,8 @@ class UserGroupStrategyTest {
   @Test
   void shouldReturnIsEnabledFalseIfUserGroupNotContainsClientInfoUser() {
     ClientInfo clientInfo = ClientInfo.builder()
-        .applicationKey("newsroom-dashboard")
-        .environmentKey("production")
+        .application("newsroom-dashboard")
+        .context("production")
         .instance("pc-3456")
         .dateTime(ZonedDateTime.now())
         .user("sauron")
@@ -166,5 +166,4 @@ class UserGroupStrategyTest {
     userGroup.setUsers(Set.of("frodo", "sam", "gandalf"));
     return userGroup;
   }
-
 }

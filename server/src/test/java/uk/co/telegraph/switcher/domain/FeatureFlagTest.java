@@ -1,9 +1,6 @@
 package uk.co.telegraph.switcher.domain;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -15,9 +12,9 @@ import org.junit.jupiter.api.Test;
 
 class FeatureFlagTest {
 
-  private static final String FEATURE_FLAG_KEY = "performance.chart";
-  private static final String FEATURE_FLAG_DESCRIPTION = "Performance chart feature";
-  private static final Boolean FEATURE_FLAG_ACTIVE = true;
+  private static final String KEY = "performance.chart";
+  private static final String DESCRIPTION = "Performance chart feature";
+  private static final Boolean ACTIVE = true;
 
   private static ValidatorFactory validatorFactory;
 
@@ -37,88 +34,100 @@ class FeatureFlagTest {
   @BeforeEach
   void setUp() {
     featureFlag = new FeatureFlag();
-    featureFlag.setKey(FEATURE_FLAG_KEY);
-    featureFlag.setDescription(FEATURE_FLAG_DESCRIPTION);
-    featureFlag.setActive(FEATURE_FLAG_ACTIVE);
+    featureFlag.setKey(KEY);
+    featureFlag.setDescription(DESCRIPTION);
+    featureFlag.setActive(ACTIVE);
 
     validator = validatorFactory.getValidator();
   }
 
   @Test
   void shouldSetKey() {
-    assertEquals(FEATURE_FLAG_KEY, featureFlag.getKey());
+    assertThat(featureFlag.getKey())
+        .isEqualTo(KEY);
   }
 
   @Test
   void shouldSetDescription() {
-    assertEquals(FEATURE_FLAG_DESCRIPTION, featureFlag.getDescription());
+    assertThat(featureFlag.getDescription())
+        .isEqualTo(DESCRIPTION);
   }
 
   @Test
   void shouldSetEnabled() {
-    assertEquals(FEATURE_FLAG_ACTIVE, featureFlag.isActive());
+    assertThat(featureFlag.isActive())
+        .isTrue();
   }
 
   @Test
   void shouldCanEqualSameClass() {
     FeatureFlag comparedObject = new FeatureFlag();
 
-    assertTrue(featureFlag.canEqual(comparedObject));
+    assertThat(featureFlag.canEqual(comparedObject))
+        .isTrue();
   }
 
   @Test
   void shouldNotCanEqualDifferentClass() {
     String comparedObject = "asdf";
 
-    assertFalse(featureFlag.canEqual(comparedObject));
+    assertThat(featureFlag.canEqual(comparedObject))
+        .isFalse();
   }
 
   @Test
   void shouldBeEqualToItself() {
-    assertEquals(featureFlag, featureFlag);
+    assertThat(featureFlag)
+        .isEqualTo(featureFlag);
   }
 
   @Test
   void shouldNotBeEqualToNull() {
-    assertNotEquals(null, featureFlag);
+    assertThat(featureFlag)
+        .isNotEqualTo(null);
   }
 
   @Test
   void shouldBeEqualToAnEnvironmentWithSameId() {
     FeatureFlag compareObject = new FeatureFlag();
-    compareObject.setKey(FEATURE_FLAG_KEY);
+    compareObject.setKey(KEY);
 
-    assertEquals(compareObject, featureFlag);
+    assertThat(featureFlag)
+        .isEqualTo(compareObject);
   }
 
   @Test
   void shouldNotBeEqualToAnEnvironmentWithADifferentId() {
     FeatureFlag compareObject = new FeatureFlag();
-    featureFlag.setKey(FEATURE_FLAG_KEY);
-    featureFlag.setDescription(FEATURE_FLAG_DESCRIPTION);
-    featureFlag.setActive(FEATURE_FLAG_ACTIVE);
+    featureFlag.setKey(KEY);
+    featureFlag.setDescription(DESCRIPTION);
+    featureFlag.setActive(ACTIVE);
 
-    assertNotEquals(compareObject, featureFlag);
+    assertThat(featureFlag)
+        .isNotEqualTo(compareObject);
   }
 
   @Test
   void shouldNotBeEqualToADifferentClass() {
     String compareObject = "testing";
 
-    assertNotEquals(compareObject, featureFlag);
+    assertThat(featureFlag)
+        .isNotEqualTo(compareObject);
   }
 
   @Test
   void sameObjectShouldHaveSameHashCode() {
-    assertEquals(featureFlag.hashCode(), featureFlag.hashCode());
+    assertThat(featureFlag.hashCode())
+        .isEqualTo(featureFlag.hashCode());
   }
 
   @Test
   void twoObjectWithTheSameIdShouldHaveSameHashCode() {
     FeatureFlag compareObject = new FeatureFlag();
-    compareObject.setKey(FEATURE_FLAG_KEY);
+    compareObject.setKey(KEY);
 
-    assertEquals(featureFlag.hashCode(), compareObject.hashCode());
+    assertThat(featureFlag.hashCode())
+        .isEqualTo(compareObject.hashCode());
   }
 
   @Test
@@ -126,18 +135,20 @@ class FeatureFlagTest {
     FeatureFlag compareObject = new FeatureFlag();
     compareObject.setKey("other-feature-flag");
 
-    assertNotEquals(featureFlag.hashCode(), compareObject.hashCode());
+    assertThat(featureFlag.hashCode())
+        .isNotEqualTo(compareObject.hashCode());
   }
 
   @Test
   void shouldConvertToString() {
     String objectToString = featureFlag.toString();
 
-    assertEquals("FeatureFlag("
-        + "key=" + FEATURE_FLAG_KEY + ", "
-        + "description=" + FEATURE_FLAG_DESCRIPTION + ", "
-        + "active=" + FEATURE_FLAG_ACTIVE + ", "
-        + "strategySets="
-        + ")", objectToString);
+    assertThat(featureFlag.toString())
+        .isEqualTo("FeatureFlag("
+            + "key=" + KEY + ", "
+            + "description=" + DESCRIPTION + ", "
+            + "active=" + ACTIVE + ", "
+            + "strategySets="
+            + ")");
   }
 }

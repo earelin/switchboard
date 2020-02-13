@@ -15,5 +15,5 @@ public class FeatureFlag {
 
   private boolean active = false;
 
-  private Map<Environment, StrategySet> strategySets;
+  private Map<Context, StrategySet> strategySets;
 }

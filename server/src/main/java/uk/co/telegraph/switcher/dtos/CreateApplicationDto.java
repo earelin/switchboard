@@ -13,5 +13,5 @@ public class CreateApplicationDto implements Serializable {
 
   private String name;
   private String description;
-  private Set<String> environments;
+  private Set<String> contexts;
 }

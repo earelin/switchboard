@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 class ClientInfoTest {
 
   private static final String APPLICATION_KEY = "newsroom-dasboard";
-  private static final String ENVIRONMENT_KEY = "production";
+  private static final String CONTEXT_KEY = "production";
   private static final String INSTANCE = "mac-1435643";
   private static final String USER = "john.smith";
   private static final ZonedDateTime DATE_TIME = ZonedDateTime.now();
@@ -19,8 +19,8 @@ class ClientInfoTest {
   @BeforeEach
   void setUp() {
     clientInfo = ClientInfo.builder()
-        .applicationKey(APPLICATION_KEY)
-        .environmentKey(ENVIRONMENT_KEY)
+        .application(APPLICATION_KEY)
+        .context(CONTEXT_KEY)
         .instance(INSTANCE)
         .user(USER)
         .dateTime(DATE_TIME)
@@ -29,14 +29,14 @@ class ClientInfoTest {
 
   @Test
   void shouldSetApplicationKeyWithBuilder() {
-    assertThat(clientInfo.getApplicationKey())
+    assertThat(clientInfo.getApplication())
         .isEqualTo(APPLICATION_KEY);
   }
 
   @Test
   void shouldSetEnvironmentKeyWithBuilder() {
-    assertThat(clientInfo.getEnvironmentKey())
-        .isEqualTo(ENVIRONMENT_KEY);
+    assertThat(clientInfo.getContext())
+        .isEqualTo(CONTEXT_KEY);
   }
 
   @Test
@@ -60,7 +60,7 @@ class ClientInfoTest {
   @Test
   void shouldCanEqualSameClass() {
     ClientInfo comparedObject = ClientInfo.builder()
-        .applicationKey(APPLICATION_KEY)
+        .application(APPLICATION_KEY)
         .build();
 
     assertThat(clientInfo.canEqual(comparedObject))
@@ -90,8 +90,8 @@ class ClientInfoTest {
   @Test
   void shouldBeEqualToAClientInfoWithSameProperties() {
     ClientInfo compareObject = ClientInfo.builder()
-        .applicationKey(APPLICATION_KEY)
-        .environmentKey(ENVIRONMENT_KEY)
+        .application(APPLICATION_KEY)
+        .context(CONTEXT_KEY)
         .instance(INSTANCE)
         .user(USER)
         .dateTime(DATE_TIME)
@@ -104,8 +104,8 @@ class ClientInfoTest {
   @Test
   void shouldNotBeEqualToAClientInfoWithDifferentApplicationKey() {
     ClientInfo compareObject = ClientInfo.builder()
-        .applicationKey("other-application")
-        .environmentKey(ENVIRONMENT_KEY)
+        .application("other-application")
+        .context(CONTEXT_KEY)
         .instance(INSTANCE)
         .user(USER)
         .dateTime(DATE_TIME)
@@ -118,8 +118,8 @@ class ClientInfoTest {
   @Test
   void shouldNotBeEqualToAClientInfoWithDifferentEnvironmentKey() {
     ClientInfo compareObject = ClientInfo.builder()
-        .applicationKey(APPLICATION_KEY)
-        .environmentKey("development")
+        .application(APPLICATION_KEY)
+        .context("development")
         .instance(INSTANCE)
         .user(USER)
         .dateTime(DATE_TIME)
@@ -132,8 +132,8 @@ class ClientInfoTest {
   @Test
   void shouldNotBeEqualToAClientInfoWithDifferentInstance() {
     ClientInfo compareObject = ClientInfo.builder()
-        .applicationKey(APPLICATION_KEY)
-        .environmentKey(ENVIRONMENT_KEY)
+        .application(APPLICATION_KEY)
+        .context(CONTEXT_KEY)
         .instance("pc-1354")
         .user(USER)
         .dateTime(DATE_TIME)
@@ -146,8 +146,8 @@ class ClientInfoTest {
   @Test
   void shouldNotBeEqualToAClientInfoWithDifferentUser() {
     ClientInfo compareObject = ClientInfo.builder()
-        .applicationKey(APPLICATION_KEY)
-        .environmentKey(ENVIRONMENT_KEY)
+        .application(APPLICATION_KEY)
+        .context(CONTEXT_KEY)
         .instance(INSTANCE)
         .user("john.snow")
         .dateTime(DATE_TIME)
@@ -160,8 +160,8 @@ class ClientInfoTest {
   @Test
   void shouldNotBeEqualToAClientInfoWithDifferentDate() {
     ClientInfo compareObject = ClientInfo.builder()
-        .applicationKey(APPLICATION_KEY)
-        .environmentKey(ENVIRONMENT_KEY)
+        .application(APPLICATION_KEY)
+        .context(CONTEXT_KEY)
         .instance(INSTANCE)
         .user(USER)
         .dateTime(DATE_TIME.plusHours(5))
@@ -188,8 +188,8 @@ class ClientInfoTest {
   @Test
   void twoObjectWithTheSamePropertiesShouldHaveSameHashCode() {
     ClientInfo compareObject = ClientInfo.builder()
-        .applicationKey(APPLICATION_KEY)
-        .environmentKey(ENVIRONMENT_KEY)
+        .application(APPLICATION_KEY)
+        .context(CONTEXT_KEY)
         .instance(INSTANCE)
         .user(USER)
         .dateTime(DATE_TIME)
@@ -202,8 +202,8 @@ class ClientInfoTest {
   @Test
   void twoObjectWithDifferentApplicationKeyShouldHaveDifferentHashCode() {
     ClientInfo compareObject = ClientInfo.builder()
-        .applicationKey("other-application")
-        .environmentKey(ENVIRONMENT_KEY)
+        .application("other-application")
+        .context(CONTEXT_KEY)
         .instance(INSTANCE)
         .user(USER)
         .dateTime(DATE_TIME)
@@ -216,8 +216,8 @@ class ClientInfoTest {
   @Test
   void twoObjectWithDifferentEnvironmentKeyShouldHaveDifferentHashCode() {
     ClientInfo compareObject = ClientInfo.builder()
-        .applicationKey(APPLICATION_KEY)
-        .environmentKey("development")
+        .application(APPLICATION_KEY)
+        .context("development")
         .instance(INSTANCE)
         .user(USER)
         .dateTime(DATE_TIME)
@@ -230,8 +230,8 @@ class ClientInfoTest {
   @Test
   void twoObjectWithDifferentInstanceShouldHaveDifferentHashCode() {
     ClientInfo compareObject = ClientInfo.builder()
-        .applicationKey(APPLICATION_KEY)
-        .environmentKey(ENVIRONMENT_KEY)
+        .application(APPLICATION_KEY)
+        .context(CONTEXT_KEY)
         .instance("pc-1354")
         .user(USER)
         .dateTime(DATE_TIME)
@@ -244,8 +244,8 @@ class ClientInfoTest {
   @Test
   void twoObjectWithDifferentUserShouldHaveDifferentHashCode() {
     ClientInfo compareObject = ClientInfo.builder()
-        .applicationKey(APPLICATION_KEY)
-        .environmentKey(ENVIRONMENT_KEY)
+        .application(APPLICATION_KEY)
+        .context(CONTEXT_KEY)
         .instance(INSTANCE)
         .user("john.snow")
         .dateTime(DATE_TIME)
@@ -258,8 +258,8 @@ class ClientInfoTest {
   @Test
   void twoObjectWithDifferentDateTimeShouldHaveDifferentHashCode() {
     ClientInfo compareObject = ClientInfo.builder()
-        .applicationKey(APPLICATION_KEY)
-        .environmentKey(ENVIRONMENT_KEY)
+        .application(APPLICATION_KEY)
+        .context(CONTEXT_KEY)
         .instance(INSTANCE)
         .user(USER)
         .dateTime(DATE_TIME.plusHours(5))
@@ -273,8 +273,8 @@ class ClientInfoTest {
   void shouldConvertToString() {
     assertThat(clientInfo.toString())
         .isEqualTo("ClientInfo("
-            + "applicationKey=" + APPLICATION_KEY + ", "
-            + "environmentKey=" + ENVIRONMENT_KEY + ", "
+            + "application=" + APPLICATION_KEY + ", "
+            + "context=" + CONTEXT_KEY + ", "
             + "instance=" + INSTANCE + ", "
             + "user=" + USER + ", "
             + "dateTime=" + DATE_TIME.toString()

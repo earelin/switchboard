@@ -15,5 +15,5 @@ public class ApplicationDto implements Serializable {
   private String name;
   private String secret;
   private String description;
-  private Set<String> environments;
+  private Set<String> contexts;
 }

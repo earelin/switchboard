@@ -19,7 +19,7 @@ class CreateApplicationDtoTest {
     createApplicationDto = new CreateApplicationDto();
     createApplicationDto.setName(NAME);
     createApplicationDto.setDescription(DESCRIPTION);
-    createApplicationDto.setEnvironments(ENVIRONMENTS);
+    createApplicationDto.setContexts(ENVIRONMENTS);
   }
 
   @Test
@@ -36,7 +36,7 @@ class CreateApplicationDtoTest {
 
   @Test
   void shouldSetEnvironments() {
-    assertThat(createApplicationDto.getEnvironments())
+    assertThat(createApplicationDto.getContexts())
         .isEqualTo(ENVIRONMENTS);
   }
 

@@ -11,8 +11,8 @@ import lombok.ToString;
 @Getter
 @EqualsAndHashCode
 public class ClientInfo {
-  private final String applicationKey;
-  private final String environmentKey;
+  private final String application;
+  private final String context;
   private final String instance;
   private final String user;
   private final ZonedDateTime dateTime;

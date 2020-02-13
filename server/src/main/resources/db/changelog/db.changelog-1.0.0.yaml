@@ -29,19 +29,19 @@ databaseChangeLog:
                   type: longvarchar
 
   - changeSet:
-      id: '1.0.0-create-environment-table'
+      id: '1.0.0-create-context-table'
       author: switch-panel
-      comment: Environment entity table
+      comment: Context entity table
       changes:
         - createTable:
-            tableName: environment
+            tableName: context
             columns:
               - column:
                   name: application_key
                   type: varchar(128)
                   constraints:
                     deleteCascade: true
-                    foreignKeyName: fk_environment_application_key
+                    foreignKeyName: fk_context_application_key
                     nullable: false
                     references: application(key)
               - column:
@@ -51,8 +51,8 @@ databaseChangeLog:
                     nullable: false
         - addPrimaryKey:
             columnNames: application_key, key
-            constraintName: pk_environment
-            tableName: environment
+            constraintName: pk_context
+            tableName: context
 
 #  - changeSet:
 #      id: '1.0.0-create-feature-flag-table'

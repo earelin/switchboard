@@ -10,22 +10,22 @@ import lombok.ToString;
 @Getter
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Environment {
-  public static final String DEFAULT_ENVIRONMENT_KEY = "default";
+public class Context {
+  public static final String DEFAULT_KEY = "default";
 
-  public static Environment buildDefault() {
-    return new Environment(DEFAULT_ENVIRONMENT_KEY);
+  public static Context buildDefault() {
+    return new Context(DEFAULT_KEY);
   }
 
   @EqualsAndHashCode.Include
   @NotBlank @Size(max = 64)
   private final String key;
 
-  public Environment(String key) {
+  public Context(String key) {
     this.key = key;
   }
 
   public boolean isDefault() {
-    return Objects.equals(key, DEFAULT_ENVIRONMENT_KEY);
+    return Objects.equals(key, DEFAULT_KEY);
   }
 }

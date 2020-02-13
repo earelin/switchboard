@@ -1,7 +1,7 @@
 package uk.co.telegraph.switcher.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static uk.co.telegraph.switcher.domain.Environment.DEFAULT_ENVIRONMENT_KEY;
+import static uk.co.telegraph.switcher.domain.Context.DEFAULT_KEY;
 
 import java.util.Set;
 import javax.validation.ConstraintViolation;
@@ -14,13 +14,13 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class EnvironmentTest {
+class ContextTest {
 
   private static final String KEY = "production";
 
   private static ValidatorFactory validatorFactory;
 
-  private Environment environment;
+  private Context context;
   private Validator validator;
 
   @BeforeAll
@@ -35,30 +35,30 @@ class EnvironmentTest {
 
   @BeforeEach
   void setUp() {
-    environment = new Environment(KEY);
+    context = new Context(KEY);
 
     validator = validatorFactory.getValidator();
   }
 
   @Test
   void shouldSetKeyOnConstructor() {
-    assertThat(environment.getKey())
+    assertThat(context.getKey())
         .isEqualTo(KEY);
   }
 
   @Test
-  void shouldGenerateADefaultEnvironment() {
-    environment = Environment.buildDefault();
+  void shouldGenerateADefaultContext() {
+    context = Context.buildDefault();
 
-    assertThat(environment.isDefault())
+    assertThat(context.isDefault())
         .isTrue();
   }
 
   @Test
   void shouldCanEqualSameClass() {
-    Environment comparedObject = new Environment("other-environment");
+    Context comparedObject = new Context("other-context");
 
-    assertThat(environment.canEqual(comparedObject))
+    assertThat(context.canEqual(comparedObject))
         .isTrue();
   }
 
@@ -66,49 +66,49 @@ class EnvironmentTest {
   void shouldNotCanEqualDifferentClass() {
     String comparedObject = "some string";
 
-    assertThat(environment.canEqual(comparedObject))
+    assertThat(context.canEqual(comparedObject))
         .isFalse();
   }
 
   @Test
   void shouldBeEqualToItself() {
-    assertThat(environment)
-        .isEqualTo(environment);
+    assertThat(context)
+        .isEqualTo(context);
   }
 
   @Test
   void shouldNotBeEqualToNull() {
-    assertThat(environment)
+    assertThat(context)
         .isNotEqualTo(null);
   }
 
   @Test
   void shouldIsDefaultReturnTrueIfKeyIsDefault() {
-    environment = new Environment(DEFAULT_ENVIRONMENT_KEY);
+    context = new Context(DEFAULT_KEY);
 
-    assertThat(environment.isDefault())
+    assertThat(context.isDefault())
         .isTrue();
   }
 
   @Test
   void shouldIsDefaultReturnFalseIfKeyIsNotDefault() {
-    assertThat(environment.isDefault())
+    assertThat(context.isDefault())
         .isFalse();
   }
 
   @Test
-  void shouldBeEqualToAnEnvironmentWithSameKey() {
-    Environment compareObject = new Environment(KEY);
+  void shouldBeEqualToAnContextWithSameKey() {
+    Context compareObject = new Context(KEY);
 
-    assertThat(environment)
+    assertThat(context)
         .isEqualTo(compareObject);
   }
 
   @Test
-  void shouldNotBeEqualToAnEnvironmentWithADifferentKey() {
-    Environment compareObject = new Environment("other-environment");
+  void shouldNotBeEqualToAnContextWithADifferentKey() {
+    Context compareObject = new Context("other-context");
 
-    assertThat(environment)
+    assertThat(context)
         .isNotEqualTo(compareObject);
   }
 
@@ -116,44 +116,44 @@ class EnvironmentTest {
   void shouldNotBeEqualToADifferentClass() {
     String compareObject = "testing";
 
-    assertThat(environment)
+    assertThat(context)
         .isNotEqualTo(compareObject);
   }
 
   @Test
   void sameObjectShouldHaveSameHashCode() {
-    assertThat(environment.hashCode())
-        .isEqualTo(environment.hashCode());
+    assertThat(context.hashCode())
+        .isEqualTo(context.hashCode());
   }
 
   @Test
   void twoObjectWithTheSameKeyShouldHaveSameHashCode() {
-    Environment compareObject = new Environment(KEY);
+    Context compareObject = new Context(KEY);
 
-    assertThat(environment.hashCode())
+    assertThat(context.hashCode())
         .isEqualTo(compareObject.hashCode());
   }
 
   @Test
   void twoObjectWithDifferentIdShouldHaveDifferentHashCode() {
-    Environment compareObject = new Environment("other-environment");
+    Context compareObject = new Context("other-context");
 
-    assertThat(environment.hashCode())
+    assertThat(context.hashCode())
         .isNotEqualTo(compareObject.hashCode());
   }
 
   @Test
   void shouldConvertToString() {
-    assertThat(environment.toString())
-        .isEqualTo("Environment("
+    assertThat(context.toString())
+        .isEqualTo("Context("
             + "key=" + KEY
             + ")");
   }
 
   @Test
   void shouldValidate() {
-    Set<ConstraintViolation<Environment>> violations
-        = validator.validate(environment);
+    Set<ConstraintViolation<Context>> violations
+        = validator.validate(context);
 
     assertThat(violations)
         .isEmpty();
@@ -163,15 +163,15 @@ class EnvironmentTest {
   void shouldNotValidateKeyWithLengthMoreThan64Characters() {
     final String longKey = RandomStringUtils.random(80);
 
-    environment = new Environment(longKey);
+    context = new Context(longKey);
 
-    Set<ConstraintViolation<Environment>> violations
-        = validator.validate(environment);
+    Set<ConstraintViolation<Context>> violations
+        = validator.validate(context);
 
     assertThat(violations)
         .hasSize(1);
 
-    ConstraintViolation<Environment> violation
+    ConstraintViolation<Context> violation
         = violations.iterator().next();
     assertThat(violation.getPropertyPath().toString())
         .isEqualTo("key");
@@ -181,15 +181,15 @@ class EnvironmentTest {
 
   @Test
   void shouldNotValidateBlankKey() {
-    environment = new Environment("   ");
+    context = new Context("   ");
 
-    Set<ConstraintViolation<Environment>> violations
-        = validator.validate(environment);
+    Set<ConstraintViolation<Context>> violations
+        = validator.validate(context);
 
     assertThat(violations)
         .hasSize(1);
 
-    ConstraintViolation<Environment> violation
+    ConstraintViolation<Context> violation
         = violations.iterator().next();
     assertThat(violation.getPropertyPath().toString())
         .isEqualTo("key");
