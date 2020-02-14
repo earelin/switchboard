@@ -40,10 +40,7 @@ databaseChangeLog:
                   name: application_key
                   type: varchar(128)
                   constraints:
-                    deleteCascade: true
-                    foreignKeyName: fk_context_application_key
                     nullable: false
-                    references: application(key)
               - column:
                   name: key
                   type: varchar(64)
@@ -53,6 +50,15 @@ databaseChangeLog:
             columnNames: application_key, key
             constraintName: pk_context
             tableName: context
+        - addForeignKeyConstraint:
+            baseColumnNames: application_key
+            baseTableName: context
+            constraintName: fk_context_application_key
+            onDelete: CASCADE
+            onUpdate: CASCADE
+            referencedColumnNames: key
+            referencedTableName: application
+            validate: true
 
 #  - changeSet:
 #      id: '1.0.0-create-feature-flag-table'
