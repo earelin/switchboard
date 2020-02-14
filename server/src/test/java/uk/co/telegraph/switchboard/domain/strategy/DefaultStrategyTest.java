@@ -25,7 +25,7 @@ class DefaultStrategyTest {
 
   @Test
   void shouldBeEnabledIfEnabledIsTrue() {
-    assertThat(defaultStrategy.isEnabled(null))
+    assertThat(defaultStrategy.isFeatureEnabled(null))
         .isTrue();
   }
 
@@ -33,7 +33,7 @@ class DefaultStrategyTest {
   void shouldNotBeEnabledIfEnabledIsFalse() {
     defaultStrategy.setEnabled(false);
 
-    assertThat(defaultStrategy.isEnabled(null))
+    assertThat(defaultStrategy.isFeatureEnabled(null))
         .isFalse();
   }
 

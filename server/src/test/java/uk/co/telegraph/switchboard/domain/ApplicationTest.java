@@ -54,13 +54,13 @@ class ApplicationTest {
   @Test
   void shouldSetName() {
     assertThat(application.getName())
-      .isEqualTo(NAME);
+        .isEqualTo(NAME);
   }
 
   @Test
   void shouldSetSecret() {
     assertThat(application.getSecret())
-       .isEqualTo(SECRET);
+        .isEqualTo(SECRET);
   }
 
   @Test
@@ -162,7 +162,7 @@ class ApplicationTest {
 
   @Test
   void shouldValidate() {
-   Set<ConstraintViolation<Application>> violations
+    Set<ConstraintViolation<Application>> violations
         = validator.validate(application);
 
     assertThat(violations)
@@ -230,13 +230,5 @@ class ApplicationTest {
         .isEqualTo("name");
     assertThat(violation.getInvalidValue())
         .isEqualTo(longName);
-  }
-
-  private Set<Context> generateEnvironments() {
-    return Set.of(
-        new Context("development"),
-        new Context("staging"),
-        new Context("production")
-    );
   }
 }

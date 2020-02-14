@@ -27,9 +27,9 @@ public class StrategySet {
     this.context = context;
   }
 
-  public boolean isEnabled(ClientInfo clientInfo) {
+  public boolean isFeatureEnabled(ClientInfo clientInfo) {
     return strategies.stream()
-      .map(strategy -> strategy.isEnabled(clientInfo))
+      .map(strategy -> strategy.isFeatureEnabled(clientInfo))
       .reduce(strategyAggregator(aggregator))
       .orElse(false);
   }

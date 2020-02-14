@@ -1,4 +1,4 @@
-rootProject.name = 'switch-panel'
+rootProject.name = 'switchboard'
 
 include 'server'
 include 'ui'

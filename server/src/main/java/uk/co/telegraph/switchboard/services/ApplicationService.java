@@ -16,7 +16,7 @@ public interface ApplicationService {
 
   List<Application> findAll();
 
-//  Page<Application> findAllPaginated(Pageable pageable);
+  //  Page<Application> findAllPaginated(Pageable pageable);
 
   void delete(Long id);
 

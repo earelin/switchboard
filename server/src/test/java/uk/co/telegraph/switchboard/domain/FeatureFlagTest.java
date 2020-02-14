@@ -1,6 +1,8 @@
 package uk.co.telegraph.switchboard.domain;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,12 +25,14 @@ class FeatureFlagTest {
   @Mock
   private StrategySet strategySetTesting;
 
+  @Mock
+  private ClientInfo clientInfo;
+
   private FeatureFlag featureFlag;
 
   @BeforeEach
   void setUp() {
-    featureFlag = new FeatureFlag();
-    featureFlag.setKey(KEY);
+    featureFlag = new FeatureFlag(KEY);
     featureFlag.setDescription(DESCRIPTION);
     featureFlag.setActive(ACTIVE);
     featureFlag.setStrategySets(generateStrategySets());
@@ -47,14 +51,40 @@ class FeatureFlagTest {
   }
 
   @Test
-  void shouldSetEnabled() {
+  void shouldSetActive() {
     assertThat(featureFlag.isActive())
         .isTrue();
   }
 
   @Test
+  void featureIsEnabledIfContextIsDefinedAndStrategySetEvaluatesAsEnabled() {
+    when(strategySetProduction.isFeatureEnabled(any())).thenReturn(true);
+    when(clientInfo.getContext()).thenReturn(new Context("production"));
+
+    assertThat(featureFlag.isFeatureEnabled(clientInfo))
+        .isTrue();
+  }
+
+  @Test
+  void featureIsNotEnabledIfContextIsDefinedAndStrategySetEvaluatesAsNotEnabled() {
+    when(strategySetProduction.isFeatureEnabled(any())).thenReturn(false);
+    when(clientInfo.getContext()).thenReturn(new Context("production"));
+
+    assertThat(featureFlag.isFeatureEnabled(clientInfo))
+        .isFalse();
+  }
+
+  @Test
+  void featureIsNotEnabledIfContextIsNotDefined() {
+    when(clientInfo.getContext()).thenReturn(new Context("undefined-context"));
+
+    assertThat(featureFlag.isFeatureEnabled(clientInfo))
+        .isFalse();
+  }
+
+  @Test
   void shouldCanEqualSameClass() {
-    FeatureFlag comparedObject = new FeatureFlag();
+    FeatureFlag comparedObject = new FeatureFlag("other.feature.flag");
 
     assertThat(featureFlag.canEqual(comparedObject))
         .isTrue();
@@ -81,18 +111,16 @@ class FeatureFlagTest {
   }
 
   @Test
-  void shouldBeEqualToAnEnvironmentWithSameId() {
-    FeatureFlag compareObject = new FeatureFlag();
-    compareObject.setKey(KEY);
+  void shouldBeEqualToAFeatureFlagWithSameKey() {
+    FeatureFlag compareObject = new FeatureFlag(KEY);
 
     assertThat(featureFlag)
         .isEqualTo(compareObject);
   }
 
   @Test
-  void shouldNotBeEqualToAnEnvironmentWithADifferentId() {
-    FeatureFlag compareObject = new FeatureFlag();
-    featureFlag.setKey(KEY);
+  void shouldNotBeEqualToAFeatureFlagWithADifferentKey() {
+    FeatureFlag compareObject = new FeatureFlag("other.feature.flag");
     featureFlag.setDescription(DESCRIPTION);
     featureFlag.setActive(ACTIVE);
 
@@ -116,8 +144,7 @@ class FeatureFlagTest {
 
   @Test
   void twoObjectWithTheSameIdShouldHaveSameHashCode() {
-    FeatureFlag compareObject = new FeatureFlag();
-    compareObject.setKey(KEY);
+    FeatureFlag compareObject = new FeatureFlag(KEY);
 
     assertThat(featureFlag.hashCode())
         .isEqualTo(compareObject.hashCode());
@@ -125,8 +152,7 @@ class FeatureFlagTest {
 
   @Test
   void twoObjectWithDifferentIdShouldHaveDifferentHashCode() {
-    FeatureFlag compareObject = new FeatureFlag();
-    compareObject.setKey("other-feature-flag");
+    FeatureFlag compareObject = new FeatureFlag("other.feature.flag");
 
     assertThat(featureFlag.hashCode())
         .isNotEqualTo(compareObject.hashCode());

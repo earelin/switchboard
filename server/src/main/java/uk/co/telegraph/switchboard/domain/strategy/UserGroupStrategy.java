@@ -19,7 +19,7 @@ public class UserGroupStrategy extends Strategy {
   }
 
   @Override
-  public boolean isEnabled(ClientInfo clientInfo) {
+  public boolean isFeatureEnabled(ClientInfo clientInfo) {
     return userGroup != null && userGroup.hasUser(clientInfo.getUser());
   }
 }

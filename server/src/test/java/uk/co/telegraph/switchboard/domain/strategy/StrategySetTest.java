@@ -56,43 +56,43 @@ class StrategySetTest {
 
   @Test
   void shouldBeEnabledWithAndAggregatorAndAllEnabledStrategies() {
-    when(strategy1.isEnabled(any())).thenReturn(true);
-    when(strategy2.isEnabled(any())).thenReturn(true);
-    when(strategy3.isEnabled(any())).thenReturn(true);
+    when(strategy1.isFeatureEnabled(any())).thenReturn(true);
+    when(strategy2.isFeatureEnabled(any())).thenReturn(true);
+    when(strategy3.isFeatureEnabled(any())).thenReturn(true);
 
-    assertThat(strategySet.isEnabled(null))
+    assertThat(strategySet.isFeatureEnabled(null))
         .isTrue();
   }
 
   @Test
   void shouldNotBeEnabledWithAndAggregatorAndOneNotEnabledStrategy() {
-    when(strategy1.isEnabled(any())).thenReturn(true);
-    when(strategy2.isEnabled(any())).thenReturn(false);
-    when(strategy3.isEnabled(any())).thenReturn(true);
+    when(strategy1.isFeatureEnabled(any())).thenReturn(true);
+    when(strategy2.isFeatureEnabled(any())).thenReturn(false);
+    when(strategy3.isFeatureEnabled(any())).thenReturn(true);
 
-    assertThat(strategySet.isEnabled(null))
+    assertThat(strategySet.isFeatureEnabled(null))
         .isFalse();
   }
 
   @Test
   void shouldBeEnabledWithAndAggregatorOrAndOneEnabledStrategies() {
     strategySet.setAggregator(StrategyAggregator.OR);
-    when(strategy1.isEnabled(any())).thenReturn(false);
-    when(strategy2.isEnabled(any())).thenReturn(true);
-    when(strategy3.isEnabled(any())).thenReturn(false);
+    when(strategy1.isFeatureEnabled(any())).thenReturn(false);
+    when(strategy2.isFeatureEnabled(any())).thenReturn(true);
+    when(strategy3.isFeatureEnabled(any())).thenReturn(false);
 
-    assertThat(strategySet.isEnabled(null))
+    assertThat(strategySet.isFeatureEnabled(null))
         .isTrue();
   }
 
   @Test
   void shouldNotBeEnabledWithAndAggregatorOrAndAllStrategiesNotEnabled() {
     strategySet.setAggregator(StrategyAggregator.OR);
-    when(strategy1.isEnabled(any())).thenReturn(false);
-    when(strategy2.isEnabled(any())).thenReturn(false);
-    when(strategy3.isEnabled(any())).thenReturn(false);
+    when(strategy1.isFeatureEnabled(any())).thenReturn(false);
+    when(strategy2.isFeatureEnabled(any())).thenReturn(false);
+    when(strategy3.isFeatureEnabled(any())).thenReturn(false);
 
-    assertThat(strategySet.isEnabled(null))
+    assertThat(strategySet.isFeatureEnabled(null))
         .isFalse();
   }
 
@@ -100,7 +100,7 @@ class StrategySetTest {
   void shouldNotBeEnabledWithEmptyStrategies() {
     strategySet.setStrategies(new HashSet<>());
 
-    assertThat(strategySet.isEnabled(null))
+    assertThat(strategySet.isFeatureEnabled(null))
         .isFalse();
   }
 

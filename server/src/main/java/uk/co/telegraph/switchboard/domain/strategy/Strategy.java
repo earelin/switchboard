@@ -20,5 +20,5 @@ public abstract class Strategy {
     this.id = id;
   }
 
-  public abstract boolean isEnabled(ClientInfo clientInfo);
+  public abstract boolean isFeatureEnabled(ClientInfo clientInfo);
 }

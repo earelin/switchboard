@@ -36,42 +36,42 @@ class UserGroupStrategyTest {
   void shouldReturnIsEnabledFalseIfUserGroupIsNotSet() {
     userGroupStrategy.setUserGroup(null);
     ClientInfo clientInfo = ClientInfo.builder()
-      .application("newsroom-dashboard")
-      .context("production")
-      .instance("pc-3456")
-      .dateTime(ZonedDateTime.now())
-      .user("gandalf")
-      .build();
+        .applicationKey("newsroom-dashboard")
+        .contextKey("production")
+        .instance("pc-3456")
+        .dateTime(ZonedDateTime.now())
+        .user("gandalf")
+        .build();
 
-    assertThat(userGroupStrategy.isEnabled(clientInfo))
+    assertThat(userGroupStrategy.isFeatureEnabled(clientInfo))
         .isFalse();
   }
 
   @Test
   void shouldReturnIsEnabledTrueIfUserGroupContainsClientInfoUser() {
     ClientInfo clientInfo = ClientInfo.builder()
-        .application("newsroom-dashboard")
-        .context("production")
+        .applicationKey("newsroom-dashboard")
+        .contextKey("production")
         .instance("pc-3456")
         .dateTime(ZonedDateTime.now())
         .user("gandalf")
         .build();
 
-    assertThat(userGroupStrategy.isEnabled(clientInfo))
+    assertThat(userGroupStrategy.isFeatureEnabled(clientInfo))
         .isTrue();
   }
 
   @Test
   void shouldReturnIsEnabledFalseIfUserGroupNotContainsClientInfoUser() {
     ClientInfo clientInfo = ClientInfo.builder()
-        .application("newsroom-dashboard")
-        .context("production")
+        .applicationKey("newsroom-dashboard")
+        .contextKey("production")
         .instance("pc-3456")
         .dateTime(ZonedDateTime.now())
         .user("sauron")
         .build();
 
-    assertThat(userGroupStrategy.isEnabled(clientInfo))
+    assertThat(userGroupStrategy.isFeatureEnabled(clientInfo))
         .isFalse();
   }
 
