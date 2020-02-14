@@ -1,0 +1,117 @@
+databaseChangeLog:
+  - changeSet:
+      id: '1.0.0-create-application-table'
+      author: switch-panel
+      comment: Application entity table
+      changes:
+        - createTable:
+            tableName: application
+            columns:
+              - column:
+                  name: key
+                  type: varchar(128)
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_application
+              - column:
+                  name: name
+                  type: varchar(128)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: secret
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: longvarchar
+
+  - changeSet:
+      id: '1.0.0-create-context-table'
+      author: switch-panel
+      comment: Context entity table
+      changes:
+        - createTable:
+            tableName: context
+            columns:
+              - column:
+                  name: application_key
+                  type: varchar(128)
+                  constraints:
+                    deleteCascade: true
+                    foreignKeyName: fk_context_application_key
+                    nullable: false
+                    references: application(key)
+              - column:
+                  name: key
+                  type: varchar(64)
+                  constraints:
+                    nullable: false
+        - addPrimaryKey:
+            columnNames: application_key, key
+            constraintName: pk_context
+            tableName: context
+
+#  - changeSet:
+#      id: '1.0.0-create-feature-flag-table'
+#      author: switch-panel
+#      comment: FeatureFlag entity table
+#      changes:
+#        - createTable:
+#            tableName: feature_flag
+#            columns:
+#              - column:
+#                  name: id
+#                  type: bigint
+#                  autoIncrement: true
+#                  constraints:
+#                    nullable: false
+#                    primaryKey: true
+#                    primaryKeyName: pk_feature_flag
+#              - column:
+#                  name: key
+#                  type: varchar(128)
+#                  constraints:
+#                    nullable: false
+#              - column:
+#                  name: description
+#                  type: longvarchar
+#              - column:
+#                  name: active
+#                  type: boolean
+#                  constraints:
+#                    nullable: false
+#                    defaultValue: false
+
+#  - changeSet:
+#      id: '1.0.0-create-strategy-set-table'
+#      author: switch-panel
+#      comment: StrategySet entity table
+#      changes:
+#        - createTable:
+#            tableName: strategy_set
+#            columns:
+#              - column:
+#                  name: id
+#                  type: bigint
+#                  autoIncrement: true
+#                  constraints:
+#                    nullable: false
+#                    primaryKey: true
+#                    primaryKeyName: pk_strategy_set
+#              - column:
+#                  name: aggregator
+#                  type: varchar(32)
+#                  constraints:
+#                    nullable: false
+#                    defaultValue: OR
+
+#  - changeSet:
+#      id: '1.0.0-create-strategy-table'
+#      author: switch-panel
+#      comment: Strategy entity table
+#      changes:
+#        - createTable:
+#            tableName: strategy_set
