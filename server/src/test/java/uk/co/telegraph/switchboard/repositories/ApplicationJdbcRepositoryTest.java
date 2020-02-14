@@ -68,7 +68,7 @@ class ApplicationJdbcRepositoryTest {
     assertThat(JdbcTestUtils.countRowsInTable(jdbcTemplate, "application"))
         .isEqualTo(4);
     assertThat(JdbcTestUtils.countRowsInTableWhere(
-            jdbcTemplate, "application", "key = payment-application"))
+            jdbcTemplate, "application", "key = 'payment-application'"))
         .isEqualTo(0);
   }
 
@@ -86,5 +86,13 @@ class ApplicationJdbcRepositoryTest {
         .isInstanceOf(List.class)
         .hasSize(5)
         .doesNotHaveDuplicates();
+  }
+
+  @Test
+  void shouldFindAllApplicationsAndReturnEmptyIfTableIsEmpty() {
+    JdbcTestUtils.deleteFromTables(jdbcTemplate, "application");
+    assertThat(applicationRepository.findAll())
+        .isInstanceOf(List.class)
+        .hasSize(0);
   }
 }

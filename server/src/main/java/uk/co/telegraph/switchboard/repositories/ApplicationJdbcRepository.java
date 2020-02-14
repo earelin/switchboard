@@ -1,15 +1,19 @@
 package uk.co.telegraph.switchboard.repositories;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import uk.co.telegraph.switchboard.domain.Application;
 
 @Repository
+@Slf4j
 public class ApplicationJdbcRepository implements ApplicationRepository {
 
   private final JdbcTemplate jdbcTemplate;
@@ -20,19 +24,32 @@ public class ApplicationJdbcRepository implements ApplicationRepository {
 
   @Override
   public Optional<Application> findByKey(String key) {
-    return Optional.empty();
+    Application application = null;
+
+    try {
+      application = jdbcTemplate.queryForObject(
+          "SELECT * FROM application WHERE key = ?",
+          ApplicationJdbcRepository::mapRowToApplication,
+          key
+      );
+    } catch (EmptyResultDataAccessException emptyResult) {
+      log.warn("Could not find application: {}", key);
+    }
+
+    return Optional.ofNullable(application);
   }
 
   @Override
   public boolean existsByKey(String key) {
-    Integer result = jdbcTemplate.queryForObject("select count(*) from application where key = ?",
-        Integer.class, key);
-    return result == 1;
+    Integer result = jdbcTemplate
+        .queryForObject("SELECT count(*) FROM application WHERE key = ?", Integer.class, key);
+    return result != 0;
   }
 
   @Override
   public long count() {
-    return jdbcTemplate.queryForObject("select count(*) from application;", Long.class);
+    return jdbcTemplate
+        .queryForObject("SELECT count(*) FROM application", Long.class);
   }
 
   @Override
@@ -52,16 +69,27 @@ public class ApplicationJdbcRepository implements ApplicationRepository {
 
   @Override
   public void deleteByKey(String key) {
-
+    jdbcTemplate.update("DELETE FROM application WHERE key = ?", key);
   }
 
   @Override
   public List<Application> findAll() {
-    return null;
+    return jdbcTemplate.query(
+        "SELECT * FROM application ORDER BY name ASC",
+        ApplicationJdbcRepository::mapRowToApplication
+    );
   }
 
   @Override
   public Page<Application> findAll(Pageable pageable) {
     return null;
+  }
+
+  private static Application mapRowToApplication(ResultSet rs, int rowNum) throws SQLException {
+    Application application = new Application(rs.getString("key"));
+    application.setName(rs.getString("name"));
+    application.setSecret(rs.getString("secret"));
+    application.setDescription(rs.getString("description"));
+    return application;
   }
 }

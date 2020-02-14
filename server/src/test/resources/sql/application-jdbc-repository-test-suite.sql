@@ -6,7 +6,7 @@ VALUES
         'editorial-dashboard',
         'Editorial Dashboard',
         'VC3MciBHBRlyMio0u6kuVoeq9mwasmQbEBAnSHu7MmE43ssjclE3stB3LM7ed7Pm',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi luctus fermentum erat.'
+        NULL
     ), (
         'authoring-frontend',
         'Authoring Frontend',
@@ -21,7 +21,7 @@ VALUES
         'mobile-authoring',
         'Mobile Authoring',
         'QjVpgDl7C7j9q09GMHlE5qYVsOU1VDG5ZQSgVAvmf8lhrY7HnKAzNtXeZS1fPtcS',
-        'Phasellus varius ipsum mauris, sed sagittis dui mattis congue.'
+        NULL
     ), (
         'payment-application',
         'Payment application',
