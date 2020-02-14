@@ -16,8 +16,13 @@ configurations {
 	}
 }
 
-repositories {
-	mavenCentral()
+bootJar {
+	manifest {
+		attributes(
+				'Implementation-Title': 'Switchboard',
+				'Implementation-Version': rootProject.version
+		)
+	}
 }
 
 configurations {
@@ -25,6 +30,10 @@ configurations {
 	runtimeClasspath {
 		extendsFrom developmentOnly
 	}
+}
+
+repositories {
+	mavenCentral()
 }
 
 dependencies {
@@ -42,6 +51,7 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	implementation 'org.modelmapper:modelmapper:2.3.6'
 
+	implementation 'org.springframework.data:spring-data-commons'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'org.liquibase:liquibase-core'
 	runtimeOnly 'com.h2database:h2'
