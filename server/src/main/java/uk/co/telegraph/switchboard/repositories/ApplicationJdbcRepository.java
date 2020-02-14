@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import uk.co.telegraph.switchboard.domain.Application;
@@ -11,9 +12,9 @@ import uk.co.telegraph.switchboard.domain.Application;
 @Repository
 public class ApplicationJdbcRepository implements ApplicationRepository {
 
-  private final NamedParameterJdbcTemplate jdbcTemplate;
+  private final JdbcTemplate jdbcTemplate;
 
-  public ApplicationJdbcRepository(NamedParameterJdbcTemplate jdbcTemplate) {
+  public ApplicationJdbcRepository(JdbcTemplate jdbcTemplate) {
     this.jdbcTemplate = jdbcTemplate;
   }
 
@@ -24,12 +25,14 @@ public class ApplicationJdbcRepository implements ApplicationRepository {
 
   @Override
   public boolean existsByKey(String key) {
-    return false;
+    Integer result = jdbcTemplate.queryForObject("select count(*) from application where key = ?",
+        Integer.class, key);
+    return result == 1;
   }
 
   @Override
   public long count() {
-    return 0;
+    return jdbcTemplate.queryForObject("select count(*) from application;", Long.class);
   }
 
   @Override

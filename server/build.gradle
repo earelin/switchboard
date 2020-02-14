@@ -14,6 +14,10 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+	developmentOnly
+	runtimeClasspath {
+		extendsFrom developmentOnly
+	}
 }
 
 bootJar {
@@ -25,11 +29,29 @@ bootJar {
 	}
 }
 
-configurations {
-	developmentOnly
-	runtimeClasspath {
-		extendsFrom developmentOnly
+test {
+	useJUnitPlatform {
+		excludeTags "integration"
 	}
+	finalizedBy jacocoTestReport
+}
+
+task('integrationTest', type: Test) {
+	group "Verification"
+	description "Runs the integration tests."
+	useJUnitPlatform {
+		includeTags "integration"
+	}
+}
+
+check {
+	dependsOn test
+	dependsOn integrationTest
+	integrationTest.mustRunAfter(test)
+	jacocoTestReport {
+		executionData test, integrationTest
+	}
+	finalizedBy jacocoTestReport
 }
 
 repositories {
@@ -66,9 +88,4 @@ dependencies {
 	}
 
 	developmentOnly "org.springframework.boot:spring-boot-devtools"
-}
-
-test {
-	useJUnitPlatform()
-	finalizedBy jacocoTestReport
 }
