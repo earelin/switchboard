@@ -33,6 +33,11 @@ public class ApplicationJdbcRepository implements ApplicationRepository {
   }
 
   @Override
+  public void create(Application application) {
+
+  }
+
+  @Override
   public void updateByKey(Application application, String key) {
 
   }
