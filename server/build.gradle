@@ -42,6 +42,9 @@ task('integrationTest', type: Test) {
 	useJUnitPlatform {
 		includeTags "integration"
 	}
+	jacocoTestReport {
+		executionData integrationTest
+	}
 }
 
 check {
