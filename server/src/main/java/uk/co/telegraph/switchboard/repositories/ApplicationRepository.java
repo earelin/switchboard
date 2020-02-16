@@ -16,10 +16,10 @@
 
 package uk.co.telegraph.switchboard.repositories;
 
-import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import uk.co.telegraph.switchboard.domain.Application;
 
 public interface ApplicationRepository {

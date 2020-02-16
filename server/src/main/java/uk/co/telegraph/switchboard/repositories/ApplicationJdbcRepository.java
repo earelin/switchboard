@@ -16,16 +16,19 @@
 
 package uk.co.telegraph.switchboard.repositories;
 
-import java.awt.print.Pageable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import uk.co.telegraph.switchboard.commons.jdbc.JdbcPageableQueryTranslator;
 import uk.co.telegraph.switchboard.domain.Application;
 
 @Repository
@@ -33,9 +36,11 @@ import uk.co.telegraph.switchboard.domain.Application;
 public class ApplicationJdbcRepository implements ApplicationRepository {
 
   private final JdbcTemplate jdbcTemplate;
+  private final JdbcPageableQueryTranslator pageableQueryTranslator;
 
   public ApplicationJdbcRepository(JdbcTemplate jdbcTemplate) {
     this.jdbcTemplate = jdbcTemplate;
+    pageableQueryTranslator = JdbcPageableQueryTranslator.sortableOfColumns(Set.of("name"));
   }
 
   @Override
@@ -103,12 +108,23 @@ public class ApplicationJdbcRepository implements ApplicationRepository {
   public List<Application> findAll() {
     return jdbcTemplate.query(
         "SELECT * FROM application ORDER BY name ASC",
-        ApplicationJdbcRepository::mapRowToApplication);
+        ApplicationJdbcRepository::mapRowToApplication
+    );
   }
 
   @Override
   public Page<Application> findAll(Pageable pageable) {
-    return null;
+    final String query = String.format(
+        "SELECT * FROM application %s",
+        pageableQueryTranslator.toSql(pageable)
+    );
+
+    List<Application> applications = jdbcTemplate.query(
+        query,
+        ApplicationJdbcRepository::mapRowToApplication
+    );
+
+    return new PageImpl<>(applications, pageable, count());
   }
 
   private static Application mapRowToApplication(ResultSet rs, int rowNum) throws SQLException {

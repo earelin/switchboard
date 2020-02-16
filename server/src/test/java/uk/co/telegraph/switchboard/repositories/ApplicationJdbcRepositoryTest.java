@@ -23,6 +23,8 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -167,5 +169,45 @@ class ApplicationJdbcRepositoryTest {
         .hasFieldOrPropertyWithValue("name", "New application")
         .hasFieldOrPropertyWithValue("secret", "new secret")
         .hasFieldOrPropertyWithValue("description", "Description");
+  }
+
+  @Test
+  void shouldReturnFirstPage() {
+    Page<Application> applicationPage
+        = applicationRepository.findAll(PageRequest.of(0, 2));
+
+    assertThat(applicationPage.getTotalElements())
+        .isEqualTo(5);
+    assertThat(applicationPage.getContent())
+        .hasSize(2)
+        .extracting(Application::getKey)
+        .containsExactly("editorial-dashboard", "authoring-frontend");
+  }
+
+  @Test
+  void shouldReturnOnePage() {
+    Page<Application> applicationPage
+        = applicationRepository.findAll(PageRequest.of(2, 2));
+
+    assertThat(applicationPage.getTotalElements())
+        .isEqualTo(5);
+    assertThat(applicationPage.getContent())
+        .hasSize(1)
+        .extracting(Application::getKey)
+        .containsExactly("payment-application");
+  }
+
+  @Test
+  void shouldReturnOnePageOrderByName() {
+    Sort sorting = Sort.by(Direction.ASC, "name");
+    Page<Application> applicationPage
+        = applicationRepository.findAll(PageRequest.of(0, 2, sorting));
+
+    assertThat(applicationPage.getTotalElements())
+        .isEqualTo(5);
+    assertThat(applicationPage.getContent())
+        .hasSize(2)
+        .extracting(Application::getKey)
+        .containsExactly("authoring-frontend", "editorial-dashboard");
   }
 }
