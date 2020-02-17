@@ -1,19 +1,40 @@
+ #
+ #  Copyright 2020 the original author or authors.
+ #
+ #  Licensed under the Apache License, Version 2.0 (the "License");
+ #  you may not use this file except in compliance with the License.
+ #  You may obtain a copy of the License at
+ #
+ #  https://www.apache.org/licenses/LICENSE-2.0
+ #
+ #  Unless required by applicable law or agreed to in writing, software
+ #  distributed under the License is distributed on an "AS IS" BASIS,
+ #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ #  See the License for the specific language governing permissions and
+ #  limitations under the License.
+ #
+
 databaseChangeLog:
   - changeSet:
-      id: '1.0.0-create-application-table'
-      author: switch-panel
+      id: '1.0.0-application-table'
+      author: switchboard
       comment: Application entity table
       changes:
         - createTable:
             tableName: application
             columns:
               - column:
-                  name: key
-                  type: varchar(128)
+                  name: id
+                  type: bigint
                   constraints:
                     nullable: false
                     primaryKey: true
                     primaryKeyName: pk_application
+              - column:
+                  name: key
+                  type: varchar(128)
+                  constraints:
+                    nullable: false
               - column:
                   name: name
                   type: varchar(128)
@@ -29,30 +50,30 @@ databaseChangeLog:
                   type: longvarchar
 
   - changeSet:
-      id: '1.0.0-create-context-table'
-      author: switch-panel
+      id: '1.0.0-context-table'
+      author: switchboard
       comment: Context entity table
       changes:
         - createTable:
             tableName: context
             columns:
               - column:
-                  name: application_key
-                  type: varchar(128)
+                  name: id
+                  type: bigint
                   constraints:
-                    deleteCascade: true
-                    foreignKeyName: fk_context_application_key
                     nullable: false
-                    references: application(key)
+                    primaryKey: true
+                    primaryKeyName: pk_context
+              - column:
+                  name: application_id
+                  type: bigint
+                  constraints:
+                    nullable: false
               - column:
                   name: key
                   type: varchar(64)
                   constraints:
                     nullable: false
-        - addPrimaryKey:
-            columnNames: application_key, key
-            constraintName: pk_context
-            tableName: context
 
 #  - changeSet:
 #      id: '1.0.0-create-feature-flag-table'

@@ -12,21 +12,12 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
-package uk.co.telegraph.switchboard.configuration;
+package uk.co.telegraph.switchboard.repositories;
 
-import org.modelmapper.ModelMapper;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.data.repository.CrudRepository;
+import uk.co.telegraph.switchboard.domain.Application;
 
-@Configuration
-public class ModelMapperConfiguration {
-
-  @Bean
-  public ModelMapper modelMapper() {
-    return new ModelMapper();
-  }
-
+public interface ApplicationRepository extends CrudRepository<Application, Long> {
 }

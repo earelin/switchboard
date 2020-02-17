@@ -1,3 +1,19 @@
+/*
+ * Copyright 2020 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package uk.co.telegraph.switchboard.domain.strategy;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -5,26 +21,31 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import uk.co.telegraph.switchboard.domain.Application;
+import uk.co.telegraph.switchboard.domain.Context;
 
 class UserGroupTest {
 
-  private static final String KEY = "testers";
+  private static final Long ID = 25L;
   private static final String NAME = "Testers";
   private static final Set<String> USERS = Set.of("sam", "frodo", "gandalf");
+  private static final Application APPLICATION = generateApplication();
 
   private UserGroup userGroup;
 
   @BeforeEach
   void setUp() {
-    userGroup = new UserGroup(KEY);
+    userGroup = new UserGroup();
+    userGroup.setId(ID);
     userGroup.setName(NAME);
     userGroup.setUsers(USERS);
+    userGroup.setApplication(APPLICATION);
   }
 
   @Test
-  void shouldSetKeyInConstruction() {
-    assertThat(userGroup.getKey())
-        .isEqualTo(KEY);
+  void shouldSetId() {
+    assertThat(userGroup.getId())
+        .isEqualTo(ID);
   }
 
   @Test
@@ -37,6 +58,12 @@ class UserGroupTest {
   void shouldSetUsers() {
     assertThat(userGroup.getUsers())
         .isEqualTo(USERS);
+  }
+
+  @Test
+  void shouldSetApplication() {
+    assertThat(userGroup.getApplication())
+        .isEqualTo(APPLICATION);
   }
 
   @Test
@@ -53,7 +80,8 @@ class UserGroupTest {
 
   @Test
   void shouldCanEqualSameClass() {
-    UserGroup comparedObject = new UserGroup("other-group");
+    UserGroup comparedObject = new UserGroup();
+    comparedObject.setId(12L);
 
     assertThat(userGroup.canEqual(comparedObject))
         .isTrue();
@@ -64,6 +92,12 @@ class UserGroupTest {
     String comparedObject = "string";
 
     assertThat(userGroup.canEqual(comparedObject))
+        .isFalse();
+  }
+
+  @Test
+  void shouldNotCanEqualToNull() {
+    assertThat(userGroup.canEqual(null))
         .isFalse();
   }
 
@@ -80,18 +114,21 @@ class UserGroupTest {
   }
 
   @Test
-  void shouldBeEqualToADefaultStrategyWithSameId() {
-    UserGroup compareObject = new UserGroup(KEY);
+  void shouldBeEqualToAnUserGroupWithSameId() {
+    UserGroup compareObject = new UserGroup();
+    compareObject.setId(ID);
 
     assertThat(userGroup)
         .isEqualTo(compareObject);
   }
 
   @Test
-  void shouldNotBeEqualToADefaultStrategyWithADifferentId() {
-    UserGroup compareObject = new UserGroup("other-group");
+  void shouldNotBeEqualToAnUserGroupWithADifferentId() {
+    UserGroup compareObject = new UserGroup();
+    compareObject.setId(12L);
     compareObject.setName(NAME);
     compareObject.setUsers(USERS);
+    userGroup.setApplication(APPLICATION);
 
     assertThat(userGroup)
         .isNotEqualTo(compareObject);
@@ -113,7 +150,8 @@ class UserGroupTest {
 
   @Test
   void twoApplicationsWithTheSameIdShouldHaveSameHashCode() {
-    UserGroup compareObject = new UserGroup(KEY);
+    UserGroup compareObject = new UserGroup();
+    compareObject.setId(ID);
 
     assertThat(userGroup.hashCode())
         .isEqualTo(compareObject.hashCode());
@@ -121,9 +159,11 @@ class UserGroupTest {
 
   @Test
   void twoObjectWithDifferentIdShouldHaveDifferentHashCode() {
-    UserGroup compareObject = new UserGroup("other-group");
+    UserGroup compareObject = new UserGroup();
+    compareObject.setId(12L);
     compareObject.setName(NAME);
     compareObject.setUsers(USERS);
+    userGroup.setApplication(APPLICATION);
 
     assertThat(userGroup.hashCode())
         .isNotEqualTo(compareObject.hashCode());
@@ -132,11 +172,19 @@ class UserGroupTest {
   @Test
   void shouldConvertToString() {
     assertThat(userGroup.toString())
-        .isEqualTo("UserGroup("
-            + "key=" + KEY + ", "
-            + "name=" + NAME + ", "
-            + "users=" + USERS.toString()
-            + ")");
+        .startsWith("UserGroup");
+  }
+
+  private static Application generateApplication() {
+    Application application = new Application();
+    application.setId(5L);
+    application.setKey("one-application");
+    application.setName("One Application");
+    application.setDescription("Lorem ipsum");
+    application.setSecret("qwerty");
+    application.setContexts(Set.of(Context.buildDefault()));
+
+    return application;
   }
 
 }

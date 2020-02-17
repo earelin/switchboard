@@ -1,47 +1,50 @@
+/*
+ * Copyright 2020 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package uk.co.telegraph.switchboard.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.telegraph.switchboard.domain.Context.DEFAULT_KEY;
 
-import java.util.Set;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class ContextTest {
 
+  private static final Long ID = 25L;
   private static final String KEY = "production";
 
-  private static ValidatorFactory validatorFactory;
-
   private Context context;
-  private Validator validator;
-
-  @BeforeAll
-  static void init() {
-    validatorFactory = Validation.buildDefaultValidatorFactory();
-  }
-
-  @AfterAll
-  static void finish() {
-    validatorFactory.close();
-  }
 
   @BeforeEach
   void setUp() {
-    context = new Context(KEY);
-
-    validator = validatorFactory.getValidator();
+    context = new Context();
+    context.setId(ID);
+    context.setKey(KEY);
   }
 
   @Test
-  void shouldSetKeyOnConstructor() {
+  void shouldSetId() {
+    assertThat(context.getId())
+        .isEqualTo(ID);
+  }
+
+  @Test
+  void shouldSetKey() {
     assertThat(context.getKey())
         .isEqualTo(KEY);
   }
@@ -56,7 +59,7 @@ class ContextTest {
 
   @Test
   void shouldCanEqualSameClass() {
-    Context comparedObject = new Context("other-context");
+    Context comparedObject = new Context();
 
     assertThat(context.canEqual(comparedObject))
         .isTrue();
@@ -67,6 +70,12 @@ class ContextTest {
     String comparedObject = "some string";
 
     assertThat(context.canEqual(comparedObject))
+        .isFalse();
+  }
+
+  @Test
+  void shouldNotCanEqualToNull() {
+    assertThat(context.canEqual(null))
         .isFalse();
   }
 
@@ -84,7 +93,8 @@ class ContextTest {
 
   @Test
   void shouldIsDefaultReturnTrueIfKeyIsDefault() {
-    context = new Context(DEFAULT_KEY);
+    context = new Context();
+    context.setKey(DEFAULT_KEY);
 
     assertThat(context.isDefault())
         .isTrue();
@@ -97,8 +107,9 @@ class ContextTest {
   }
 
   @Test
-  void shouldBeEqualToAnContextWithSameKey() {
-    Context compareObject = new Context(KEY);
+  void shouldBeEqualToAnContextWithSameId() {
+    Context compareObject = new Context();
+    compareObject.setId(ID);
 
     assertThat(context)
         .isEqualTo(compareObject);
@@ -106,7 +117,9 @@ class ContextTest {
 
   @Test
   void shouldNotBeEqualToAnContextWithADifferentKey() {
-    Context compareObject = new Context("other-context");
+    Context compareObject = new Context();
+    compareObject.setId(15L);
+    compareObject.setKey(KEY);
 
     assertThat(context)
         .isNotEqualTo(compareObject);
@@ -127,8 +140,9 @@ class ContextTest {
   }
 
   @Test
-  void twoObjectWithTheSameKeyShouldHaveSameHashCode() {
-    Context compareObject = new Context(KEY);
+  void twoObjectWithTheSameIdShouldHaveSameHashCode() {
+    Context compareObject = new Context();
+    compareObject.setId(ID);
 
     assertThat(context.hashCode())
         .isEqualTo(compareObject.hashCode());
@@ -136,7 +150,9 @@ class ContextTest {
 
   @Test
   void twoObjectWithDifferentIdShouldHaveDifferentHashCode() {
-    Context compareObject = new Context("other-context");
+    Context compareObject = new Context();
+    compareObject.setId(15L);
+    compareObject.setKey(KEY);
 
     assertThat(context.hashCode())
         .isNotEqualTo(compareObject.hashCode());
@@ -145,55 +161,6 @@ class ContextTest {
   @Test
   void shouldConvertToString() {
     assertThat(context.toString())
-        .isEqualTo("Context("
-            + "key=" + KEY
-            + ")");
-  }
-
-  @Test
-  void shouldValidate() {
-    Set<ConstraintViolation<Context>> violations
-        = validator.validate(context);
-
-    assertThat(violations)
-        .isEmpty();
-  }
-
-  @Test
-  void shouldNotValidateKeyWithLengthMoreThan64Characters() {
-    final String longKey = RandomStringUtils.random(80);
-
-    context = new Context(longKey);
-
-    Set<ConstraintViolation<Context>> violations
-        = validator.validate(context);
-
-    assertThat(violations)
-        .hasSize(1);
-
-    ConstraintViolation<Context> violation
-        = violations.iterator().next();
-    assertThat(violation.getPropertyPath().toString())
-        .isEqualTo("key");
-    assertThat(violation.getInvalidValue())
-        .isEqualTo(longKey);
-  }
-
-  @Test
-  void shouldNotValidateBlankKey() {
-    context = new Context("   ");
-
-    Set<ConstraintViolation<Context>> violations
-        = validator.validate(context);
-
-    assertThat(violations)
-        .hasSize(1);
-
-    ConstraintViolation<Context> violation
-        = violations.iterator().next();
-    assertThat(violation.getPropertyPath().toString())
-        .isEqualTo("key");
-    assertThat(violation.getInvalidValue())
-        .isEqualTo("   ");
+        .startsWith("Context");
   }
 }

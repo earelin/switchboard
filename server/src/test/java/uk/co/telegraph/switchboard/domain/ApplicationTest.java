@@ -1,52 +1,58 @@
+/*
+ * Copyright 2020 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package uk.co.telegraph.switchboard.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Set;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class ApplicationTest {
 
+  private static final Long ID = 15L;
   private static final String KEY = "newsroom-dashboard";
   private static final String NAME = "Newsroom Dashboard";
   private static final String SECRET = "K2I1JPxYp1pCWprzf4QaReiwntZXxmu4";
   private static final String DESCRIPTION
       = "An amazing application to be feature flagged";
-
-  private static ValidatorFactory validatorFactory;
+  private static final Set<Context> CONTEXTS = generateContexts();
 
   private Application application;
-  private Validator validator;
-
-  @BeforeAll
-  static void init() {
-    validatorFactory = Validation.buildDefaultValidatorFactory();
-  }
-
-  @AfterAll
-  static void finish() {
-    validatorFactory.close();
-  }
 
   @BeforeEach
   void setUp() {
-    application = new Application(KEY);
+    application = new Application();
+    application.setId(ID);
+    application.setKey(KEY);
     application.setName(NAME);
     application.setSecret(SECRET);
     application.setDescription(DESCRIPTION);
-
-    validator = validatorFactory.getValidator();
+    application.setContexts(CONTEXTS);
   }
 
   @Test
-  void shouldSetKeyInConstruction() {
+  void shouldSetId() {
+    assertThat(application.getId())
+        .isEqualTo(ID);
+  }
+
+  @Test
+  void shouldSetKey() {
     assertThat(application.getKey())
         .isEqualTo(KEY);
   }
@@ -70,8 +76,14 @@ class ApplicationTest {
   }
 
   @Test
+  void shouldSetContext() {
+    assertThat(application.getContexts())
+        .isEqualTo(CONTEXTS);
+  }
+
+  @Test
   void shouldCanEqualSameClass() {
-    Application comparedObject = new Application("other-application");
+    Application comparedObject = new Application();
 
     assertThat(application.canEqual(comparedObject))
         .isTrue();
@@ -82,6 +94,12 @@ class ApplicationTest {
     String comparedObject = "string";
 
     assertThat(application.canEqual(comparedObject))
+        .isFalse();
+  }
+
+  @Test
+  void shouldNotCanEqualToNull() {
+    assertThat(application.canEqual(null))
         .isFalse();
   }
 
@@ -98,8 +116,9 @@ class ApplicationTest {
   }
 
   @Test
-  void shouldBeEqualToAnApplicationWithSameKey() {
-    Application compareObject = new Application(KEY);
+  void shouldBeEqualToAnApplicationWithSameId() {
+    Application compareObject = new Application();
+    compareObject.setId(ID);
 
     assertThat(application)
         .isEqualTo(compareObject);
@@ -107,7 +126,9 @@ class ApplicationTest {
 
   @Test
   void shouldNotBeEqualToAnApplicationWithADifferentKey() {
-    Application compareObject = new Application("other-application");
+    Application compareObject = new Application();
+    compareObject.setId(1L);
+    compareObject.setKey(KEY);
     compareObject.setName(NAME);
     compareObject.setSecret(SECRET);
     compareObject.setDescription(DESCRIPTION);
@@ -131,8 +152,9 @@ class ApplicationTest {
   }
 
   @Test
-  void twoObjectsWithTheSameKeyShouldHaveSameHashCode() {
-    Application compareObject = new Application(KEY);
+  void twoObjectsWithTheSameIdShouldHaveSameHashCode() {
+    Application compareObject = new Application();
+    compareObject.setId(ID);
 
     assertThat(application.hashCode())
         .isEqualTo(compareObject.hashCode());
@@ -140,7 +162,9 @@ class ApplicationTest {
 
   @Test
   void twoObjectsWithDifferentIdShouldHaveDifferentHashCode() {
-    Application compareObject = new Application("other-application");
+    Application compareObject = new Application();
+    compareObject.setId(1L);
+    compareObject.setKey(KEY);
     compareObject.setName(NAME);
     compareObject.setSecret(SECRET);
     compareObject.setDescription(DESCRIPTION);
@@ -152,83 +176,18 @@ class ApplicationTest {
   @Test
   void shouldConvertToString() {
     assertThat(application.toString())
-        .isEqualTo("Application("
-            + "key=" + KEY + ", "
-            + "name=" + NAME + ", "
-            + "secret=" + SECRET + ", "
-            + "description=" + DESCRIPTION
-            + ")");
+        .startsWith("Application");
   }
 
-  @Test
-  void shouldValidate() {
-    Set<ConstraintViolation<Application>> violations
-        = validator.validate(application);
+  private static Set<Context> generateContexts() {
+    Context staging = new Context();
+    staging.setId(1L);
+    staging.setKey("staging");
 
-    assertThat(violations)
-        .isEmpty();
-  }
+    Context production = new Context();
+    production.setId(2L);
+    production.setKey("production");
 
-  @Test
-  void shouldNotValidateKeyBiggerThan128() {
-    final String longKey = "lorem-ipsum-dolor-sit-amet-consectetur-adipiscing-elit-praesent-quam"
-        + "-tellus-consectetur-nec-neque-vel-lobortis-elementum-ex-curabitur";
-
-    application = new Application(longKey);
-    application.setName(NAME);
-    application.setSecret(SECRET);
-    application.setDescription(DESCRIPTION);
-
-    Set<ConstraintViolation<Application>> violations
-        = validator.validate(application);
-
-    assertThat(violations)
-        .hasSize(1);
-
-    ConstraintViolation<Application> violation
-        = violations.iterator().next();
-    assertThat(violation.getPropertyPath().toString())
-        .isEqualTo("key");
-    assertThat(violation.getInvalidValue())
-        .isEqualTo(longKey);
-  }
-
-  @Test
-  void blankNameShouldNotValidate() {
-    application.setName("   ");
-
-    Set<ConstraintViolation<Application>> violations
-        = validator.validate(application);
-
-    assertThat(violations)
-        .hasSize(1);
-
-    ConstraintViolation<Application> violation
-        = violations.iterator().next();
-    assertThat(violation.getPropertyPath().toString())
-        .isEqualTo("name");
-    assertThat(violation.getInvalidValue())
-        .isEqualTo("   ");
-  }
-
-  @Test
-  void shouldNotValidateNameBiggerThan128() {
-    final String longName = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent"
-        + " quam tellus, consectetur nec neque vel, lobortis elementum ex curabitur";
-
-    application.setName(longName);
-
-    Set<ConstraintViolation<Application>> violations
-        = validator.validate(application);
-
-    assertThat(violations)
-        .hasSize(1);
-
-    ConstraintViolation<Application> violation
-        = violations.iterator().next();
-    assertThat(violation.getPropertyPath().toString())
-        .isEqualTo("name");
-    assertThat(violation.getInvalidValue())
-        .isEqualTo(longName);
+    return Set.of(staging, production);
   }
 }

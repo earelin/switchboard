@@ -14,17 +14,46 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
-}
-
-repositories {
-	mavenCentral()
-}
-
-configurations {
 	developmentOnly
 	runtimeClasspath {
 		extendsFrom developmentOnly
 	}
+}
+
+bootJar {
+	manifest {
+		attributes(
+				'Implementation-Title': 'Switchboard',
+				'Implementation-Version': rootProject.version
+		)
+	}
+}
+
+test {
+	useJUnitPlatform {
+		excludeTags "integration"
+	}
+}
+
+task('integrationTest', type: Test) {
+	group "Verification"
+	description "Runs the integration tests."
+	useJUnitPlatform {
+		includeTags "integration"
+	}
+}
+
+check {
+	dependsOn test
+	dependsOn integrationTest
+	jacocoTestReport {
+		executionData test, integrationTest
+	}
+	finalizedBy jacocoTestReport
+}
+
+repositories {
+	mavenCentral()
 }
 
 dependencies {
@@ -42,7 +71,7 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	implementation 'org.modelmapper:modelmapper:2.3.6'
 
-	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.liquibase:liquibase-core'
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'mysql:mysql-connector-java'
@@ -56,9 +85,4 @@ dependencies {
 	}
 
 	developmentOnly "org.springframework.boot:spring-boot-devtools"
-}
-
-test {
-	useJUnitPlatform()
-	finalizedBy jacocoTestReport
 }

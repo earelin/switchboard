@@ -1,12 +1,13 @@
 
-${AnsiColor.CYAN}     .----------------------------------.
-${AnsiColor.CYAN}     |  ${AnsiColor.BRIGHT_RED}|.--.|  |.--.|  ${AnsiColor.GREEN}|./[⎺]  ${AnsiColor.BRIGHT_RED}|.--.|  ${AnsiColor.CYAN}|
-${AnsiColor.CYAN}     |  ${AnsiColor.BRIGHT_RED}||  ||  ||  ||  ${AnsiColor.GREEN}|/ /⎺/  ${AnsiColor.BRIGHT_RED}||  ||  ${AnsiColor.CYAN}|
-${AnsiColor.CYAN}     |  ${AnsiColor.BRIGHT_RED}||__||  ||__||  ${AnsiColor.GREEN}||/ /|  ${AnsiColor.BRIGHT_RED}||__||  ${AnsiColor.CYAN}|
-${AnsiColor.CYAN}     |  ${AnsiColor.BRIGHT_RED}||\ \|  ||\ \|  ${AnsiColor.GREEN}||⎺⎺||  ${AnsiColor.BRIGHT_RED}||\ \|  ${AnsiColor.CYAN}|
-${AnsiColor.CYAN}     |  ${AnsiColor.BRIGHT_RED}|\ \_\  |\ \_\  ${AnsiColor.GREEN}||  ||  ${AnsiColor.BRIGHT_RED}|\ \_\  ${AnsiColor.CYAN}|
-${AnsiColor.CYAN}     |  ${AnsiColor.BRIGHT_RED}|˙\[_]  |˙\[_]  ${AnsiColor.GREEN}|˙--˙|  ${AnsiColor.BRIGHT_RED}|˙\[_]  ${AnsiColor.CYAN}|
-${AnsiColor.CYAN}     '----------------------------------'
+${AnsiColor.CYAN}     .------------------------------------------.
+${AnsiColor.CYAN}     |  ${AnsiColor.BRIGHT_RED}|.--.|  |.--.|  ${AnsiColor.GREEN}|./[⎺]  ${AnsiColor.BRIGHT_RED}|.--.|  ${AnsiColor.GREEN}|./[⎺]  ${AnsiColor.CYAN}|
+${AnsiColor.CYAN}     |  ${AnsiColor.BRIGHT_RED}||  ||  ||  ||  ${AnsiColor.GREEN}|/ /⎺/  ${AnsiColor.BRIGHT_RED}||  ||  ${AnsiColor.GREEN}|/ /⎺/  ${AnsiColor.CYAN}|
+${AnsiColor.CYAN}     |  ${AnsiColor.BRIGHT_RED}||__||  ||__||  ${AnsiColor.GREEN}||/ /|  ${AnsiColor.BRIGHT_RED}||__||  ${AnsiColor.GREEN}||/ /|  ${AnsiColor.CYAN}|
+${AnsiColor.CYAN}     |  ${AnsiColor.BRIGHT_RED}||\ \|  ||\ \|  ${AnsiColor.GREEN}||⎺⎺||  ${AnsiColor.BRIGHT_RED}||\ \|  ${AnsiColor.GREEN}||⎺⎺||  ${AnsiColor.CYAN}|
+${AnsiColor.CYAN}     |  ${AnsiColor.BRIGHT_RED}|\ \_\  |\ \_\  ${AnsiColor.GREEN}||  ||  ${AnsiColor.BRIGHT_RED}|\ \_\  ${AnsiColor.GREEN}||  ||  ${AnsiColor.CYAN}|
+${AnsiColor.CYAN}     |  ${AnsiColor.BRIGHT_RED}|˙\[_]  |˙\[_]  ${AnsiColor.GREEN}|˙--˙|  ${AnsiColor.BRIGHT_RED}|˙\[_]  ${AnsiColor.GREEN}|˙--˙|  ${AnsiColor.CYAN}|
+${AnsiColor.CYAN}     '------------------------------------------'
 
-${AnsiColor.BRIGHT_YELLOW}     ::  Switch Panel  ::  ${application.version}
-${AnsiColor.GREEN}     Feature Toggle Configuration Server
+${AnsiColor.BRIGHT_YELLOW}         ::  Switchboard  ::  ${AnsiColor.BRIGHT_WHITE}${application.version}
+
+${AnsiColor.GREEN}         Feature Flag Configuration Server

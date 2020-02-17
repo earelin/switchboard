@@ -1,3 +1,19 @@
+/*
+ * Copyright 2020 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package uk.co.telegraph.switchboard.domain;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -15,6 +31,7 @@ import uk.co.telegraph.switchboard.domain.strategy.StrategySet;
 @ExtendWith(MockitoExtension.class)
 class FeatureFlagTest {
 
+  private static final Long ID = 25L;
   private static final String KEY = "performance.chart";
   private static final String DESCRIPTION = "Performance chart feature";
   private static final Boolean ACTIVE = true;
@@ -32,10 +49,18 @@ class FeatureFlagTest {
 
   @BeforeEach
   void setUp() {
-    featureFlag = new FeatureFlag(KEY);
+    featureFlag = new FeatureFlag();
+    featureFlag.setId(ID);
+    featureFlag.setKey(KEY);
     featureFlag.setDescription(DESCRIPTION);
     featureFlag.setActive(ACTIVE);
     featureFlag.setStrategySets(generateStrategySets());
+  }
+
+  @Test
+  void shouldSetId() {
+    assertThat(featureFlag.getId())
+        .isEqualTo(ID);
   }
 
   @Test
@@ -57,34 +82,40 @@ class FeatureFlagTest {
   }
 
   @Test
-  void featureIsEnabledIfContextIsDefinedAndStrategySetEvaluatesAsEnabled() {
-    when(strategySetProduction.isFeatureEnabled(any())).thenReturn(true);
-    when(clientInfo.getContext()).thenReturn(new Context("production"));
+  void shouldSetStrategySets() {
+    assertThat(featureFlag.getStrategySets())
+        .isEqualTo(generateStrategySets());
+  }
 
-    assertThat(featureFlag.isFeatureEnabled(clientInfo))
+  @Test
+  void featureIsEnabledIfContextIsDefinedAndStrategySetEvaluatesAsEnabled() {
+    when(strategySetProduction.isFeatureEnabledForClient(any())).thenReturn(true);
+    when(clientInfo.getContext()).thenReturn("production");
+
+    assertThat(featureFlag.isFeatureEnabledForClient(clientInfo))
         .isTrue();
   }
 
   @Test
   void featureIsNotEnabledIfContextIsDefinedAndStrategySetEvaluatesAsNotEnabled() {
-    when(strategySetProduction.isFeatureEnabled(any())).thenReturn(false);
-    when(clientInfo.getContext()).thenReturn(new Context("production"));
+    when(strategySetProduction.isFeatureEnabledForClient(any())).thenReturn(false);
+    when(clientInfo.getContext()).thenReturn("production");
 
-    assertThat(featureFlag.isFeatureEnabled(clientInfo))
+    assertThat(featureFlag.isFeatureEnabledForClient(clientInfo))
         .isFalse();
   }
 
   @Test
   void featureIsNotEnabledIfContextIsNotDefined() {
-    when(clientInfo.getContext()).thenReturn(new Context("undefined-context"));
+    when(clientInfo.getContext()).thenReturn("undefined-context");
 
-    assertThat(featureFlag.isFeatureEnabled(clientInfo))
+    assertThat(featureFlag.isFeatureEnabledForClient(clientInfo))
         .isFalse();
   }
 
   @Test
   void shouldCanEqualSameClass() {
-    FeatureFlag comparedObject = new FeatureFlag("other.feature.flag");
+    FeatureFlag comparedObject = new FeatureFlag();
 
     assertThat(featureFlag.canEqual(comparedObject))
         .isTrue();
@@ -95,6 +126,12 @@ class FeatureFlagTest {
     String comparedObject = "asdf";
 
     assertThat(featureFlag.canEqual(comparedObject))
+        .isFalse();
+  }
+
+  @Test
+  void shouldNotCanEqualToNull() {
+    assertThat(featureFlag.canEqual(null))
         .isFalse();
   }
 
@@ -111,18 +148,22 @@ class FeatureFlagTest {
   }
 
   @Test
-  void shouldBeEqualToAFeatureFlagWithSameKey() {
-    FeatureFlag compareObject = new FeatureFlag(KEY);
+  void shouldBeEqualToAFeatureFlagWithSameId() {
+    FeatureFlag compareObject = new FeatureFlag();
+    compareObject.setId(ID);
 
     assertThat(featureFlag)
         .isEqualTo(compareObject);
   }
 
   @Test
-  void shouldNotBeEqualToAFeatureFlagWithADifferentKey() {
-    FeatureFlag compareObject = new FeatureFlag("other.feature.flag");
+  void shouldNotBeEqualToAFeatureFlagWithADifferentId() {
+    FeatureFlag compareObject = new FeatureFlag();
+    featureFlag.setId(15L);
+    featureFlag.setKey(KEY);
     featureFlag.setDescription(DESCRIPTION);
     featureFlag.setActive(ACTIVE);
+    featureFlag.setStrategySets(generateStrategySets());
 
     assertThat(featureFlag)
         .isNotEqualTo(compareObject);
@@ -144,7 +185,8 @@ class FeatureFlagTest {
 
   @Test
   void twoObjectWithTheSameIdShouldHaveSameHashCode() {
-    FeatureFlag compareObject = new FeatureFlag(KEY);
+    FeatureFlag compareObject = new FeatureFlag();
+    compareObject.setId(ID);
 
     assertThat(featureFlag.hashCode())
         .isEqualTo(compareObject.hashCode());
@@ -152,7 +194,12 @@ class FeatureFlagTest {
 
   @Test
   void twoObjectWithDifferentIdShouldHaveDifferentHashCode() {
-    FeatureFlag compareObject = new FeatureFlag("other.feature.flag");
+    FeatureFlag compareObject = new FeatureFlag();
+    featureFlag.setId(15L);
+    featureFlag.setKey(KEY);
+    featureFlag.setDescription(DESCRIPTION);
+    featureFlag.setActive(ACTIVE);
+    featureFlag.setStrategySets(generateStrategySets());
 
     assertThat(featureFlag.hashCode())
         .isNotEqualTo(compareObject.hashCode());
@@ -161,18 +208,13 @@ class FeatureFlagTest {
   @Test
   void shouldConvertToString() {
     assertThat(featureFlag.toString())
-        .isEqualTo("FeatureFlag("
-            + "key=" + KEY + ", "
-            + "description=" + DESCRIPTION + ", "
-            + "active=" + ACTIVE + ", "
-            + "strategySets=" + generateStrategySets()
-            + ")");
+        .startsWith("FeatureFlag");
   }
 
-  private Map<Context, StrategySet> generateStrategySets() {
+  private Map<String, StrategySet> generateStrategySets() {
     return Map.of(
-        new Context("production"), strategySetProduction,
-        new Context("testing"), strategySetTesting
+        "production", strategySetProduction,
+        "testing", strategySetTesting
     );
   }
 }

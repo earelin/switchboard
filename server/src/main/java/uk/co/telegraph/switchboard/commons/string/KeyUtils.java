@@ -1,4 +1,4 @@
-package uk.co.telegraph.switchboard.utils;
+package uk.co.telegraph.switchboard.commons.string;
 
 public class KeyUtils {
   private KeyUtils() {
