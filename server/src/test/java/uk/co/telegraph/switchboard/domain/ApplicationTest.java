@@ -19,7 +19,6 @@ package uk.co.telegraph.switchboard.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Set;
-import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
