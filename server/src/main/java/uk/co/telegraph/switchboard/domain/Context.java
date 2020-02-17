@@ -17,29 +17,28 @@
 package uk.co.telegraph.switchboard.domain;
 
 import java.util.Objects;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
 
-@Getter
-@ToString
+@Entity
+@Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Context {
   public static final String DEFAULT_KEY = "default";
 
   public static Context buildDefault() {
-    return new Context(DEFAULT_KEY);
+    Context context = new Context();
+    context.setKey(DEFAULT_KEY);
+    return context;
   }
 
+  @Id @GeneratedValue
   @EqualsAndHashCode.Include
-  @NotBlank @Size(max = 64)
-  private final String key;
-
-  public Context(String key) {
-    this.key = key;
-  }
+  private Long id;
+  private String key;
 
   public boolean isDefault() {
     return Objects.equals(key, DEFAULT_KEY);

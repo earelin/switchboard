@@ -33,7 +33,6 @@ test {
 	useJUnitPlatform {
 		excludeTags "integration"
 	}
-	finalizedBy jacocoTestReport
 }
 
 task('integrationTest', type: Test) {
@@ -42,15 +41,11 @@ task('integrationTest', type: Test) {
 	useJUnitPlatform {
 		includeTags "integration"
 	}
-	jacocoTestReport {
-		executionData integrationTest
-	}
 }
 
 check {
 	dependsOn test
 	dependsOn integrationTest
-	integrationTest.mustRunAfter(test)
 	jacocoTestReport {
 		executionData test, integrationTest
 	}
@@ -76,8 +71,7 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	implementation 'org.modelmapper:modelmapper:2.3.6'
 
-	implementation 'org.springframework.data:spring-data-commons'
-	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.liquibase:liquibase-core'
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'mysql:mysql-connector-java'

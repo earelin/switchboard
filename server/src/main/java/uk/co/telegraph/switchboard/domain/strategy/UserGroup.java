@@ -19,20 +19,33 @@ package uk.co.telegraph.switchboard.domain.strategy;
 
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import uk.co.telegraph.switchboard.domain.Application;
 
 /**
  * Group of users to be used in group related strategies.
  */
+@Entity
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class UserGroup {
+
+  @Id @GeneratedValue
   @EqualsAndHashCode.Include
-  private final String key;
+  private Long id;
+
+  @ManyToOne
+  private Application application;
 
   private String name;
 
+  @ElementCollection
   private Set<String> users = new HashSet<>();
 
   public boolean hasUser(String user) {

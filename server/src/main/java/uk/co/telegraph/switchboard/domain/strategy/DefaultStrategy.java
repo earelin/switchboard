@@ -17,12 +17,14 @@
 
 package uk.co.telegraph.switchboard.domain.strategy;
 
+import javax.persistence.Entity;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Setter;
 import lombok.ToString;
 import uk.co.telegraph.switchboard.domain.ClientInfo;
 
-@Setter
+@Entity
+@Data
 @ToString(callSuper = true)
 @EqualsAndHashCode(
     callSuper = true,
@@ -32,12 +34,8 @@ public class DefaultStrategy extends Strategy {
 
   private boolean enabled = false;
 
-  public DefaultStrategy(long id) {
-    super(id);
-  }
-
   @Override
-  public boolean isFeatureEnabled(ClientInfo clientInfo) {
+  public boolean isFeatureEnabledForClient(ClientInfo clientInfo) {
     return enabled;
   }
 }

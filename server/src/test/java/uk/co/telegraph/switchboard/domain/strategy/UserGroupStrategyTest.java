@@ -26,14 +26,16 @@ import uk.co.telegraph.switchboard.domain.ClientInfo;
 
 class UserGroupStrategyTest {
 
-  private static final long ID = 25;
+  private static final Long ID = 25L;
+  private static final Set<UserGroup> USER_GROUPS = generateUserGroup();
 
   private UserGroupStrategy userGroupStrategy;
 
   @BeforeEach
   void setUp() {
-    userGroupStrategy = new UserGroupStrategy(ID);
-    userGroupStrategy.setUserGroup(generateUserGroup());
+    userGroupStrategy = new UserGroupStrategy();
+    userGroupStrategy.setId(ID);
+    userGroupStrategy.setUserGroups(USER_GROUPS);
   }
 
   @Test
@@ -44,56 +46,57 @@ class UserGroupStrategyTest {
 
   @Test
   void shouldSetUsers() {
-    assertThat(userGroupStrategy.getUserGroup())
-        .isEqualTo(generateUserGroup());
+    assertThat(userGroupStrategy.getUserGroups())
+        .isEqualTo(USER_GROUPS);
   }
 
   @Test
   void shouldReturnIsEnabledFalseIfUserGroupIsNotSet() {
-    userGroupStrategy.setUserGroup(null);
+    userGroupStrategy.setUserGroups(null);
     ClientInfo clientInfo = ClientInfo.builder()
-        .applicationKey("newsroom-dashboard")
-        .contextKey("production")
+        .application("newsroom-dashboard")
+        .context("production")
         .instance("pc-3456")
         .dateTime(ZonedDateTime.now())
         .user("gandalf")
         .build();
 
-    assertThat(userGroupStrategy.isFeatureEnabled(clientInfo))
+    assertThat(userGroupStrategy.isFeatureEnabledForClient(clientInfo))
         .isFalse();
   }
 
   @Test
   void shouldReturnIsEnabledTrueIfUserGroupContainsClientInfoUser() {
     ClientInfo clientInfo = ClientInfo.builder()
-        .applicationKey("newsroom-dashboard")
-        .contextKey("production")
+        .application("newsroom-dashboard")
+        .context("production")
         .instance("pc-3456")
         .dateTime(ZonedDateTime.now())
         .user("gandalf")
         .build();
 
-    assertThat(userGroupStrategy.isFeatureEnabled(clientInfo))
+    assertThat(userGroupStrategy.isFeatureEnabledForClient(clientInfo))
         .isTrue();
   }
 
   @Test
   void shouldReturnIsEnabledFalseIfUserGroupNotContainsClientInfoUser() {
     ClientInfo clientInfo = ClientInfo.builder()
-        .applicationKey("newsroom-dashboard")
-        .contextKey("production")
+        .application("newsroom-dashboard")
+        .context("production")
         .instance("pc-3456")
         .dateTime(ZonedDateTime.now())
         .user("sauron")
         .build();
 
-    assertThat(userGroupStrategy.isFeatureEnabled(clientInfo))
+    assertThat(userGroupStrategy.isFeatureEnabledForClient(clientInfo))
         .isFalse();
   }
 
   @Test
   void shouldCanEqualSameClass() {
-    UserGroupStrategy comparedObject = new UserGroupStrategy(12);
+    UserGroupStrategy comparedObject = new UserGroupStrategy();
+    comparedObject.setId(12L);
 
     assertThat(userGroupStrategy.canEqual(comparedObject))
         .isTrue();
@@ -121,7 +124,8 @@ class UserGroupStrategyTest {
 
   @Test
   void shouldBeEqualToAUserGroupStrategyWithSameId() {
-    UserGroupStrategy compareObject = new UserGroupStrategy(ID);
+    UserGroupStrategy compareObject = new UserGroupStrategy();
+    compareObject.setId(ID);
 
     assertThat(userGroupStrategy)
         .isEqualTo(compareObject);
@@ -129,8 +133,9 @@ class UserGroupStrategyTest {
 
   @Test
   void shouldNotBeEqualToADefaultStrategyWithADifferentId() {
-    UserGroupStrategy compareObject = new UserGroupStrategy(12);
-    compareObject.setUserGroup(generateUserGroup());
+    UserGroupStrategy compareObject = new UserGroupStrategy();
+    compareObject.setId(12L);
+    compareObject.setUserGroups(USER_GROUPS);
 
     assertThat(userGroupStrategy)
         .isNotEqualTo(compareObject);
@@ -152,7 +157,8 @@ class UserGroupStrategyTest {
 
   @Test
   void twoUserGroupStrategiesWithTheSameIdShouldHaveSameHashCode() {
-    UserGroupStrategy compareObject = new UserGroupStrategy(ID);
+    UserGroupStrategy compareObject = new UserGroupStrategy();
+    compareObject.setId(ID);
 
     assertThat(userGroupStrategy.hashCode())
         .isEqualTo(compareObject.hashCode());
@@ -160,8 +166,9 @@ class UserGroupStrategyTest {
 
   @Test
   void twoObjectWithDifferentIdShouldHaveDifferentHashCode() {
-    UserGroupStrategy compareObject = new UserGroupStrategy(12);
-    compareObject.setUserGroup(generateUserGroup());
+    UserGroupStrategy compareObject = new UserGroupStrategy();
+    compareObject.setId(12L);
+    compareObject.setUserGroups(generateUserGroup());
 
     assertThat(userGroupStrategy.hashCode())
         .isNotEqualTo(compareObject.hashCode());
@@ -170,16 +177,20 @@ class UserGroupStrategyTest {
   @Test
   void shouldConvertToString() {
     assertThat(userGroupStrategy.toString())
-        .isEqualTo("UserGroupStrategy("
-            + "super=Strategy(id=" + ID + "), "
-            + "userGroup=" + generateUserGroup().toString()
-            + ")");
+        .startsWith("UserGroupStrategy");
   }
 
-  private UserGroup generateUserGroup() {
-    UserGroup userGroup = new UserGroup("beta-users");
-    userGroup.setName("Beta users");
-    userGroup.setUsers(Set.of("frodo", "sam", "gandalf"));
-    return userGroup;
+  private static Set<UserGroup> generateUserGroup() {
+    UserGroup userGroup1 = new UserGroup();
+    userGroup1.setId(2L);
+    userGroup1.setName("Beta users");
+    userGroup1.setUsers(Set.of("frodo", "sam", "gandalf"));
+
+    UserGroup userGroup2 = new UserGroup();
+    userGroup2.setId(3L);
+    userGroup2.setName("Testers");
+    userGroup2.setUsers(Set.of("aragorn", "gandalf"));
+
+    return Set.of(userGroup1, userGroup2);
   }
 }

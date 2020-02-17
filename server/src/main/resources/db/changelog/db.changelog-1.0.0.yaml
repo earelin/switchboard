@@ -16,20 +16,25 @@
 
 databaseChangeLog:
   - changeSet:
-      id: '1.0.0-create-application-table'
-      author: switch-panel
+      id: '1.0.0-application-table'
+      author: switchboard
       comment: Application entity table
       changes:
         - createTable:
             tableName: application
             columns:
               - column:
-                  name: key
-                  type: varchar(128)
+                  name: id
+                  type: bigint
                   constraints:
                     nullable: false
                     primaryKey: true
                     primaryKeyName: pk_application
+              - column:
+                  name: key
+                  type: varchar(128)
+                  constraints:
+                    nullable: false
               - column:
                   name: name
                   type: varchar(128)
@@ -45,16 +50,23 @@ databaseChangeLog:
                   type: longvarchar
 
   - changeSet:
-      id: '1.0.0-create-context-table'
-      author: switch-panel
+      id: '1.0.0-context-table'
+      author: switchboard
       comment: Context entity table
       changes:
         - createTable:
             tableName: context
             columns:
               - column:
-                  name: application_key
-                  type: varchar(128)
+                  name: id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_context
+              - column:
+                  name: application_id
+                  type: bigint
                   constraints:
                     nullable: false
               - column:
@@ -62,19 +74,6 @@ databaseChangeLog:
                   type: varchar(64)
                   constraints:
                     nullable: false
-        - addPrimaryKey:
-            columnNames: application_key, key
-            constraintName: pk_context
-            tableName: context
-        - addForeignKeyConstraint:
-            baseColumnNames: application_key
-            baseTableName: context
-            constraintName: fk_context_application_key
-            onDelete: CASCADE
-            onUpdate: CASCADE
-            referencedColumnNames: key
-            referencedTableName: application
-            validate: true
 
 #  - changeSet:
 #      id: '1.0.0-create-feature-flag-table'

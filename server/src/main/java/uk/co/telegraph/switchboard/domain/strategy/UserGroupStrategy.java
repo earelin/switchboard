@@ -17,26 +17,36 @@
 
 package uk.co.telegraph.switchboard.domain.strategy;
 
+import java.util.Objects;
+import java.util.Set;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 import uk.co.telegraph.switchboard.domain.ClientInfo;
 
-@Getter
-@Setter
+@Entity
+@Data
 @ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(
+    callSuper = true,
+    onlyExplicitlyIncluded = true
+)
 public class UserGroupStrategy extends Strategy {
 
-  private UserGroup userGroup;
-
-  public UserGroupStrategy(long id) {
-    super(id);
-  }
+  @ManyToMany
+  private Set<UserGroup> userGroups;
 
   @Override
-  public boolean isFeatureEnabled(ClientInfo clientInfo) {
-    return userGroup != null && userGroup.hasUser(clientInfo.getUser());
+  public boolean isFeatureEnabledForClient(ClientInfo clientInfo) {
+    if (Objects.isNull(userGroups)) {
+      return false;
+    }
+
+    return userGroups.stream()
+        .map(userGroup -> userGroup.hasUser(clientInfo.getUser()))
+        .reduce(Boolean::logicalOr)
+        .orElse(false);
   }
 }

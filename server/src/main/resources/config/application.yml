@@ -15,7 +15,7 @@ logging:
     uk:
       co:
         telegraph:
-          switch: DEBUG
+          switchboard: DEBUG
 
 spring:
   jpa:
