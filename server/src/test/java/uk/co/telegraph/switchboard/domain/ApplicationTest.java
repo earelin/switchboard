@@ -19,8 +19,15 @@ package uk.co.telegraph.switchboard.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Set;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class ApplicationTest {
 
@@ -32,7 +39,11 @@ class ApplicationTest {
       = "An amazing application to be feature flagged";
   private static final Set<Context> CONTEXTS = generateContexts();
 
+  private static final ValidatorFactory validatorFactory
+      = Validation.buildDefaultValidatorFactory();
+
   private Application application;
+  private Validator validator;
 
   @BeforeEach
   void setUp() {
@@ -43,6 +54,17 @@ class ApplicationTest {
     application.setSecret(SECRET);
     application.setDescription(DESCRIPTION);
     application.setContexts(CONTEXTS);
+
+    validator = validatorFactory.getValidator();
+  }
+
+  @Test
+  void shouldValidateApplication() {
+    Set<ConstraintViolation<Application>> violations
+        = validator.validate(application);
+
+    assertThat(violations)
+        .isEmpty();
   }
 
   @Test
@@ -58,15 +80,117 @@ class ApplicationTest {
   }
 
   @Test
+  void shouldNotValidateNullKey() {
+    application.setKey(null);
+
+    Set<ConstraintViolation<Application>> violations
+        = validator.validateProperty(application, "key");
+
+    assertThat(violations)
+        .hasSize(1);
+  }
+
+  @Test
+  void shouldNotValidateBlankKey() {
+    application.setKey("    ");
+
+    Set<ConstraintViolation<Application>> violations
+        = validator.validateProperty(application, "key");
+
+    assertThat(violations)
+        .hasSize(1);
+  }
+
+  @ParameterizedTest
+  @ValueSource(ints = {129, 256, 512})
+  void shouldNotValidateKeyLongerThan128Chars(int keyLength) {
+    application.setKey(RandomStringUtils.randomAlphanumeric(keyLength));
+
+    Set<ConstraintViolation<Application>> violations
+        = validator.validateProperty(application, "key");
+
+    assertThat(violations)
+        .hasSize(1);
+  }
+
+  @Test
   void shouldSetName() {
     assertThat(application.getName())
         .isEqualTo(NAME);
   }
 
   @Test
+  void shouldNotValidateNullName() {
+    application.setName(null);
+
+    Set<ConstraintViolation<Application>> violations
+        = validator.validateProperty(application, "name");
+
+    assertThat(violations)
+        .hasSize(1);
+  }
+
+  @Test
+  void shouldNotValidateBlankName() {
+    application.setName("    ");
+
+    Set<ConstraintViolation<Application>> violations
+        = validator.validateProperty(application, "name");
+
+    assertThat(violations)
+        .hasSize(1);
+  }
+
+  @ParameterizedTest
+  @ValueSource(ints = {129, 256, 512})
+  void shouldNotValidateNameLongerThan128Chars(int nameLength) {
+    application.setName(RandomStringUtils.randomAlphanumeric(nameLength));
+
+    Set<ConstraintViolation<Application>> violations
+        = validator.validateProperty(application, "name");
+
+    assertThat(violations)
+        .hasSize(1);
+  }
+
+  @Test
   void shouldSetSecret() {
     assertThat(application.getSecret())
         .isEqualTo(SECRET);
+  }
+
+  @Test
+  void shouldNotValidateNullSecret() {
+    application.setSecret(null);
+
+    Set<ConstraintViolation<Application>> violations
+        = validator.validateProperty(application, "secret");
+
+    assertThat(violations)
+        .hasSize(1);
+  }
+
+  @Test
+  void shouldNotValidateBlankSecret() {
+    application.setSecret("    ");
+
+    Set<ConstraintViolation<Application>> violations
+        = validator.validateProperty(application, "secret");
+
+    assertThat(violations)
+        .hasSize(1);
+  }
+
+  @ParameterizedTest
+  @ValueSource(ints = {256, 512, 1024})
+  void shouldNotValidateSecretLongerThan255Chars(int nameLength) {
+    application.setSecret(RandomStringUtils.randomAlphanumeric(nameLength));
+
+    Set<ConstraintViolation<Application>> violations
+        = validator.validateProperty(application, "secret");
+
+    assertThat(violations)
+        .hasSize(1);
   }
 
   @Test

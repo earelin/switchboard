@@ -21,7 +21,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.DisplayNameGenerator;
 
 /**
- * A junit DisplayNameGenerator that convert camelcase into separated words
+ * A jUnit DisplayNameGenerator that convert camelcase names into separated words
  * sentences.
  */
 class ReplaceCamelCase extends DisplayNameGenerator.Standard {

@@ -26,6 +26,7 @@ databaseChangeLog:
               - column:
                   name: id
                   type: bigint
+                  autoIncrement: true
                   constraints:
                     nullable: false
                     primaryKey: true
@@ -35,6 +36,7 @@ databaseChangeLog:
                   type: varchar(128)
                   constraints:
                     nullable: false
+                    unique: true
               - column:
                   name: name
                   type: varchar(128)
@@ -60,6 +62,7 @@ databaseChangeLog:
               - column:
                   name: id
                   type: bigint
+                  autoIncrement: true
                   constraints:
                     nullable: false
                     primaryKey: true
@@ -68,7 +71,11 @@ databaseChangeLog:
                   name: application_id
                   type: bigint
                   constraints:
+                    deleteCascade: true
+                    foreignKeyName: fk_context_application_id
                     nullable: false
+                    referencedTableName: application
+                    referencedColumnNames: id
               - column:
                   name: key
                   type: varchar(64)

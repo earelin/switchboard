@@ -17,10 +17,15 @@
 package uk.co.telegraph.switchboard.domain;
 
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -33,14 +38,29 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Application {
 
-  @Id @GeneratedValue
+  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
   @EqualsAndHashCode.Include
   private Long id;
+
+  @NotBlank @Size(max = 128)
   private String key;
+
+  @NotBlank @Size(max = 128)
   private String name;
+
+  @NotBlank @Size(max = 255)
   private String secret;
+
   private String description;
 
-  @OneToMany
+  @OneToMany(
+      cascade = {CascadeType.ALL},
+      orphanRemoval = true
+  )
+  @JoinColumn(
+      name = "application_id",
+      referencedColumnName = "id",
+      nullable = false
+  )
   private Set<Context> contexts;
 }

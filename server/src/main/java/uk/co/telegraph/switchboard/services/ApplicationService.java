@@ -14,20 +14,22 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.repositories;
+package uk.co.telegraph.switchboard.services;
 
 import java.util.List;
 import java.util.Optional;
-import org.springframework.data.domain.Page;
+import java.util.Set;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.Repository;
 import uk.co.telegraph.switchboard.domain.Application;
 
-public interface ApplicationRepository extends CrudRepository<Application, Long> {
-  void deleteByKey(String key);
-  boolean existsByKey(String key);
+public interface ApplicationService {
+  Application createFrom(String name, String description);
+  Application createFrom(String name, String description, Set<String> context);
+  void delete(Application application);
+  Application updateNameAndDescription(Application application, String name, String description);
+  Application addContext(Application application, String contextKey);
+  Application removeContext(Application application, String contextKey);
   Optional<Application> findByKey(String key);
-  List<Application> findAllByOrderByNameAsc();
-  Page<Application> findAll(Pageable pageable);
+  List<Application> findAll();
+  List<Application> findAll(Pageable pageable);
 }

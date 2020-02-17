@@ -19,7 +19,11 @@ package uk.co.telegraph.switchboard.domain;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -35,10 +39,18 @@ public class Context {
     return context;
   }
 
-  @Id @GeneratedValue
+  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
   @EqualsAndHashCode.Include
   private Long id;
+
+  @NotBlank @Size(max = 64)
   private String key;
+
+  public Context() {}
+
+  public Context(String key) {
+    this.key = key;
+  }
 
   public boolean isDefault() {
     return Objects.equals(key, DEFAULT_KEY);

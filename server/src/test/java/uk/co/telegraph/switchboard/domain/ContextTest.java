@@ -19,22 +19,45 @@ package uk.co.telegraph.switchboard.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.telegraph.switchboard.domain.Context.DEFAULT_KEY;
 
+import java.util.Set;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class ContextTest {
 
   private static final Long ID = 25L;
   private static final String KEY = "production";
 
+  private static final ValidatorFactory validatorFactory
+      = Validation.buildDefaultValidatorFactory();
+
   private Context context;
+  private Validator validator;
 
   @BeforeEach
   void setUp() {
     context = new Context();
     context.setId(ID);
     context.setKey(KEY);
+
+    validator = validatorFactory.getValidator();
+  }
+
+  @Test
+  void shouldValidateContext() {
+    Set<ConstraintViolation<Context>> violations
+        = validator.validate(context);
+
+    assertThat(violations)
+        .isEmpty();
   }
 
   @Test
@@ -47,6 +70,40 @@ class ContextTest {
   void shouldSetKey() {
     assertThat(context.getKey())
         .isEqualTo(KEY);
+  }
+
+  @Test
+  void shouldNotValidateNullKey() {
+    context.setKey(null);
+
+    Set<ConstraintViolation<Context>> violations
+        = validator.validateProperty(context, "key");
+
+    assertThat(violations)
+        .hasSize(1);
+  }
+
+  @Test
+  void shouldNotValidateBlankKey() {
+    context.setKey("    ");
+
+    Set<ConstraintViolation<Context>> violations
+        = validator.validateProperty(context, "key");
+
+    assertThat(violations)
+        .hasSize(1);
+  }
+
+  @ParameterizedTest
+  @ValueSource(ints = {65, 128, 256})
+  void shouldNotValidateKeyLongerThan64Chars(int keyLength) {
+    context.setKey(RandomStringUtils.randomAlphanumeric(keyLength));
+
+    Set<ConstraintViolation<Context>> violations
+        = validator.validateProperty(context, "key");
+
+    assertThat(violations)
+        .hasSize(1);
   }
 
   @Test
