@@ -17,42 +17,57 @@
 
 package uk.co.telegraph.switchboard.controllers;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+import uk.co.telegraph.switchboard.controllers.dto.ApplicationDto;
+import uk.co.telegraph.switchboard.domain.Application;
+import uk.co.telegraph.switchboard.factories.ApplicationFactory;
+import uk.co.telegraph.switchboard.repositories.ApplicationRepository;
 
 @RestController
 @RequestMapping("/api/application")
 public class ApplicationController {
-//
-//  private final ApplicationService applicationService;
-//  private final ModelMapper modelMapper;
-//
-//  public ApplicationController(
-//      ApplicationService applicationService,
-//      ModelMapper modelMapper) {
-//    this.applicationService = applicationService;
-//    this.modelMapper = modelMapper;
-//  }
-//
-//  @GetMapping("/{key}")
-//  public ApplicationDto find(@PathVariable String key) {
-//    Application application = applicationService.find(key)
-//        .orElseThrow(() -> new ResponseStatusException(
-//            HttpStatus.NOT_FOUND,
-//            String.format("Application not found: %s", key)
-//        ));
-//    return convertToDto(application);
-//  }
-//
-//  @GetMapping
-//  public List<ApplicationDto> findAll() {
-//    return applicationService.findAll()
-//        .stream()
-//        .map(this::convertToDto)
-//        .collect(Collectors.toList());
-//  }
-//
-//  private ApplicationDto convertToDto(Application application) {
-//    return modelMapper.map(application, ApplicationDto.class);
-//  }
+
+  private final ApplicationRepository applicationRepository;
+  private final ApplicationFactory applicationFactory;
+  private final ModelMapper modelMapper;
+
+  public ApplicationController(
+      ApplicationRepository applicationRepository,
+      ApplicationFactory applicationFactory,
+      ModelMapper modelMapper
+  ) {
+    this.applicationRepository = applicationRepository;
+    this.applicationFactory = applicationFactory;
+    this.modelMapper = modelMapper;
+  }
+
+  @GetMapping("/{id}")
+  public ApplicationDto find(@PathVariable String id) {
+    Application application = applicationRepository.findById(id)
+        .orElseThrow(() -> new ResponseStatusException(
+            HttpStatus.NOT_FOUND,
+            String.format("Application not found: %s", id)
+        ));
+    return convertToDto(application);
+  }
+
+  @GetMapping
+  public List<ApplicationDto> findAll() {
+    return applicationRepository.findAllByOrderByNameAsc()
+        .stream()
+        .map(this::convertToDto)
+        .collect(Collectors.toList());
+  }
+
+  private ApplicationDto convertToDto(Application application) {
+    return modelMapper.map(application, ApplicationDto.class);
+  }
 }

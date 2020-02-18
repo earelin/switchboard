@@ -31,29 +31,29 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 class ApplicationTest {
 
-  private static final Long ID = 15L;
-  private static final String KEY = "newsroom-dashboard";
+  private static final String ID = "c0a8e1e5-e307-3c5b-b381-9b387b5f01fd";
   private static final String NAME = "Newsroom Dashboard";
   private static final String SECRET = "K2I1JPxYp1pCWprzf4QaReiwntZXxmu4";
   private static final String DESCRIPTION
       = "An amazing application to be feature flagged";
-  private static final Set<Context> CONTEXTS = generateContexts();
 
   private static final ValidatorFactory validatorFactory
       = Validation.buildDefaultValidatorFactory();
 
   private Application application;
   private Validator validator;
+  private Set<Context> contexts;
 
   @BeforeEach
   void setUp() {
+    contexts = generateContexts(application);
+
     application = new Application();
     application.setId(ID);
-    application.setKey(KEY);
     application.setName(NAME);
     application.setSecret(SECRET);
     application.setDescription(DESCRIPTION);
-    application.setContexts(CONTEXTS);
+    application.setContexts(contexts);
 
     validator = validatorFactory.getValidator();
   }
@@ -74,17 +74,11 @@ class ApplicationTest {
   }
 
   @Test
-  void shouldSetKey() {
-    assertThat(application.getKey())
-        .isEqualTo(KEY);
-  }
-
-  @Test
-  void shouldNotValidateNullKey() {
-    application.setKey(null);
+  void shouldNotValidateNullId() {
+    application.setId(null);
 
     Set<ConstraintViolation<Application>> violations
-        = validator.validateProperty(application, "key");
+        = validator.validateProperty(application, "id");
 
     assertThat(violations)
         .hasSize(1);
@@ -92,10 +86,10 @@ class ApplicationTest {
 
   @Test
   void shouldNotValidateBlankKey() {
-    application.setKey("    ");
+    application.setId("    ");
 
     Set<ConstraintViolation<Application>> violations
-        = validator.validateProperty(application, "key");
+        = validator.validateProperty(application, "id");
 
     assertThat(violations)
         .hasSize(1);
@@ -104,10 +98,10 @@ class ApplicationTest {
   @ParameterizedTest
   @ValueSource(ints = {129, 256, 512})
   void shouldNotValidateKeyLongerThan128Chars(int keyLength) {
-    application.setKey(RandomStringUtils.randomAlphanumeric(keyLength));
+    application.setId(RandomStringUtils.randomAlphanumeric(keyLength));
 
     Set<ConstraintViolation<Application>> violations
-        = validator.validateProperty(application, "key");
+        = validator.validateProperty(application, "id");
 
     assertThat(violations)
         .hasSize(1);
@@ -202,7 +196,7 @@ class ApplicationTest {
   @Test
   void shouldSetContext() {
     assertThat(application.getContexts())
-        .isEqualTo(CONTEXTS);
+        .isEqualTo(contexts);
   }
 
   @Test
@@ -249,10 +243,9 @@ class ApplicationTest {
   }
 
   @Test
-  void shouldNotBeEqualToAnApplicationWithADifferentKey() {
+  void shouldNotBeEqualToAnApplicationWithADifferentId() {
     Application compareObject = new Application();
-    compareObject.setId(1L);
-    compareObject.setKey(KEY);
+    compareObject.setId("d2270af7-0528-38c0-94d2-5515c0156e8a");
     compareObject.setName(NAME);
     compareObject.setSecret(SECRET);
     compareObject.setDescription(DESCRIPTION);
@@ -287,8 +280,7 @@ class ApplicationTest {
   @Test
   void twoObjectsWithDifferentIdShouldHaveDifferentHashCode() {
     Application compareObject = new Application();
-    compareObject.setId(1L);
-    compareObject.setKey(KEY);
+    compareObject.setId("d2270af7-0528-38c0-94d2-5515c0156e8a");
     compareObject.setName(NAME);
     compareObject.setSecret(SECRET);
     compareObject.setDescription(DESCRIPTION);
@@ -303,13 +295,11 @@ class ApplicationTest {
         .startsWith("Application");
   }
 
-  private static Set<Context> generateContexts() {
+  private Set<Context> generateContexts(Application application) {
     Context staging = new Context();
-    staging.setId(1L);
     staging.setKey("staging");
 
     Context production = new Context();
-    production.setId(2L);
     production.setKey("production");
 
     return Set.of(staging, production);

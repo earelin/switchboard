@@ -177,8 +177,7 @@ class UserGroupTest {
 
   private static Application generateApplication() {
     Application application = new Application();
-    application.setId(5L);
-    application.setKey("one-application");
+    application.setId("c0a8e1e5-e307-3c5b-b381-9b387b5f01fd");
     application.setName("One Application");
     application.setDescription("Lorem ipsum");
     application.setSecret("qwerty");

@@ -14,29 +14,12 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.services;
+package uk.co.telegraph.switchboard.factories;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Set;
+import uk.co.telegraph.switchboard.domain.Application;
 
-import java.util.regex.Pattern;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-class SecretsGeneratorServiceImpTest {
-
-  private SecretsGeneratorServiceImp keyService;
-
-  @BeforeEach
-  void setUp() {
-    keyService = new SecretsGeneratorServiceImp();
-  }
-
-  @Test
-  void shouldGenerateSecret() {
-    String key = keyService.generateSecret(64);
-
-    assertThat(key)
-        .matches(Pattern.compile("^[A-Za-z0-9]*$"))
-        .hasSize(64);
-  }
+public interface ApplicationFactory {
+  Application createWith(String name, String description);
+  Application createWith(String name, String description, Set<String> contexts);
 }

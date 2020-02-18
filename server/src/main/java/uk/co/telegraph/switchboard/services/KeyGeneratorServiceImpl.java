@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.repositories;
+package uk.co.telegraph.switchboard.services;
 
-import java.util.List;
-import java.util.Optional;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.CrudRepository;
-import uk.co.telegraph.switchboard.domain.Application;
+import java.util.UUID;
+import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.stereotype.Service;
 
-public interface ApplicationRepository extends CrudRepository<Application, Long> {
-  void deleteById(String id);
-  boolean existsById(String id);
-  Optional<Application> findById(String id);
-  List<Application> findAllByOrderByNameAsc();
-  Page<Application> findAll(Pageable pageable);
+@Service
+public class KeyGeneratorServiceImpl implements KeyGeneratorService {
+  @Override
+  public String generateKey(String name) {
+    byte[] nameBytes = name.getBytes();
+    byte[] timestampBytes = String.valueOf(System.nanoTime()).getBytes();
+    byte[] uuidSeed = ArrayUtils.addAll(nameBytes, timestampBytes);
+    return UUID.nameUUIDFromBytes(uuidSeed).toString();
+  }
 }

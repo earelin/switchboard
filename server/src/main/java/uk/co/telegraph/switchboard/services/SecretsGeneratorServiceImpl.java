@@ -14,18 +14,15 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.dtos;
+package uk.co.telegraph.switchboard.services;
 
-import java.io.Serializable;
-import lombok.Getter;
-import lombok.Setter;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.stereotype.Service;
 
-@Getter
-@Setter
-public class UpdateApplicationDto implements Serializable {
-
-  private static final long serialVersionUID = -1092331299112614892L;
-
-  private String name;
-  private String description;
+@Service
+public class SecretsGeneratorServiceImpl implements SecretsGeneratorService {
+  @Override
+  public String generateSecret(int size) {
+    return RandomStringUtils.randomAlphanumeric(size);
+  }
 }

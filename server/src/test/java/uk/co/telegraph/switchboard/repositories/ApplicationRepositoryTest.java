@@ -61,24 +61,24 @@ class ApplicationRepositoryTest {
 
   @Test
   void existsShouldReturnTrueIfAnApplicationExists() {
-    assertThat(applicationRepository.existsByKey("editorial-dashboard"))
+    assertThat(applicationRepository.existsById("fd528ad1-6072-3d96-b5af-ff901ac93818"))
         .isTrue();
   }
 
   @Test
   void existsShouldReturnFalseIfAnApplicationDoesNotExists() {
-    assertThat(applicationRepository.existsByKey("not-existing-application"))
+    assertThat(applicationRepository.existsById("not-existing-application"))
         .isFalse();
   }
 
   @Test
   void findShouldReturnAnApplicationIfItDoesExists() {
     Application application = applicationRepository
-        .findByKey("mobile-application")
+        .findById("4e6aea3a-506c-3b7b-a3c3-74e442d1dfa4")
         .orElseThrow();
 
     assertThat(application)
-        .hasFieldOrPropertyWithValue("key", "mobile-application")
+        .hasFieldOrPropertyWithValue("id", "4e6aea3a-506c-3b7b-a3c3-74e442d1dfa4")
         .hasFieldOrPropertyWithValue("name", "Mobile Application")
         .hasFieldOrPropertyWithValue(
             "secret", "EU8ig9DWP0O41IZO420QwumGXC1sqJYE5lwvpGzUpuMoC9oj3tDeN63qBcZCBY3h")
@@ -92,23 +92,23 @@ class ApplicationRepositoryTest {
 
   @Test
   void findShouldReturnEmptyIfAnApplicationDoesExists() {
-    assertThat(applicationRepository.findByKey("not-existing-application"))
+    assertThat(applicationRepository.findById("not-existing-application"))
         .isNotPresent();
   }
 
   @Test
   void shouldDeleteAnApplicationIfExists() {
-    applicationRepository.deleteByKey("payment-application");
+    applicationRepository.deleteById("e6211ab1-8838-38ec-a10f-d36f673bb84f");
 
     assertThat(applicationRepository.count())
         .isEqualTo(4);
-    assertThat(applicationRepository.findByKey("payment-application"))
+    assertThat(applicationRepository.findById("e6211ab1-8838-38ec-a10f-d36f673bb84f"))
         .isNotPresent();
   }
 
   @Test
   void shouldNotDeleteAnApplicationIfDoesNotExists() {
-    applicationRepository.deleteByKey("not-existing-application");
+    applicationRepository.deleteById("not-existing-application");
 
     assertThat(JdbcTestUtils.countRowsInTable(jdbcTemplate, "application"))
         .isEqualTo(5);
@@ -125,7 +125,7 @@ class ApplicationRepositoryTest {
   @Test
   void shouldCreateAnApplication() {
     Application application = new Application();
-    application.setKey("new-application");
+    application.setId("d2270af7-0528-38c0-94d2-5515c0156e8a");
     application.setName("New application");
     application.setSecret("new secret");
     application.setDescription("Description");
@@ -134,7 +134,7 @@ class ApplicationRepositoryTest {
     Application createdApplication = applicationRepository.save(application);
 
     assertThat(createdApplication)
-        .hasFieldOrPropertyWithValue("key", "new-application")
+        .hasFieldOrPropertyWithValue("id", "d2270af7-0528-38c0-94d2-5515c0156e8a")
         .hasFieldOrPropertyWithValue("name", "New application")
         .hasFieldOrPropertyWithValue("secret", "new secret")
         .hasFieldOrPropertyWithValue("description", "Description");
@@ -147,20 +147,17 @@ class ApplicationRepositoryTest {
   @Test
   void shouldUpdateApplicationData() {
     Application application = applicationRepository
-        .findByKey("mobile-application")
+        .findById("4e6aea3a-506c-3b7b-a3c3-74e442d1dfa4")
         .orElseThrow();
-    application.setKey("mobile-application-updated");
     application.setName("Mobile Application updated");
     application.setSecret("Updated secret");
     application.setDescription("Updated description");
-    application.setContexts(new HashSet<>(Set.of(
-      new Context("testing")
-    )));
+    application.setContexts(new HashSet<>(Set.of(new Context("testing"))));
 
     Application updatedApplication = applicationRepository.save(application);
 
     assertThat(updatedApplication)
-        .hasFieldOrPropertyWithValue("key", "mobile-application-updated")
+        .hasFieldOrPropertyWithValue("id", "4e6aea3a-506c-3b7b-a3c3-74e442d1dfa4")
         .hasFieldOrPropertyWithValue("name", "Mobile Application updated")
         .hasFieldOrPropertyWithValue("secret", "Updated secret")
         .hasFieldOrPropertyWithValue("description", "Updated description");
@@ -180,8 +177,11 @@ class ApplicationRepositoryTest {
         .isEqualTo(5);
     assertThat(applicationPage.getContent())
         .hasSize(2)
-        .extracting(Application::getKey)
-        .containsExactly("editorial-dashboard", "authoring-frontend");
+        .extracting(Application::getId)
+        .containsExactly(
+            "fd528ad1-6072-3d96-b5af-ff901ac93818",
+            "d1cbbea4-67a3-3b70-9ab5-81da0af46238"
+        );
   }
 
   @Test
@@ -193,8 +193,8 @@ class ApplicationRepositoryTest {
         .isEqualTo(5);
     assertThat(applicationPage.getContent())
         .hasSize(1)
-        .extracting(Application::getKey)
-        .containsExactly("payment-application");
+        .extracting(Application::getId)
+        .containsExactly("e6211ab1-8838-38ec-a10f-d36f673bb84f");
   }
 
   @Test
@@ -207,7 +207,10 @@ class ApplicationRepositoryTest {
         .isEqualTo(5);
     assertThat(applicationPage.getContent())
         .hasSize(2)
-        .extracting(Application::getKey)
-        .containsExactly("authoring-frontend", "editorial-dashboard");
+        .extracting(Application::getId)
+        .containsExactly(
+            "d1cbbea4-67a3-3b70-9ab5-81da0af46238",
+            "fd528ad1-6072-3d96-b5af-ff901ac93818"
+        );
   }
 }

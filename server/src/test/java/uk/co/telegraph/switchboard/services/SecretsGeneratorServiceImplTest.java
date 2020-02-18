@@ -14,20 +14,29 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.dtos;
+package uk.co.telegraph.switchboard.services;
 
-import java.io.Serializable;
-import java.util.Set;
-import lombok.Getter;
-import lombok.Setter;
+import static org.assertj.core.api.Assertions.assertThat;
 
-@Getter
-@Setter
-public class CreateApplicationDto implements Serializable {
+import java.util.regex.Pattern;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-  private static final long serialVersionUID = 1616804722855966764L;
+class SecretsGeneratorServiceImplTest {
 
-  private String name;
-  private String description;
-  private Set<String> contexts;
+  private SecretsGeneratorServiceImpl keyService;
+
+  @BeforeEach
+  void setUp() {
+    keyService = new SecretsGeneratorServiceImpl();
+  }
+
+  @Test
+  void shouldGenerateSecret() {
+    String key = keyService.generateSecret(64);
+
+    assertThat(key)
+        .matches(Pattern.compile("^[A-Za-z0-9]*$"))
+        .hasSize(64);
+  }
 }

@@ -24,40 +24,41 @@ import uk.co.telegraph.switchboard.domain.Context;
 
 public class ApplicationContentGenerator {
 
-  private ApplicationContentGenerator() {}
+  private ApplicationContentGenerator() {
+  }
 
   public static List<Application> generateApplications() {
     return List.of(
-        generateApplicationOf(
-            "editorial-dashboard",
+        generateApplication(
+            "fd528ad1-6072-3d96-b5af-ff901ac93818",
             "Editorial Dashboard",
             "VC3MciBHBRlyMio0u6kuVoeq9mwasmQbEBAnSHu7MmE43ssjclE3stB3LM7ed7Pm",
             null,
             Set.of(Context.DEFAULT_KEY)
         ),
-        generateApplicationOf(
-            "authoring-frontend",
+        generateApplication(
+            "d1cbbea4-67a3-3b70-9ab5-81da0af46238",
             "Authoring Frontend",
             "mC5XPkAZBrW4sG7gmi7VdV1ajX0CV5d4nVKq6Jg54v5YjrasjNWcC0haV4kEWVln",
             "Nam at purus justo. Donec lacinia justo eu nisi vestibulum fermentum.",
             Set.of("development", "staging", "production")
         ),
-        generateApplicationOf(
-            "mobile-application",
+        generateApplication(
+            "4e6aea3a-506c-3b7b-a3c3-74e442d1dfa4",
             "Mobile Application",
             "EU8ig9DWP0O41IZO420QwumGXC1sqJYE5lwvpGzUpuMoC9oj3tDeN63qBcZCBY3h",
             "Nullam ipsum orci, suscipit a nibh vel, tempus iaculis nibh.",
             Set.of(Context.DEFAULT_KEY)
         ),
-        generateApplicationOf(
-            "mobile-authoring",
+        generateApplication(
+            "e2a3ab66-3a1d-3256-9499-1d0c96961405",
             "Mobile Authoring",
             "QjVpgDl7C7j9q09GMHlE5qYVsOU1VDG5ZQSgVAvmf8lhrY7HnKAzNtXeZS1fPtcS",
             null,
             Set.of("development", "staging", "production")
         ),
-        generateApplicationOf(
-            "payment-application",
+        generateApplication(
+            "e6211ab1-8838-38ec-a10f-d36f673bb84f",
             "Payment application",
             "um1TGPBGErS2g4Woqj23VXIHYTqgJr56qXuQpu8oHS4uMAkFgi8pZc40ENXbkRcW",
             "Cras sagittis nisi nec neque eleifend, non tempor erat finibus.",
@@ -66,34 +67,28 @@ public class ApplicationContentGenerator {
     );
   }
 
-  private static Application generateApplicationOf(
-      String key,
+  public static Application generateApplication(
+      String id,
       String name,
       String secret,
       String description,
-      Set<String> contexts
+      Set<String> contextKeys
   ) {
-    Application application = new Application();
-    application.setKey(key);
-    application.setName(name);
-    application.setSecret(secret);
-    application.setDescription(description);
+    Application application = new Application(
+        id,
+        name,
+        secret,
+        description
+    );
 
-    if (contexts != null && !contexts.isEmpty()) {
-      Set<Context> contextSet = contexts.stream()
-          .map(ApplicationContentGenerator::generateContextOf)
-          .collect(Collectors.toSet());
-      application.setContexts(contextSet);
-    }
+    application.setContexts(generateContexts(contextKeys));
 
     return application;
   }
 
-  private static Context generateContextOf(
-      String key
-  ) {
-    Context context = new Context();
-    context.setKey(key);
-    return context;
+  public static Set<Context> generateContexts(Set<String> contextKeys) {
+    return contextKeys.stream()
+        .map(contextKey -> new Context(contextKey))
+        .collect(Collectors.toSet());
   }
 }

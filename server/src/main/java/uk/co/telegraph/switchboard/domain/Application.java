@@ -37,13 +37,10 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Application {
-
-  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
+  @NotBlank @Size(max = 36)
   @EqualsAndHashCode.Include
-  private Long id;
-
-  @NotBlank @Size(max = 128)
-  private String key;
+  private String id;
 
   @NotBlank @Size(max = 128)
   private String name;
@@ -63,4 +60,19 @@ public class Application {
       nullable = false
   )
   private Set<Context> contexts;
+
+  public Application() {
+  }
+
+  public Application(
+      String id,
+      String name,
+      String secret,
+      String description
+  ) {
+    this.id = id;
+    this.name = name;
+    this.secret = secret;
+    this.description = description;
+  }
 }

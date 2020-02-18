@@ -14,20 +14,14 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.dtos;
+package uk.co.telegraph.switchboard.controllers.dto;
 
-import java.io.Serializable;
 import java.util.Set;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
-public class ApplicationDto implements Serializable {
-
-  private static final long serialVersionUID = 7524449056283565095L;
-
-  private String key;
+@Data
+public class ApplicationDto {
+  private String id;
   private String name;
   private String secret;
   private String description;

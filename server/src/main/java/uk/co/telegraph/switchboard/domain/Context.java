@@ -16,13 +16,13 @@
 
 package uk.co.telegraph.switchboard.domain;
 
+import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -30,7 +30,10 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Context {
+public class Context implements Serializable {
+
+  private static final long serialVersionUID = 5778843762308210190L;
+
   public static final String DEFAULT_KEY = "default";
 
   public static Context buildDefault() {
@@ -40,13 +43,14 @@ public class Context {
   }
 
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @EqualsAndHashCode.Include
   private Long id;
 
   @NotBlank @Size(max = 64)
+  @EqualsAndHashCode.Include
   private String key;
 
-  public Context() {}
+  public Context() {
+  }
 
   public Context(String key) {
     this.key = key;

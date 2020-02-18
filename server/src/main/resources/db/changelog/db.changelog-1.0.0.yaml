@@ -25,18 +25,11 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: bigint
-                  autoIncrement: true
+                  type: char(36)
                   constraints:
                     nullable: false
                     primaryKey: true
                     primaryKeyName: pk_application
-              - column:
-                  name: key
-                  type: varchar(128)
-                  constraints:
-                    nullable: false
-                    unique: true
               - column:
                   name: name
                   type: varchar(128)
@@ -69,7 +62,7 @@ databaseChangeLog:
                     primaryKeyName: pk_context
               - column:
                   name: application_id
-                  type: bigint
+                  type: char(36)
                   constraints:
                     deleteCascade: true
                     foreignKeyName: fk_context_application_id

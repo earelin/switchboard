@@ -26,6 +26,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import uk.co.telegraph.switchboard.domain.Application;
 import uk.co.telegraph.switchboard.domain.Context;
 
 @ExtendWith(MockitoExtension.class)
@@ -224,7 +225,6 @@ class StrategySetTest {
 
   private static Context generateContext() {
     Context context = new Context();
-    context.setId(12L);
     context.setKey("production");
     return context;
   }
@@ -232,5 +232,4 @@ class StrategySetTest {
   private Set<Strategy> generateStrategies() {
     return Set.of(strategy1, strategy2, strategy3);
   }
-
 }
