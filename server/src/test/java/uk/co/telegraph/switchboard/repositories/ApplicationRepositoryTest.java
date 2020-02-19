@@ -17,6 +17,7 @@
 package uk.co.telegraph.switchboard.repositories;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static uk.co.telegraph.switchboard.Definitions.TEST_INTEGRATION_TAG;
 
 import java.util.HashSet;
 import java.util.List;
@@ -35,10 +36,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.jdbc.JdbcTestUtils;
 import uk.co.telegraph.switchboard.domain.Application;
 import uk.co.telegraph.switchboard.domain.Context;
+import uk.co.telegraph.switchboard.utils.ApplicationContentGenerator;
 
 @SpringBootTest
 @Transactional
-@Tag("integration")
+@Tag(TEST_INTEGRATION_TAG)
 class ApplicationRepositoryTest {
 
   @Autowired
@@ -50,7 +52,7 @@ class ApplicationRepositoryTest {
   @BeforeEach
   void setUp() {
     applicationRepository.deleteAll();
-    applicationRepository.saveAll(ApplicationContentGenerator.generateApplications());
+    applicationRepository.saveAll(ApplicationContentGenerator.generateApplicationList());
   }
 
   @Test

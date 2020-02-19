@@ -14,13 +14,19 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.factories;
+package uk.co.telegraph.switchboard.controllers.dtos;
 
 import java.util.Set;
-import uk.co.telegraph.switchboard.domain.Application;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-public interface ApplicationFactory {
-  Application createWith(String name, String description);
-
-  Application createWith(String name, String description, Set<String> contexts);
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+public class ApplicationDto {
+  @EqualsAndHashCode.Include
+  private String id;
+  private String name;
+  private String secret;
+  private String description;
+  private Set<String> contexts;
 }

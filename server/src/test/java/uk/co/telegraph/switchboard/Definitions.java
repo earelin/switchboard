@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.factories;
+package uk.co.telegraph.switchboard;
 
-import java.util.Set;
-import uk.co.telegraph.switchboard.domain.Application;
+public class Definitions {
 
-public interface ApplicationFactory {
-  Application createWith(String name, String description);
+  public static final String TEST_INTEGRATION_TAG = "integration";
 
-  Application createWith(String name, String description, Set<String> contexts);
+  private Definitions() {
+  }
+
 }

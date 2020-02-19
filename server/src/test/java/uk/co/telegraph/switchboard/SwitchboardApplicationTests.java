@@ -16,31 +16,40 @@
 
 package uk.co.telegraph.switchboard;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
+import static org.hamcrest.Matchers.equalTo;
+import static uk.co.telegraph.switchboard.Definitions.TEST_INTEGRATION_TAG;
 
+import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.context.WebApplicationContext;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@Tag("integration")
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@Tag(TEST_INTEGRATION_TAG)
 class SwitchboardApplicationTests {
 
   @Autowired
-  private MockMvc mockMvc;
+  private WebApplicationContext webApplicationContext;
+
+  @BeforeEach
+  public void initialiseRestAssuredMockMvcWebApplicationContext() {
+    RestAssuredMockMvc.webAppContextSetup(webApplicationContext);
+  }
 
   @Test
-  void checkHealth() throws Exception {
-    mockMvc
-        .perform(get("/actuator/health"))
-        .andDo(print())
-        .andExpect(status().isOk());
+  void checkHealth() {
+    given()
+      .when()
+        .get("/actuator/health")
+      .then()
+        .statusCode(HttpStatus.OK.value())
+        .body("status", equalTo("UP"));
   }
 
 }

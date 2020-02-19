@@ -35,6 +35,7 @@ public class FeatureFlag {
   @Id @GeneratedValue
   @EqualsAndHashCode.Include
   private Long id;
+
   private String key;
   private String description;
   private boolean active = false;

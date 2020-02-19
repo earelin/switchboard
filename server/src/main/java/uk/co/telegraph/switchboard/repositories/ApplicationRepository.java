@@ -25,8 +25,12 @@ import uk.co.telegraph.switchboard.domain.Application;
 
 public interface ApplicationRepository extends CrudRepository<Application, Long> {
   void deleteById(String id);
+
   boolean existsById(String id);
+
   Optional<Application> findById(String id);
+
   List<Application> findAllByOrderByNameAsc();
+
   Page<Application> findAll(Pageable pageable);
 }

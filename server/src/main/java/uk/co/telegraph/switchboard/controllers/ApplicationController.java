@@ -19,36 +19,41 @@ package uk.co.telegraph.switchboard.controllers;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-import uk.co.telegraph.switchboard.controllers.dto.ApplicationDto;
+import uk.co.telegraph.switchboard.controllers.dtos.ApplicationDto;
+import uk.co.telegraph.switchboard.controllers.dtos.ApplicationMapper;
 import uk.co.telegraph.switchboard.domain.Application;
 import uk.co.telegraph.switchboard.factories.ApplicationFactory;
 import uk.co.telegraph.switchboard.repositories.ApplicationRepository;
 
+/**
+ * Application REST controller.
+ */
 @RestController
 @RequestMapping("/api/application")
 public class ApplicationController {
 
   private final ApplicationRepository applicationRepository;
   private final ApplicationFactory applicationFactory;
-  private final ModelMapper modelMapper;
 
   public ApplicationController(
       ApplicationRepository applicationRepository,
-      ApplicationFactory applicationFactory,
-      ModelMapper modelMapper
+      ApplicationFactory applicationFactory
   ) {
     this.applicationRepository = applicationRepository;
     this.applicationFactory = applicationFactory;
-    this.modelMapper = modelMapper;
   }
 
+  /**
+   * Get an application by its id.
+   * @param id Application id must not be empty or null.
+   * @return Found application.
+   */
   @GetMapping("/{id}")
   public ApplicationDto find(@PathVariable String id) {
     Application application = applicationRepository.findById(id)
@@ -56,18 +61,14 @@ public class ApplicationController {
             HttpStatus.NOT_FOUND,
             String.format("Application not found: %s", id)
         ));
-    return convertToDto(application);
+    return ApplicationMapper.INSTANCE.domainToDto(application);
   }
 
   @GetMapping
   public List<ApplicationDto> findAll() {
     return applicationRepository.findAllByOrderByNameAsc()
         .stream()
-        .map(this::convertToDto)
+        .map(ApplicationMapper.INSTANCE::domainToDto)
         .collect(Collectors.toList());
-  }
-
-  private ApplicationDto convertToDto(Application application) {
-    return modelMapper.map(application, ApplicationDto.class);
   }
 }

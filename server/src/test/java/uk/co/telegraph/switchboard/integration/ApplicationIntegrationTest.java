@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.controllers.dto;
+package uk.co.telegraph.switchboard.integration;
 
-import java.util.Set;
-import lombok.Data;
+import static uk.co.telegraph.switchboard.Definitions.TEST_INTEGRATION_TAG;
 
-@Data
-public class ApplicationDto {
-  private String id;
-  private String name;
-  private String secret;
-  private String description;
-  private Set<String> contexts;
+import org.junit.jupiter.api.Tag;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@Tag(TEST_INTEGRATION_TAG)
+public class ApplicationIntegrationTest {
+
 }

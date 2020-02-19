@@ -12,21 +12,22 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
-package uk.co.telegraph.switchboard.configuration;
+package uk.co.telegraph.switchboard.controllers.dtos;
 
-import org.modelmapper.ModelMapper;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
+import uk.co.telegraph.switchboard.domain.Application;
+import uk.co.telegraph.switchboard.domain.Context;
 
-@Configuration
-public class ModelMapperConfiguration {
+@Mapper
+public abstract class ApplicationMapper {
+  public static final ApplicationMapper INSTANCE = Mappers.getMapper(ApplicationMapper.class);
 
-  @Bean
-  public ModelMapper modelMapper() {
-    return new ModelMapper();
+  public abstract ApplicationDto domainToDto(Application application);
+
+  public String contextToContextDto(Context context) {
+    return context.getKey();
   }
-
 }

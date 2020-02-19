@@ -61,7 +61,7 @@ public class ApplicationFactoryImpl implements ApplicationFactory {
 
   private Set<Context> generateContextSetFromKeys(Set<String> keys) {
     return keys.stream()
-        .map(key -> new Context(key))
+        .map(Context::new)
         .collect(Collectors.toSet());
   }
 

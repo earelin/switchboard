@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.repositories;
+package uk.co.telegraph.switchboard.utils;
 
 import java.util.List;
 import java.util.Set;
@@ -27,7 +27,7 @@ public class ApplicationContentGenerator {
   private ApplicationContentGenerator() {
   }
 
-  public static List<Application> generateApplications() {
+  public static List<Application> generateApplicationList() {
     return List.of(
         generateApplication(
             "fd528ad1-6072-3d96-b5af-ff901ac93818",
@@ -88,7 +88,7 @@ public class ApplicationContentGenerator {
 
   public static Set<Context> generateContexts(Set<String> contextKeys) {
     return contextKeys.stream()
-        .map(contextKey -> new Context(contextKey))
+        .map(Context::new)
         .collect(Collectors.toSet());
   }
 }

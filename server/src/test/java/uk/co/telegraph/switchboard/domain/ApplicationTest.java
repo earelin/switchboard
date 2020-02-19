@@ -48,11 +48,7 @@ class ApplicationTest {
   void setUp() {
     contexts = generateContexts(application);
 
-    application = new Application();
-    application.setId(ID);
-    application.setName(NAME);
-    application.setSecret(SECRET);
-    application.setDescription(DESCRIPTION);
+    application = new Application(ID, NAME, SECRET, DESCRIPTION);
     application.setContexts(contexts);
 
     validator = validatorFactory.getValidator();
