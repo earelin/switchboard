@@ -17,11 +17,6 @@
 
 package uk.co.telegraph.switchboard.domain.strategy;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import uk.co.telegraph.switchboard.domain.ClientInfo;
@@ -29,15 +24,8 @@ import uk.co.telegraph.switchboard.domain.ClientInfo;
 /**
  * Algorithm for calculating one feature flag status condition for a particular client.
  */
-@Entity
-@Inheritance(strategy = InheritanceType.JOINED)
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public abstract class Strategy {
-
-  @Id @GeneratedValue
-  @EqualsAndHashCode.Include
-  private Long id;
-
   public abstract boolean isFeatureEnabledForClient(ClientInfo clientInfo);
 }

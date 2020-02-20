@@ -31,21 +31,11 @@ import uk.co.telegraph.switchboard.domain.Application;
 /**
  * Group of users to be used in group related strategies.
  */
-@Entity
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class UserGroup {
-
-  @Id @GeneratedValue
-  @EqualsAndHashCode.Include
-  private Long id;
-
-  @ManyToOne
-  private Application application;
-
   private String name;
 
-  @ElementCollection
   private Set<String> users = new HashSet<>();
 
   public boolean hasUser(String user) {

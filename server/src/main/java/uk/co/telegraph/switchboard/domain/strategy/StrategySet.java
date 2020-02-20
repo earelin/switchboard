@@ -35,21 +35,11 @@ import uk.co.telegraph.switchboard.domain.Context;
 /**
  * Set of strategies applicable to a particular context.
  */
-@Entity
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class StrategySet {
-
-  @Id @GeneratedValue
-  @EqualsAndHashCode.Include
-  private Long id;
-
-  @ManyToOne
-  private Context context;
-
   private StrategyAggregator aggregator = StrategyAggregator.OR;
 
-  @OneToMany
   private Set<Strategy> strategies = new HashSet<>();
 
   public boolean isFeatureEnabledForClient(ClientInfo clientInfo) {

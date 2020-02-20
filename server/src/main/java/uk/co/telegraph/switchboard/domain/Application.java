@@ -16,14 +16,8 @@
 
 package uk.co.telegraph.switchboard.domain;
 
+import java.util.Map;
 import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -31,44 +25,27 @@ import lombok.EqualsAndHashCode;
  * An application is a namespace that represents a particular software artifact
  * that will have its own set of contexts and feature flags.
  */
-@Entity
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Application {
-  @Id
-  @NotBlank @Size(max = 36)
   @EqualsAndHashCode.Include
-  private String id;
-
-  @NotBlank @Size(max = 128)
+  private String key;
   private String name;
-
-  @NotBlank @Size(max = 255)
   private String secret;
-
   private String description;
-
-  @OneToMany(
-      cascade = {CascadeType.ALL},
-      orphanRemoval = true
-  )
-  @JoinColumn(
-      name = "application_id",
-      referencedColumnName = "id",
-      nullable = false
-  )
   private Set<Context> contexts;
+  private Map<String, FeatureFlag> featureFlags;
 
   public Application() {
   }
 
   public Application(
-      String id,
+      String key,
       String name,
       String secret,
       String description
   ) {
-    this.id = id;
+    this.key = key;
     this.name = name;
     this.secret = secret;
     this.description = description;

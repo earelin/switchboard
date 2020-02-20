@@ -23,7 +23,6 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import uk.co.telegraph.switchboard.domain.ClientInfo;
 
-@Entity
 @Data
 @ToString(callSuper = true)
 @EqualsAndHashCode(

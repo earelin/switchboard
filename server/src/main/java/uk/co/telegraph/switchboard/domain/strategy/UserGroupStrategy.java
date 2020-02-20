@@ -26,7 +26,6 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import uk.co.telegraph.switchboard.domain.ClientInfo;
 
-@Entity
 @Data
 @ToString(callSuper = true)
 @EqualsAndHashCode(
@@ -35,7 +34,6 @@ import uk.co.telegraph.switchboard.domain.ClientInfo;
 )
 public class UserGroupStrategy extends Strategy {
 
-  @ManyToMany
   private Set<UserGroup> userGroups;
 
   @Override
