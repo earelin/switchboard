@@ -19,9 +19,8 @@ package uk.co.telegraph.switchboard.domain;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
-import lombok.Builder;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode
@@ -43,23 +42,23 @@ public class ClientInfo {
     return time;
   }
 
-  public String getPropertyValue(String key) {
-    throw new UnsupportedOperationException();
+  public Optional<String> getPropertyValue(String key) {
+    return Optional.ofNullable(properties.get(key));
   }
 
   public void setProperty(String key, String value) {
-    throw new UnsupportedOperationException();
+    properties.put(key, value);
   }
 
   public boolean doesPropertyExists(String key) {
-    throw new UnsupportedOperationException();
+    return properties.containsKey(key);
   }
 
   public Set<String> getPropertyKeys() {
-    throw new UnsupportedOperationException();
+    return properties.keySet();
   }
 
   public Map<String, String> getProperties() {
-    throw new UnsupportedOperationException();
+    return Map.copyOf(properties);
   }
 }

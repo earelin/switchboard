@@ -18,11 +18,9 @@ package uk.co.telegraph.switchboard;
 
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static org.hamcrest.Matchers.equalTo;
-import static uk.co.telegraph.switchboard.Definitions.TEST_INTEGRATION_TAG;
 
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,7 +29,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-@Tag(TEST_INTEGRATION_TAG)
+@Integration
 class SwitchboardApplicationTests {
 
   @Autowired

@@ -14,13 +14,8 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard;
+package uk.co.telegraph.switchboard.domain.rules;
 
-public class Definitions {
-
-  public static final String TEST_INTEGRATION_TAG = "integration";
-
-  private Definitions() {
-  }
+public class Context {
 
 }
