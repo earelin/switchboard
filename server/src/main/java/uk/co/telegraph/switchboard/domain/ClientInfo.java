@@ -17,17 +17,49 @@
 package uk.co.telegraph.switchboard.domain;
 
 import java.time.ZonedDateTime;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@Data
-@Builder
 @EqualsAndHashCode
 public class ClientInfo {
   private final String application;
-  private final String context;
-  private final String instance;
-  private final String user;
-  private final ZonedDateTime dateTime;
+  private final ZonedDateTime time;
+  private final Map<String, String> properties = new HashMap<>();
+
+  public ClientInfo(String application, ZonedDateTime time) {
+    this.application = application;
+    this.time = time;
+  }
+
+  public String getApplication() {
+    return application;
+  }
+
+  public ZonedDateTime getTime() {
+    return time;
+  }
+
+  public String getPropertyValue(String key) {
+    throw new UnsupportedOperationException();
+  }
+
+  public void setProperty(String key, String value) {
+    throw new UnsupportedOperationException();
+  }
+
+  public boolean doesPropertyExists(String key) {
+    throw new UnsupportedOperationException();
+  }
+
+  public Set<String> getPropertyKeys() {
+    throw new UnsupportedOperationException();
+  }
+
+  public Map<String, String> getProperties() {
+    throw new UnsupportedOperationException();
+  }
 }
