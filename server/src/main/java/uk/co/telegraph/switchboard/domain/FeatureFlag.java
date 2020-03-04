@@ -16,8 +16,37 @@
 
 package uk.co.telegraph.switchboard.domain;
 
+import java.util.Set;
+
 public class FeatureFlag {
-  boolean isEnabledFromClient(ClientInfo clientInfo) {
+
+  private String id;
+  private Set<RulesSet> rulesSets;
+
+  public FeatureFlag() {
+  }
+
+  public FeatureFlag(String id) {
+    this.id = id;
+  }
+
+  public void addRulesSet(RulesSet rulesSet) {
     throw new UnsupportedOperationException();
+  }
+
+  public void removeRulesSet(RulesSet rulesSet) {
+    throw new UnsupportedOperationException();
+  }
+
+  public Set<RulesSet> getRulesSets() {
+    throw new UnsupportedOperationException();
+  }
+
+  boolean isEnabledForClient(ClientInfo clientInfo) {
+    throw new UnsupportedOperationException();
+  }
+
+  public String getId() {
+    return id;
   }
 }
