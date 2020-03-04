@@ -17,7 +17,9 @@
 package uk.co.telegraph.switchboard.domain.rules;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
+import java.time.ZonedDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,44 +28,43 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import uk.co.telegraph.switchboard.domain.ClientInfo;
 
 @ExtendWith(MockitoExtension.class)
-class DefaultRuleTest {
+class DateTimeRuleTest {
 
-  private DefaultRule defaultRule;
+  private static final ZonedDateTime DATE_TIME = ZonedDateTime.now();
+
+  private DateTimeRule dateTimeRule;
 
   @Mock
   private ClientInfo clientInfo;
 
   @BeforeEach
   void setUp() {
-    defaultRule = new DefaultRule();
+    dateTimeRule = new DateTimeRule();
+    dateTimeRule.setDateTimeEnabledAfter(DATE_TIME);
   }
 
   @Test
-  void should_not_be_enabled_in_construction() {
-    assertThat(defaultRule.isEnabled())
-        .isFalse();
+  void should_set_and_get_date_time_that_is_enabled_after() {
+    assertThat(dateTimeRule.getDateTimeEnabledAfter())
+        .isEqualTo(DATE_TIME);
   }
 
   @Test
-  void should_set_and_get_enable_value() {
-    defaultRule.setEnabled(true);
+  void should_be_enabled_when_client_request_is_after_date_time_field_value() {
+    when(clientInfo.getTime())
+        .thenReturn(DATE_TIME.plusDays(2));
 
-    assertThat(defaultRule.isEnabled())
+    assertThat(dateTimeRule.isEnabledForClient(clientInfo))
         .isTrue();
   }
 
   @Test
-  void should_report_disabled_if_default_value_is_not_enabled() {
-    assertThat(defaultRule.isEnabledForClient(clientInfo))
+  void should_not_be_enabled_when_client_request_is_before_date_time_field_value() {
+    when(clientInfo.getTime())
+        .thenReturn(DATE_TIME.minusDays(2));
+
+    assertThat(dateTimeRule.isEnabledForClient(clientInfo))
         .isFalse();
-  }
-
-  @Test
-  void should_report_enabled_if_default_value_is_enabled() {
-    defaultRule.setEnabled(true);
-
-    assertThat(defaultRule.isEnabledForClient(clientInfo))
-        .isTrue();
   }
 
 }

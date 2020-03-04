@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy of the License at:
  *
  * https://www.apache.org/licenses/LICENSE-2.0
  *
@@ -16,12 +16,23 @@
 
 package uk.co.telegraph.switchboard.domain.rules;
 
+import java.time.ZonedDateTime;
 import uk.co.telegraph.switchboard.domain.ClientInfo;
 
-public class TimeRule extends Rule {
+public class DateTimeRule extends Rule {
+
+  private ZonedDateTime dateTime;
 
   @Override
   public boolean isEnabledForClient(ClientInfo clientInfo) {
-    throw new UnsupportedOperationException();
+    return dateTime.isBefore(clientInfo.getTime());
+  }
+
+  public void setDateTimeEnabledAfter(ZonedDateTime dateTime) {
+    this.dateTime = dateTime;
+  }
+
+  public ZonedDateTime getDateTimeEnabledAfter() {
+    return dateTime;
   }
 }

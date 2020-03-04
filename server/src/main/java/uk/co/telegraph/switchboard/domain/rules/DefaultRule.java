@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy of the License at:
  *
  * https://www.apache.org/licenses/LICENSE-2.0
  *
@@ -20,8 +20,18 @@ import uk.co.telegraph.switchboard.domain.ClientInfo;
 
 public class DefaultRule extends Rule {
 
+  private boolean enabled = false;
+
   @Override
   public boolean isEnabledForClient(ClientInfo clientInfo) {
-    throw new UnsupportedOperationException();
+    return enabled;
+  }
+
+  public boolean isEnabled() {
+    return enabled;
+  }
+
+  public void setEnabled(boolean enabled) {
+    this.enabled = enabled;
   }
 }

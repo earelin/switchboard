@@ -14,12 +14,8 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.domain;
+package uk.co.telegraph.switchboard.domain.rules;
 
-import java.util.Map;
+class ContextTest {
 
-public class Application {
-  Map<String, Boolean> getFeatureStatusesForClient(ClientInfo clientInfo) {
-    throw new UnsupportedOperationException();
-  }
 }
