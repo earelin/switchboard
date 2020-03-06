@@ -233,4 +233,10 @@ class ClientInfoTest {
     assertThat(clientInfo.hashCode())
         .isNotEqualTo(compareObject.hashCode());
   }
+
+  @Test
+  void should_convert_to_string() {
+    assertThat(clientInfo.toString())
+        .startsWith("ClientInfo");
+  }
 }

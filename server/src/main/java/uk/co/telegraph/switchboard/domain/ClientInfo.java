@@ -21,16 +21,18 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @EqualsAndHashCode
-public class ClientInfo {
+@ToString
+public final class ClientInfo {
   private final String application;
   private final ZonedDateTime time;
   private final Map<String, String> properties;
 
-  public ClientInfo(String application, ZonedDateTime time, Map<String, String > properties) {
+  public ClientInfo(String application, ZonedDateTime time, Map<String, String> properties) {
     this.application = application;
-    this.time = ZonedDateTime.from(time);
+    this.time = time;
     this.properties = Map.copyOf(properties);
   }
 
