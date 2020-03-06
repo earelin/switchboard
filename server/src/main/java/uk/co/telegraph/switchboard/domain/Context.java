@@ -16,24 +16,6 @@
 
 package uk.co.telegraph.switchboard.domain;
 
-import java.util.Set;
-import uk.co.telegraph.switchboard.domain.rules.Rule;
+public class Context {
 
-public class RulesSet {
-
-  public void addRule(Rule rule) {
-    throw new UnsupportedOperationException();
-  }
-
-  public void removeRule(Rule rule) {
-    throw new UnsupportedOperationException();
-  }
-
-  public Set<Rule> getRules() {
-    throw new UnsupportedOperationException();
-  }
-
-  public boolean isEnabledForClient(ClientInfo clientInfo) {
-    throw new UnsupportedOperationException();
-  }
 }

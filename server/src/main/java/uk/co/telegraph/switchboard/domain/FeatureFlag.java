@@ -17,6 +17,7 @@
 package uk.co.telegraph.switchboard.domain;
 
 import java.util.Set;
+import uk.co.telegraph.switchboard.domain.rules.RulesSet;
 
 public class FeatureFlag {
 

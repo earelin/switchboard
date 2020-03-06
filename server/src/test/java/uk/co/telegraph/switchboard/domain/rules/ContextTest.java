@@ -16,6 +16,107 @@
 
 package uk.co.telegraph.switchboard.domain.rules;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import uk.co.telegraph.switchboard.domain.Context;
+
 class ContextTest {
 
+  private static final String CONTEXT_PRODUCTION = "production";
+  private static final String CONTEXT_STAGING = "staging";
+
+  private Context context;
+
+  @BeforeEach
+  void setUp() {
+    context = new Context(CONTEXT_PRODUCTION);
+  }
+
+  @Test
+  void should_get_id() {
+    assertThat(context.getId())
+        .isEqualTo(CONTEXT_PRODUCTION);
+  }
+
+  @Test
+  void should_can_equal_to_same_class() {
+    Context compareObject = new Context();
+
+    assertThat(context.canEqual(compareObject))
+        .isTrue();
+  }
+
+  @Test
+  void should_cannot_equal_to_different_class() {
+    String compareObject = "2wertgyhuji";
+
+    assertThat(context.canEqual(compareObject))
+        .isFalse();
+  }
+
+  @Test
+  void should_cannot_equal_to_null() {
+    assertThat(context.canEqual(null))
+        .isFalse();
+  }
+
+  @Test
+  void should_be_equal_to_itself() {
+    assertThat(context.equals(context))
+        .isTrue();
+  }
+
+  @Test
+  void should_be_equal_to_an_object_with_same_id() {
+    Context compareObject = new Context(CONTEXT_PRODUCTION);
+
+    assertThat(context.equals(compareObject))
+        .isTrue();
+  }
+
+  @Test
+  void should_not_be_equal_to_null() {
+    assertThat(context.equals(null))
+        .isFalse();
+  }
+
+  @Test
+  void should_not_be_equal_to_a_different_class() {
+    String compareObject = "2wertgyhuji";
+
+    assertThat(context.equals(compareObject))
+        .isFalse();
+  }
+
+  @Test
+  void should_be_equal_to_an_object_with_different_id() {
+    Context compareObject = new Context(CONTEXT_STAGING);
+
+    assertThat(context.equals(compareObject))
+        .isFalse();
+  }
+
+  @Test
+  void should_have_the_same_hash_code_than_itself() {
+    assertThat(context.hashCode())
+        .isEqualTo(context.hashCode());
+  }
+
+  @Test
+  void should_have_the_same_hash_code_than_a_object_with_same_id() {
+    Context compareObject = new Context(CONTEXT_PRODUCTION);
+
+    assertThat(context.hashCode())
+        .isEqualTo(compareObject.hashCode());
+  }
+
+  @Test
+  void should_have_a_different_hash_code_than_a_object_with_differnt_id() {
+    Context compareObject = new Context(CONTEXT_STAGING);
+
+    assertThat(context.hashCode())
+        .isNotEqualTo(compareObject.hashCode());
+  }
 }

@@ -117,12 +117,6 @@ class ClientInfoTest {
   }
 
   @Test
-  void should_can_equal_to_itself() {
-    assertThat(clientInfo.canEqual(clientInfo))
-        .isTrue();
-  }
-
-  @Test
   void should_can_equal_to_same_class() {
     ClientInfo compareClientInfo = new ClientInfo(APPLICATION_KEY, DATE_TIME);
 
