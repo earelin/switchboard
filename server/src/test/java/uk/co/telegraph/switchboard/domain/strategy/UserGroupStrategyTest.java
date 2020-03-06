@@ -23,6 +23,7 @@ import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import uk.co.telegraph.switchboard.domain.ClientInfo;
+import uk.co.telegraph.switchboard.domain.UserGroup;
 
 class UserGroupStrategyTest {
 

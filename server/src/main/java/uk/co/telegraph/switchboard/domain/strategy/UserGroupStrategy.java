@@ -25,6 +25,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import uk.co.telegraph.switchboard.domain.ClientInfo;
+import uk.co.telegraph.switchboard.domain.UserGroup;
 
 @Entity
 @Data
