@@ -19,10 +19,12 @@ package uk.co.telegraph.switchboard.domain;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString
 public class Application {
 
   @Id

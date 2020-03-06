@@ -16,9 +16,6 @@
 
 package uk.co.telegraph.switchboard.factories;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 class ApplicationFactoryTest {
 
   private ApplicationFactory applicationFactory;

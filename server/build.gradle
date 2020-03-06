@@ -1,8 +1,10 @@
 plugins {
-	id 'org.springframework.boot' version '2.2.4.RELEASE'
+	id 'checkstyle'
+	id 'com.github.spotbugs' version '4.0.1'
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'jacoco'
 	id 'java'
+	id 'org.springframework.boot' version '2.2.4.RELEASE'
 }
 
 java {
@@ -15,6 +17,7 @@ compileJava {
 }
 
 configurations {
+	checkstyleConfig
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
@@ -85,11 +88,38 @@ dependencies {
 	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-	developmentOnly "org.springframework.boot:spring-boot-devtools"
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	checkstyleConfig('com.puppycrawl.tools:checkstyle:8.30') {
+		transitive = false
+	}
+	spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.10.1'
+	spotbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:7.4.7'
 
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
 	testImplementation 'io.rest-assured:rest-assured-all:4.2.0'
 	testImplementation 'io.rest-assured:spring-mock-mvc:4.2.0'
+}
+
+checkstyle {
+	toolVersion '8.30'
+	maxErrors 0
+	config = resources.text.fromArchiveEntry(configurations.checkstyleConfig, 'google_checks.xml')
+}
+
+spotbugs {
+	effort = 'max'
+	ignoreFailures = true
+	reportLevel = 'low'
+	showProgress  = true
+}
+
+spotbugsMain {
+	reports {
+		xml {
+			enabled = true
+		}
+	}
 }

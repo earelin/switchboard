@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.domain.rules;
+package uk.co.telegraph.switchboard.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

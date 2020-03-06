@@ -92,6 +92,18 @@ class ApplicationTest {
   }
 
   @Test
+  void should_not_allow_to_set_a_null_id() {
+    assertThatThrownBy(() -> application.setId(null))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  void should_not_allow_to_set_a_blank_id() {
+    assertThatThrownBy(() -> application.setId("   "))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
   void should_set_and_return_name() {
     application.setName(APPLICATION_NAME_ALT);
 
@@ -108,7 +120,7 @@ class ApplicationTest {
   @Test
   void should_not_allow_to_set_a_blank_name() {
     assertThatThrownBy(() -> application.setName("  "))
-      .isInstanceOf(IllegalArgumentException.class);
+        .isInstanceOf(IllegalArgumentException.class);
   }
 
   @Test
@@ -193,5 +205,11 @@ class ApplicationTest {
 
     assertThat(application.hashCode())
         .isNotEqualTo(compareObject.hashCode());
+  }
+
+  @Test
+  void should_return_string_representation() {
+    assertThat(application.toString())
+        .startsWith("Application");
   }
 }

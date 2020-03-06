@@ -18,6 +18,7 @@ package uk.co.telegraph.switchboard.services;
 
 import static org.apache.commons.lang3.Conversion.intToByteArray;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Random;
 import java.util.UUID;
 import org.apache.commons.lang3.ArrayUtils;
@@ -42,9 +43,10 @@ public class IdGeneratorImpl implements IdGenerator {
 
   @Override
   public String generateId(String name) {
-    byte[] nameBytes = name.getBytes();
-    byte[] timestampBytes = String.valueOf(System.nanoTime()).getBytes();
-    byte[] uuidSeed = ArrayUtils.addAll(nameBytes, timestampBytes);
+    byte[] nameBytes = name.getBytes(StandardCharsets.UTF_8);
+    byte[] timestampBytes = String.valueOf(System.nanoTime()).getBytes(StandardCharsets.UTF_8);
+    byte[] seed = ArrayUtils.addAll(randomSeed, timestampBytes);
+    byte[] uuidSeed = ArrayUtils.addAll(nameBytes, seed);
 
     return UUID.nameUUIDFromBytes(uuidSeed)
         .toString();

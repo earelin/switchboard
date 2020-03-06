@@ -28,7 +28,7 @@ public class Context {
   private Application application;
   private String name;
 
-  public Context() {
+  protected Context() {
   }
 
   public Context(Long id, Application application) {
