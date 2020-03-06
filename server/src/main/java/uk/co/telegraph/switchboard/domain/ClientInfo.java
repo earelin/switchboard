@@ -17,7 +17,6 @@
 package uk.co.telegraph.switchboard.domain;
 
 import java.time.ZonedDateTime;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -27,11 +26,12 @@ import lombok.EqualsAndHashCode;
 public class ClientInfo {
   private final String application;
   private final ZonedDateTime time;
-  private final Map<String, String> properties = new HashMap<>();
+  private final Map<String, String> properties;
 
-  public ClientInfo(String application, ZonedDateTime time) {
+  public ClientInfo(String application, ZonedDateTime time, Map<String, String > properties) {
     this.application = application;
-    this.time = time;
+    this.time = ZonedDateTime.from(time);
+    this.properties = Map.copyOf(properties);
   }
 
   public String getApplication() {
@@ -46,10 +46,6 @@ public class ClientInfo {
     return Optional.ofNullable(properties.get(key));
   }
 
-  public void setProperty(String key, String value) {
-    properties.put(key, value);
-  }
-
   public boolean doesPropertyExists(String key) {
     return properties.containsKey(key);
   }
@@ -59,6 +55,6 @@ public class ClientInfo {
   }
 
   public Map<String, String> getProperties() {
-    return Map.copyOf(properties);
+    return properties;
   }
 }

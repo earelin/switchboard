@@ -27,8 +27,8 @@ import org.junit.jupiter.api.Test;
 
 class ClientInfoTest {
 
-  private static final String APPLICATION_KEY = "56c6d5f1-050e-4914-95c4-40330ef21918";
-  private static final String APPLICATION_KEY_ALTERNATIVE = "28259af6-c55b-42aa-b4c6-e6292fd4b86d";
+  private static final String APPLICATION_ID = "56c6d5f1-050e-4914-95c4-40330ef21918";
+  private static final String APPLICATION_ID_ALTERNATIVE = "28259af6-c55b-42aa-b4c6-e6292fd4b86d";
   private static final ZonedDateTime DATE_TIME = ZonedDateTime.now();
   private static final String CONTEXT_PROPERTY_KEY = "context";
   private static final String CONTEXT_PROPERTY_VALUE = "preprod";
@@ -39,34 +39,32 @@ class ClientInfoTest {
 
   @BeforeEach
   void setUp() {
-    clientInfo = new ClientInfo(APPLICATION_KEY, DATE_TIME);
-    clientInfo.setProperty(CONTEXT_PROPERTY_KEY, CONTEXT_PROPERTY_VALUE);
+    clientInfo = new ClientInfo(
+        APPLICATION_ID,
+        DATE_TIME,
+        Map.of(CONTEXT_PROPERTY_KEY, CONTEXT_PROPERTY_VALUE)
+    );
   }
 
   @Test
   void should_set_application_and_time_on_construction() {
     assertThat(clientInfo)
-        .hasFieldOrPropertyWithValue("application", APPLICATION_KEY)
-        .hasFieldOrPropertyWithValue("time", DATE_TIME);
+        .hasFieldOrPropertyWithValue("application", APPLICATION_ID)
+        .hasFieldOrPropertyWithValue("time", DATE_TIME)
+        .hasFieldOrPropertyWithValue("properties",
+            Map.of(CONTEXT_PROPERTY_KEY, CONTEXT_PROPERTY_VALUE));
   }
 
   @Test
   void should_return_application() {
     assertThat(clientInfo.getApplication())
-        .isEqualTo(APPLICATION_KEY);
+        .isEqualTo(APPLICATION_ID);
   }
 
   @Test
   void should_return_time() {
     assertThat(clientInfo.getTime())
         .isEqualTo(DATE_TIME);
-  }
-
-  @Test
-  void constructed_object_should_have_empty_properties() {
-    clientInfo = new ClientInfo(APPLICATION_KEY, DATE_TIME);
-    assertThat(clientInfo.getProperties())
-        .isEmpty();
   }
 
   @Test
@@ -110,10 +108,8 @@ class ClientInfoTest {
 
   @Test
   void should_return_property_keys() {
-    clientInfo.setProperty(USER_PROPERTY_KEY, USER_PROPERTY_VALUE);
-
     assertThat(clientInfo.getPropertyKeys())
-        .contains(CONTEXT_PROPERTY_KEY, USER_PROPERTY_KEY);
+        .contains(CONTEXT_PROPERTY_KEY);
   }
 
   @Test
@@ -124,8 +120,11 @@ class ClientInfoTest {
 
   @Test
   void should_be_equal_to_an_object_with_same_fields() {
-    ClientInfo compareObject = new ClientInfo(APPLICATION_KEY, DATE_TIME);
-    compareObject.setProperty(CONTEXT_PROPERTY_KEY, CONTEXT_PROPERTY_VALUE);
+    ClientInfo compareObject = new ClientInfo(
+        APPLICATION_ID,
+        DATE_TIME,
+        Map.of(CONTEXT_PROPERTY_KEY, CONTEXT_PROPERTY_VALUE)
+    );
 
     assertThat(clientInfo.equals(compareObject))
         .isTrue();
@@ -147,8 +146,11 @@ class ClientInfoTest {
 
   @Test
   void should_not_be_equal_to_an_object_with_different_application_value() {
-    ClientInfo compareObject = new ClientInfo(APPLICATION_KEY_ALTERNATIVE, DATE_TIME);
-    compareObject.setProperty(CONTEXT_PROPERTY_KEY, CONTEXT_PROPERTY_VALUE);
+    ClientInfo compareObject = new ClientInfo(
+        APPLICATION_ID_ALTERNATIVE,
+        DATE_TIME,
+        Map.of(CONTEXT_PROPERTY_KEY, CONTEXT_PROPERTY_VALUE)
+    );
 
     assertThat(clientInfo.equals(compareObject))
         .isFalse();
@@ -156,8 +158,11 @@ class ClientInfoTest {
 
   @Test
   void should_not_be_equal_to_an_object_with_different_date_time_value() {
-    ClientInfo compareObject = new ClientInfo(APPLICATION_KEY, DATE_TIME.minusDays(1));
-    compareObject.setProperty(CONTEXT_PROPERTY_KEY, CONTEXT_PROPERTY_VALUE);
+    ClientInfo compareObject = new ClientInfo(
+        APPLICATION_ID,
+        DATE_TIME.minusDays(1),
+        Map.of(CONTEXT_PROPERTY_KEY, CONTEXT_PROPERTY_VALUE)
+    );
 
     assertThat(clientInfo.equals(compareObject))
         .isFalse();
@@ -165,8 +170,11 @@ class ClientInfoTest {
 
   @Test
   void should_not_be_equal_to_an_object_with_different_properties() {
-    ClientInfo compareObject = new ClientInfo(APPLICATION_KEY, DATE_TIME);
-    compareObject.setProperty(USER_PROPERTY_KEY, USER_PROPERTY_VALUE);
+    ClientInfo compareObject = new ClientInfo(
+        APPLICATION_ID,
+        DATE_TIME,
+        Map.of(USER_PROPERTY_KEY, USER_PROPERTY_VALUE)
+    );
 
     assertThat(clientInfo.equals(compareObject))
         .isFalse();
@@ -180,8 +188,11 @@ class ClientInfoTest {
 
   @Test
   void should_have_the_same_hash_code_than_a_object_with_same_field_values() {
-    ClientInfo compareObject = new ClientInfo(APPLICATION_KEY, DATE_TIME);
-    compareObject.setProperty(CONTEXT_PROPERTY_KEY, CONTEXT_PROPERTY_VALUE);
+    ClientInfo compareObject = new ClientInfo(
+        APPLICATION_ID,
+        DATE_TIME,
+        Map.of(CONTEXT_PROPERTY_KEY, CONTEXT_PROPERTY_VALUE)
+    );
 
     assertThat(clientInfo.hashCode())
         .isEqualTo(compareObject.hashCode());
@@ -189,8 +200,11 @@ class ClientInfoTest {
 
   @Test
   void should_not_have_the_same_hash_code_than_an_object_with_different_application_value() {
-    ClientInfo compareObject = new ClientInfo(APPLICATION_KEY_ALTERNATIVE, DATE_TIME);
-    compareObject.setProperty(CONTEXT_PROPERTY_KEY, CONTEXT_PROPERTY_VALUE);
+    ClientInfo compareObject = new ClientInfo(
+        APPLICATION_ID_ALTERNATIVE,
+        DATE_TIME,
+        Map.of(CONTEXT_PROPERTY_KEY, CONTEXT_PROPERTY_VALUE)
+    );
 
     assertThat(clientInfo.hashCode())
         .isNotEqualTo(compareObject.hashCode());
@@ -198,8 +212,11 @@ class ClientInfoTest {
 
   @Test
   void should_not_have_the_same_hash_code_than_an_object_with_different_date_time_value() {
-    ClientInfo compareObject = new ClientInfo(APPLICATION_KEY, DATE_TIME.minusDays(1));
-    compareObject.setProperty(CONTEXT_PROPERTY_KEY, CONTEXT_PROPERTY_VALUE);
+    ClientInfo compareObject = new ClientInfo(
+        APPLICATION_ID,
+        DATE_TIME.minusDays(1),
+        Map.of(CONTEXT_PROPERTY_KEY, CONTEXT_PROPERTY_VALUE)
+    );
 
     assertThat(clientInfo.hashCode())
         .isNotEqualTo(compareObject.hashCode());
@@ -207,8 +224,11 @@ class ClientInfoTest {
 
   @Test
   void should_not_have_the_same_hash_code_than_an_object_with_different_properties() {
-    ClientInfo compareObject = new ClientInfo(APPLICATION_KEY, DATE_TIME);
-    compareObject.setProperty(USER_PROPERTY_KEY, USER_PROPERTY_VALUE);
+    ClientInfo compareObject = new ClientInfo(
+        APPLICATION_ID,
+        DATE_TIME,
+        Map.of(USER_PROPERTY_KEY, USER_PROPERTY_VALUE)
+    );
 
     assertThat(clientInfo.hashCode())
         .isNotEqualTo(compareObject.hashCode());
