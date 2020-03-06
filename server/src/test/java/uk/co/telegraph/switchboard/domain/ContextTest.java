@@ -14,52 +14,54 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.domain.rules;
+package uk.co.telegraph.switchboard.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import uk.co.telegraph.switchboard.domain.Application;
 import uk.co.telegraph.switchboard.domain.Context;
 
 class ContextTest {
 
-  private static final String CONTEXT_PRODUCTION = "production";
-  private static final String CONTEXT_STAGING = "staging";
+  private static final Long CONTEXT_ID = 10L;
+  private static final String CONTEXT_NAME = "production";
 
   private Context context;
 
+  private Application application;
+
   @BeforeEach
   void setUp() {
-    context = new Context(CONTEXT_PRODUCTION);
+    application = new Application();
+    context = new Context(CONTEXT_ID, application);
   }
 
   @Test
-  void should_get_id() {
+  void constructor_should_set_id_and_application() {
+    assertThat(context)
+        .hasFieldOrPropertyWithValue("id", CONTEXT_ID)
+        .hasFieldOrPropertyWithValue("application", application);
+  }
+
+  @Test
+  void should_return_id() {
     assertThat(context.getId())
-        .isEqualTo(CONTEXT_PRODUCTION);
+        .isEqualTo(CONTEXT_ID);
   }
 
   @Test
-  void should_can_equal_to_same_class() {
-    Context compareObject = new Context();
-
-    assertThat(context.canEqual(compareObject))
-        .isTrue();
+  void should_return_application() {
+    assertThat(context.getApplication())
+        .isEqualTo(application);
   }
 
   @Test
-  void should_cannot_equal_to_different_class() {
-    String compareObject = "2wertgyhuji";
-
-    assertThat(context.canEqual(compareObject))
-        .isFalse();
-  }
-
-  @Test
-  void should_cannot_equal_to_null() {
-    assertThat(context.canEqual(null))
-        .isFalse();
+  void should_set_and_return_name() {
+    context.setName(CONTEXT_NAME);
+    assertThat(context.getName())
+        .isEqualTo(CONTEXT_NAME);
   }
 
   @Test
@@ -70,7 +72,7 @@ class ContextTest {
 
   @Test
   void should_be_equal_to_an_object_with_same_id() {
-    Context compareObject = new Context(CONTEXT_PRODUCTION);
+    Context compareObject = new Context(CONTEXT_ID, application);
 
     assertThat(context.equals(compareObject))
         .isTrue();
@@ -92,7 +94,7 @@ class ContextTest {
 
   @Test
   void should_be_equal_to_an_object_with_different_id() {
-    Context compareObject = new Context(CONTEXT_STAGING);
+    Context compareObject = new Context(20L, application);
 
     assertThat(context.equals(compareObject))
         .isFalse();
@@ -106,7 +108,7 @@ class ContextTest {
 
   @Test
   void should_have_the_same_hash_code_than_a_object_with_same_id() {
-    Context compareObject = new Context(CONTEXT_PRODUCTION);
+    Context compareObject = new Context(CONTEXT_ID, new Application());
 
     assertThat(context.hashCode())
         .isEqualTo(compareObject.hashCode());
@@ -114,7 +116,7 @@ class ContextTest {
 
   @Test
   void should_have_a_different_hash_code_than_a_object_with_differnt_id() {
-    Context compareObject = new Context(CONTEXT_STAGING);
+    Context compareObject = new Context(20L, application);
 
     assertThat(context.hashCode())
         .isNotEqualTo(compareObject.hashCode());

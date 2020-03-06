@@ -16,25 +16,53 @@
 
 package uk.co.telegraph.switchboard.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import lombok.EqualsAndHashCode;
+import org.apache.commons.lang3.StringUtils;
 
+@Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Application {
 
+  @Id
   @EqualsAndHashCode.Include
   private String id;
   private String name;
   private String description;
+  private String secret;
 
-  public Application() {
+  Application() {
   }
 
-  public Application(String id) {
+  public Application(String id, String name, String secret) {
+    if (StringUtils.isBlank(id)) {
+      throw new IllegalArgumentException("Application key cannot be empty or null");
+    }
+
+    if (StringUtils.isBlank(name)) {
+      throw new IllegalArgumentException("Application name cannot be empty or null");
+    }
+
+    if (StringUtils.isBlank(secret)) {
+      throw new IllegalArgumentException("Application secret cannot be empty or null");
+    }
+
     this.id = id;
+    this.name = name;
+    this.secret = secret;
   }
 
   public String getId() {
     return id;
+  }
+
+  void setId(String id) {
+    if (StringUtils.isBlank(id)) {
+      throw new IllegalArgumentException("Application id cannot be empty or null");
+    }
+
+    this.id = id;
   }
 
   public String getName() {
@@ -42,6 +70,10 @@ public class Application {
   }
 
   public void setName(String name) {
+    if (StringUtils.isBlank(name)) {
+      throw new IllegalArgumentException("Application name cannot be empty or null");
+    }
+
     this.name = name;
   }
 
@@ -51,5 +83,17 @@ public class Application {
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+  public String getSecret() {
+    return secret;
+  }
+
+  public void setSecret(String secret) {
+    if (StringUtils.isBlank(secret)) {
+      throw new IllegalArgumentException("Application secret cannot be empty or null");
+    }
+
+    this.secret = secret;
   }
 }

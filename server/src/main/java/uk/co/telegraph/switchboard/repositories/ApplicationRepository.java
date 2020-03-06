@@ -14,21 +14,24 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard;
+package uk.co.telegraph.switchboard.repositories;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import org.junit.jupiter.api.Tag;
-import org.springframework.boot.test.context.SpringBootTest;
+import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import uk.co.telegraph.switchboard.domain.Application;
 
 /**
- * Integration testing with Spring environment bootstrapped.
+ * Application entity repository.
  */
-@Target({ElementType.TYPE, ElementType.METHOD})
-@Retention(RetentionPolicy.RUNTIME)
-@SpringBootTest
-@Tag("integration")
-public @interface Integration {
+public interface ApplicationRepository {
+  Optional<Application> getApplication(String key);
+
+  void saveApplication(Application application);
+
+  void removeApplication(String key);
+
+  boolean doesApplicationExistsByKey(String key);
+
+  Page<Application> getPagedApplicationList(Pageable pageable);
 }

@@ -16,6 +16,39 @@
 
 package uk.co.telegraph.switchboard.domain;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString
 public class Context {
 
+  @EqualsAndHashCode.Include
+  private Long id;
+  private Application application;
+  private String name;
+
+  public Context() {
+  }
+
+  public Context(Long id, Application application) {
+    this.id = id;
+    this.application = application;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public Application getApplication() {
+    return application;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
 }

@@ -14,21 +14,8 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard;
+package uk.co.telegraph.switchboard.services;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import org.junit.jupiter.api.Tag;
-import org.springframework.boot.test.context.SpringBootTest;
-
-/**
- * Integration testing with Spring environment bootstrapped.
- */
-@Target({ElementType.TYPE, ElementType.METHOD})
-@Retention(RetentionPolicy.RUNTIME)
-@SpringBootTest
-@Tag("integration")
-public @interface Integration {
+public interface IdGenerator {
+  String generateId(String name);
 }

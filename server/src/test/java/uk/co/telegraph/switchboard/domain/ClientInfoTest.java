@@ -117,28 +117,6 @@ class ClientInfoTest {
   }
 
   @Test
-  void should_can_equal_to_same_class() {
-    ClientInfo compareClientInfo = new ClientInfo(APPLICATION_KEY, DATE_TIME);
-
-    assertThat(clientInfo.canEqual(compareClientInfo))
-        .isTrue();
-  }
-
-  @Test
-  void should_cannot_equal_to_different_class() {
-    String compareObject = "2wertgyhuji";
-
-    assertThat(clientInfo.canEqual(compareObject))
-        .isFalse();
-  }
-
-  @Test
-  void should_cannot_equal_to_null() {
-    assertThat(clientInfo.canEqual(null))
-        .isFalse();
-  }
-
-  @Test
   void should_be_equal_to_itself() {
     assertThat(clientInfo.equals(clientInfo))
         .isTrue();
@@ -235,5 +213,4 @@ class ClientInfoTest {
     assertThat(clientInfo.hashCode())
         .isNotEqualTo(compareObject.hashCode());
   }
-
 }

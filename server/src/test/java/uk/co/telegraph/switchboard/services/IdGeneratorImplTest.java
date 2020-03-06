@@ -14,35 +14,40 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.domain.rules;
+package uk.co.telegraph.switchboard.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import uk.co.telegraph.switchboard.domain.UserGroup;
 
-class UserGroupTest {
+class IdGeneratorImplTest {
 
-  private static final String USER_GROUP_ID = "beta";
+  private IdGeneratorImpl idGenerator;
 
-  private UserGroup userGroup;
+  @BeforeEach
+  void setUp() {
+    idGenerator = new IdGeneratorImpl();
+  }
 
-//  @BeforeEach
-//  void setUp() {
-//    userGroup = new UserGroup(USER_GROUP_ID);
-//  }
-//
-//  @Test
-//  void should_set_user_id_on_constructor() {
-//    assertThat(userGroup)
-//        .hasFieldOrPropertyWithValue("id", USER_GROUP_ID);
-//  }
-//
-//  @Test
-//  void should_get_user_id() {
-//    assertThat(userGroup.getId())
-//        .isEqualTo(USER_GROUP_ID);
-//  }
+  @Test
+  void should_generate_random_ids() {
+    List<String> names = List.of(
+        "One application",
+        "Another application",
+        "Feature",
+        "One application"
+    );
 
+    Set<String> ids = names.stream()
+        .map(name -> idGenerator.generateId(name))
+        .collect(Collectors.toSet());
+
+    assertThat(ids)
+        .hasSize(names.size())
+        .doesNotContainNull();
+  }
 }

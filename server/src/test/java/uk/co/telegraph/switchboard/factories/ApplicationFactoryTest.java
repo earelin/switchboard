@@ -14,35 +14,13 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.domain.rules;
-
-import static org.assertj.core.api.Assertions.assertThat;
+package uk.co.telegraph.switchboard.factories;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import uk.co.telegraph.switchboard.domain.UserGroup;
 
-class UserGroupTest {
+class ApplicationFactoryTest {
 
-  private static final String USER_GROUP_ID = "beta";
-
-  private UserGroup userGroup;
-
-//  @BeforeEach
-//  void setUp() {
-//    userGroup = new UserGroup(USER_GROUP_ID);
-//  }
-//
-//  @Test
-//  void should_set_user_id_on_constructor() {
-//    assertThat(userGroup)
-//        .hasFieldOrPropertyWithValue("id", USER_GROUP_ID);
-//  }
-//
-//  @Test
-//  void should_get_user_id() {
-//    assertThat(userGroup.getId())
-//        .isEqualTo(USER_GROUP_ID);
-//  }
+  private ApplicationFactory applicationFactory;
 
 }

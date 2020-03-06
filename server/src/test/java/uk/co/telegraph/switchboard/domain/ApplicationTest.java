@@ -17,139 +17,181 @@
 package uk.co.telegraph.switchboard.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.entry;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-@ExtendWith(MockitoExtension.class)
 class ApplicationTest {
 
   private static final String APPLICATION_ID = "5cfd7920-1f9f-4fb3-a975-0393fccaa068";
+  private static final String APPLICATION_ID_ALT = "b6acb171-65f6-4000-837c-0cf1184a918e";
   private static final String APPLICATION_NAME = "Authoring";
+  private static final String APPLICATION_NAME_ALT = "CMS";
   private static final String APPLICATION_DESCRIPTION = "A great authoring application";
-
-  private static final String FEATURE_FLAG_1_ID = "embed.youtube.videos";
-  private static final String FEATURE_FLAG_2_ID = "tag.suggestions";
+  private static final String APPLICATION_SECRET = "XQqhNWDvEmnK777R";
+  private static final String APPLICATION_SECRET_ALT = "qR7yQdMEEZn7XsCU";
 
   private Application application;
 
-  @Mock
-  private FeatureFlag featureFlag1;
-
-  @Mock
-  private FeatureFlag featureFlag2;
-
-  @Mock
-  private ClientInfo clientInfo;
-
   @BeforeEach
   void setUp() {
-    application = new Application(APPLICATION_ID);
-    application.setName(APPLICATION_NAME);
-    application.setDescription(APPLICATION_DESCRIPTION);
+    application = new Application(APPLICATION_ID, APPLICATION_NAME, APPLICATION_SECRET);
   }
 
   @Test
-  void constructor_should_set_application_id() {
+  void constructor_should_set_id_name_and_secret() {
     assertThat(application)
-        .hasFieldOrPropertyWithValue("id", APPLICATION_ID);
+        .hasFieldOrPropertyWithValue("id", APPLICATION_ID)
+        .hasFieldOrPropertyWithValue("name", APPLICATION_NAME)
+        .hasFieldOrPropertyWithValue("secret", APPLICATION_SECRET);
   }
 
   @Test
-  void should_set_and_get_name() {
+  void should_not_allow_to_construct_with_a_blank_id() {
+    assertThatThrownBy(() -> new Application("  ", APPLICATION_NAME, APPLICATION_SECRET))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  void should_not_allow_to_construct_with_a_null_id() {
+    assertThatThrownBy(() -> new Application(null, APPLICATION_NAME, APPLICATION_SECRET))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  void should_not_allow_to_construct_with_a_blank_name() {
+    assertThatThrownBy(() -> new Application(APPLICATION_ID, "   ", APPLICATION_SECRET))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  void should_not_allow_to_construct_with_a_null_name() {
+    assertThatThrownBy(() -> new Application(APPLICATION_ID, null, APPLICATION_SECRET))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  void should_not_allow_to_construct_with_a_blank_secret() {
+    assertThatThrownBy(() -> new Application(APPLICATION_ID, APPLICATION_NAME, "   "))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  void should_not_allow_to_construct_with_a_null_secret() {
+    assertThatThrownBy(() -> new Application(APPLICATION_ID, APPLICATION_NAME, null))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  void should_set_and_return_id() {
+    application.setId(APPLICATION_ID_ALT);
+
+    assertThat(application.getId())
+        .isEqualTo(APPLICATION_ID_ALT);
+  }
+
+  @Test
+  void should_set_and_return_name() {
+    application.setName(APPLICATION_NAME_ALT);
+
     assertThat(application.getName())
-        .isEqualTo(APPLICATION_NAME);
+        .isEqualTo(APPLICATION_NAME_ALT);
   }
 
   @Test
-  void should_set_and_get_description() {
+  void should_not_allow_to_set_a_null_name() {
+    assertThatThrownBy(() -> application.setName(null))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  void should_not_allow_to_set_a_blank_name() {
+    assertThatThrownBy(() -> application.setName("  "))
+      .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  void should_set_and_return_description() {
+    application.setDescription(APPLICATION_DESCRIPTION);
+
     assertThat(application.getDescription())
         .isEqualTo(APPLICATION_DESCRIPTION);
   }
 
   @Test
-  void should_add_feature_flags_and_get_it_by_id() {
-    when(featureFlag1.getId()).thenReturn(FEATURE_FLAG_1_ID);
+  void should_set_and_return_secret() {
+    application.setSecret(APPLICATION_SECRET_ALT);
 
-    application.addFeatureFlag(featureFlag1);
-
-    assertThat(application.getFeatureFlagById(FEATURE_FLAG_1_ID))
-        .get()
-        .isEqualTo(featureFlag1);
+    assertThat(application.getSecret())
+        .isEqualTo(APPLICATION_SECRET_ALT);
   }
 
   @Test
-  void should_remove_a_feature_flag() {
-    when(featureFlag1.getId()).thenReturn(FEATURE_FLAG_1_ID);
-
-    application.addFeatureFlag(featureFlag1);
-    application.removeFeatureFlag(featureFlag1);
-
-    assertThat(application.getFeatureFlagById(FEATURE_FLAG_1_ID))
-        .isNotPresent();
+  void should_not_allow_to_set_a_null_secret() {
+    assertThatThrownBy(() -> application.setSecret(null))
+        .isInstanceOf(IllegalArgumentException.class);
   }
 
   @Test
-  void should_return_the_set_of_feature_flags() {
-    when(featureFlag1.getId()).thenReturn(FEATURE_FLAG_1_ID);
-    when(featureFlag2.getId()).thenReturn(FEATURE_FLAG_2_ID);
-
-    application.addFeatureFlag(featureFlag1);
-    application.addFeatureFlag(featureFlag2);
-
-    assertThat(application.getFeatureFlags())
-        .contains(featureFlag1, featureFlag2);
+  void should_not_allow_to_set_a_blank_secret() {
+    assertThatThrownBy(() -> application.setSecret("  "))
+        .isInstanceOf(IllegalArgumentException.class);
   }
 
   @Test
-  void should_return_a_list_of_feature_status_for_a_client() {
-    when(featureFlag1.getId()).thenReturn(FEATURE_FLAG_1_ID);
-    when(featureFlag2.getId()).thenReturn(FEATURE_FLAG_2_ID);
-    when(featureFlag1.isEnabledForClient(any())).thenReturn(true);
-    when(featureFlag2.isEnabledForClient(any())).thenReturn(false);
-
-    application.addFeatureFlag(featureFlag1);
-    application.addFeatureFlag(featureFlag2);
-
-    assertThat(application.getFeatureStatusesForClient(clientInfo))
-        .contains(
-            entry(FEATURE_FLAG_1_ID, true),
-            entry(FEATURE_FLAG_2_ID, false)
-        );
-  }
-
-  @Test
-  void should_can_equal_to_itself() {
-    assertThat(application.canEqual(application))
+  void should_be_equal_to_itself() {
+    assertThat(application.equals(application))
         .isTrue();
   }
 
   @Test
-  void should_can_equal_to_same_class() {
+  void should_be_equal_to_an_object_with_same_id() {
     Application compareObject = new Application();
+    compareObject.setId(APPLICATION_ID);
 
-    assertThat(application.canEqual(compareObject))
+    assertThat(application.equals(compareObject))
         .isTrue();
   }
 
   @Test
-  void should_cannot_equal_to_different_class() {
+  void should_not_be_equal_to_null() {
+    assertThat(application.equals(null))
+        .isFalse();
+  }
+
+  @Test
+  void should_not_be_equal_to_a_different_class() {
     String compareObject = "2wertgyhuji";
 
-    assertThat(application.canEqual(compareObject))
+    assertThat(application.equals(compareObject))
         .isFalse();
   }
 
   @Test
-  void should_cannot_equal_to_null() {
-    assertThat(application.canEqual(null))
+  void should_not_be_equal_to_an_object_with_different_id() {
+    Application compareObject = new Application();
+    compareObject.setId(APPLICATION_ID_ALT);
+
+    assertThat(application.equals(compareObject))
         .isFalse();
   }
 
+  @Test
+  void should_have_the_same_hash_code_than_a_object_with_same_id() {
+    Application compareObject = new Application();
+    compareObject.setId(APPLICATION_ID);
+
+    assertThat(application.hashCode())
+        .isEqualTo(compareObject.hashCode());
+  }
+
+  @Test
+  void should_not_have_the_same_hash_code_than_an_object_with_different_properties() {
+    Application compareObject = new Application();
+    compareObject.setId(APPLICATION_ID_ALT);
+
+    assertThat(application.hashCode())
+        .isNotEqualTo(compareObject.hashCode());
+  }
 }

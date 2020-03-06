@@ -14,21 +14,19 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard;
+package uk.co.telegraph.switchboard.factories;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import org.junit.jupiter.api.Tag;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.stereotype.Component;
+import uk.co.telegraph.switchboard.domain.Application;
 
 /**
- * Integration testing with Spring environment bootstrapped.
+ * Creates new application objects applying app invariants.
  */
-@Target({ElementType.TYPE, ElementType.METHOD})
-@Retention(RetentionPolicy.RUNTIME)
-@SpringBootTest
-@Tag("integration")
-public @interface Integration {
+@Component
+public class ApplicationFactory {
+
+  public Application createApplication(String name, String description) {
+    throw new UnsupportedOperationException();
+  }
+
 }

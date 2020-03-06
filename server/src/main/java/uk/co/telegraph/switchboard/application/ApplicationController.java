@@ -14,21 +14,17 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard;
+package uk.co.telegraph.switchboard.application;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import org.junit.jupiter.api.Tag;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.web.bind.annotation.RestController;
+import uk.co.telegraph.switchboard.repositories.ApplicationRepository;
 
-/**
- * Integration testing with Spring environment bootstrapped.
- */
-@Target({ElementType.TYPE, ElementType.METHOD})
-@Retention(RetentionPolicy.RUNTIME)
-@SpringBootTest
-@Tag("integration")
-public @interface Integration {
+@RestController
+public class ApplicationController {
+
+  private final ApplicationRepository applicationRepository;
+
+  public ApplicationController(ApplicationRepository applicationRepository) {
+    this.applicationRepository = applicationRepository;
+  }
 }
