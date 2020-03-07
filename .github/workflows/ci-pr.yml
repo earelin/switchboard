@@ -14,5 +14,8 @@ jobs:
         with:
           java-version: 11
 
-      - name: Unit tests
+      - name: Tests
         run: ./gradlew check
+
+      - name: Spotbugs
+        run: ./gradlew spotbugsMain
