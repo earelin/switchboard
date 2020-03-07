@@ -18,15 +18,38 @@ package uk.co.telegraph.switchboard.factories;
 
 import org.springframework.stereotype.Component;
 import uk.co.telegraph.switchboard.domain.Application;
+import uk.co.telegraph.switchboard.services.IdGenerator;
+import uk.co.telegraph.switchboard.services.PasswordGenerator;
 
 /**
- * Creates new application objects applying app invariants.
+ * Creates new application objects applying invariants.
  */
 @Component
 public class ApplicationFactory {
 
-  public Application createApplication(String name, String description) {
-    throw new UnsupportedOperationException();
+  private static final int SECRET_SIZE = 16;
+
+  private final IdGenerator idGenerator;
+  private final PasswordGenerator passwordGenerator;
+
+  public ApplicationFactory(
+      IdGenerator idGenerator,
+      PasswordGenerator passwordGenerator) {
+    this.idGenerator = idGenerator;
+    this.passwordGenerator = passwordGenerator;
   }
 
+  public Application createApplication(String name) {
+    return createApplication(name, null);
+  }
+
+  public Application createApplication(String name, String description) {
+    String id = idGenerator.generateId(name);
+    String secret = passwordGenerator.generatePassword(SECRET_SIZE);
+
+    Application application = new Application(id, name, secret);
+    application.setDescription(description);
+
+    return application;
+  }
 }
