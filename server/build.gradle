@@ -13,7 +13,7 @@ java {
 }
 
 compileJava {
-	options.compilerArgs << '-Xlint:all'
+	options.compilerArgs << '-Xlint:all,-processing'
 }
 
 configurations {
