@@ -18,10 +18,10 @@ package uk.co.telegraph.switchboard.repositories;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import uk.co.telegraph.switchboard.Integration;
+import uk.co.telegraph.switchboard.ApplicationIntegration;
 import uk.co.telegraph.switchboard.domain.Application;
 
-@Integration
+@ApplicationIntegration
 class ApplicationRepositoryJpaImplTest {
 
   private static final String APPLICATION_ID = "0420d644-1cd3-4c77-aadf-0c70677ce041";

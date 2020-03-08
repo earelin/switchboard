@@ -16,19 +16,23 @@
 
 package uk.co.telegraph.switchboard.application.dto;
 
+import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
 import lombok.ToString;
 
 @ToString
-public class ApplicationRequest {
+public class ApplicationRequestDto implements Serializable {
+
+  private static final long serialVersionUID = 5901042808680184056L;
+
   @NotBlank
   private String name;
   private String description;
 
-  public ApplicationRequest() {
+  public ApplicationRequestDto() {
   }
 
-  public ApplicationRequest(String name, String description) {
+  public ApplicationRequestDto(String name, String description) {
     this.name = name;
     this.description = description;
   }

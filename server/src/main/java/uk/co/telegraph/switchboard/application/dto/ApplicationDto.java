@@ -16,10 +16,14 @@
 
 package uk.co.telegraph.switchboard.application.dto;
 
+import java.io.Serializable;
 import lombok.ToString;
 
 @ToString
-public class ApplicationDto {
+public class ApplicationDto implements Serializable {
+
+  private static final long serialVersionUID = 1686198595939219224L;
+
   private String id;
   private String name;
   private String description;

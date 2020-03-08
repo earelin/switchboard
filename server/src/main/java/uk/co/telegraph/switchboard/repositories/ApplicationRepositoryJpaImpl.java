@@ -32,7 +32,7 @@ class ApplicationRepositoryJpaImpl implements ApplicationRepository {
   }
 
   @Override
-  public Optional<Application> getApplication(String key) {
+  public Optional<Application> getApplication(String id) {
     return Optional.empty();
   }
 
@@ -42,12 +42,12 @@ class ApplicationRepositoryJpaImpl implements ApplicationRepository {
   }
 
   @Override
-  public void removeApplication(String key) {
+  public void removeApplication(String id) {
 
   }
 
   @Override
-  public boolean doesApplicationExistsByKey(String key) {
+  public boolean doesApplicationExists(String id) {
     return false;
   }
 

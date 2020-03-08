@@ -25,13 +25,13 @@ import uk.co.telegraph.switchboard.domain.Application;
  * Application entity repository.
  */
 public interface ApplicationRepository {
-  Optional<Application> getApplication(String key);
+  Optional<Application> getApplication(String id);
 
   void saveApplication(Application application);
 
-  void removeApplication(String key);
+  void removeApplication(String id);
 
-  boolean doesApplicationExistsByKey(String key);
+  boolean doesApplicationExists(String id);
 
   Page<Application> getPagedApplicationList(Pageable pageable);
 }

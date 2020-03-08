@@ -16,9 +16,9 @@
 
 package uk.co.telegraph.switchboard.application;
 
-import java.util.List;
 import javax.validation.Valid;
 import org.mapstruct.factory.Mappers;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,8 +29,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 import uk.co.telegraph.switchboard.application.dto.ApplicationDto;
-import uk.co.telegraph.switchboard.application.dto.ApplicationRequest;
+import uk.co.telegraph.switchboard.application.dto.ApplicationRequestDto;
 import uk.co.telegraph.switchboard.application.mappers.ApplicationMapper;
 import uk.co.telegraph.switchboard.domain.Application;
 import uk.co.telegraph.switchboard.factories.ApplicationFactory;
@@ -55,7 +56,7 @@ public class ApplicationController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public ApplicationDto createApplication(
-      @RequestBody @Valid ApplicationRequest request) {
+      @RequestBody @Valid ApplicationRequestDto request) {
     Application application = applicationFactory.createApplication(
         request.getName(),
         request.getDescription()
@@ -67,24 +68,36 @@ public class ApplicationController {
   }
 
   @GetMapping
-  public List<ApplicationDto> getApplicationList() {
+  public Page<ApplicationDto> getApplicationList() {
     throw new UnsupportedOperationException();
   }
 
   @GetMapping("/{id}")
-  public ApplicationDto findApplicationById(@PathVariable String id) {
-    throw new UnsupportedOperationException();
+  public ApplicationDto findApplication(@PathVariable String id) {
+    Application application = applicationRepository.getApplication(id)
+        .orElseThrow(() -> new ResponseStatusException(
+            HttpStatus.NOT_FOUND,
+            String.format("Application not found: %s", id)
+        ));
+    return applicationMapper.domainToDto(application);
   }
 
   @DeleteMapping("/{id}")
   public void deleteApplication(@PathVariable String id) {
-    throw new UnsupportedOperationException();
+    if (!applicationRepository.doesApplicationExists(id)) {
+      throw new ResponseStatusException(
+          HttpStatus.NOT_FOUND,
+          String.format("Application not found: %s", id)
+      );
+    }
+    applicationRepository.removeApplication(id);
   }
 
   @PutMapping("/{id}")
-  public void updateApplication(
+  public ApplicationDto updateApplication(
       @PathVariable String id,
-      @RequestBody ApplicationRequest request) {
+      @RequestBody ApplicationRequestDto request) {
     throw new UnsupportedOperationException();
   }
+
 }
