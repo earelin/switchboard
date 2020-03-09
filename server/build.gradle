@@ -44,7 +44,7 @@ test {
 
 task('integrationTest', type: Test) {
 	group "Verification"
-	description "Runs the integration tests."
+	description "Runs integration tests."
 	useJUnitPlatform {
 		includeTags "integration"
 	}
@@ -57,6 +57,7 @@ check {
 		executionData test, integrationTest
 	}
 	finalizedBy jacocoTestReport
+	finalizedBy spotbugsMain
 }
 
 repositories {
