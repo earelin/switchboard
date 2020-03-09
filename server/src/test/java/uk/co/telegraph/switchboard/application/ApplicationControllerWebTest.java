@@ -16,7 +16,6 @@
 
 package uk.co.telegraph.switchboard.application;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -30,7 +29,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.google.gson.Gson;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -150,7 +148,6 @@ public class ApplicationControllerWebTest {
   }
 
   @Test
-  @Disabled
   void should_update_one_application() throws Exception {
     Application application = new Application(APPLICATION_ID, APPLICATION_NAME, APPLICATION_SECRET);
     application.setDescription(APPLICATION_DESCRIPTION);
@@ -172,5 +169,35 @@ public class ApplicationControllerWebTest {
         .andExpect(jsonPath("$.name").value(APPLICATION_UPDATED_NAME))
         .andExpect(jsonPath("$.description").value(APPLICATION_UPDATED_DESCRIPTION))
         .andExpect(jsonPath("$.secret").value(APPLICATION_SECRET));
+  }
+
+  @Test
+  void should_not_update_an_application_that_does_not_exists() throws Exception {
+    when(applicationRepository.getApplication(APPLICATION_ID))
+        .thenReturn(Optional.empty());
+
+    ApplicationRequestDto request = new ApplicationRequestDto(
+        APPLICATION_UPDATED_NAME,
+        APPLICATION_UPDATED_DESCRIPTION
+    );
+
+    mockMvc.perform(put("/api/application/{id}", APPLICATION_ID)
+          .contentType(MediaType.APPLICATION_JSON)
+          .characterEncoding(StandardCharsets.UTF_8.name())
+          .content(gson.toJson(request)))
+        .andDo(print())
+        .andExpect(status().isNotFound());
+  }
+
+  @Test
+  void should_not_update_an_application_with_empty_name() throws Exception {
+    ApplicationRequestDto request = new ApplicationRequestDto("  ", APPLICATION_DESCRIPTION);
+
+    mockMvc.perform(put("/api/application/{id}", APPLICATION_ID)
+          .contentType(MediaType.APPLICATION_JSON)
+          .characterEncoding(StandardCharsets.UTF_8.name())
+          .content(gson.toJson(request)))
+        .andDo(print())
+        .andExpect(status().isBadRequest());
   }
 }

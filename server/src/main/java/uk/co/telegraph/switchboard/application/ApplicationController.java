@@ -96,8 +96,16 @@ public class ApplicationController {
   @PutMapping("/{id}")
   public ApplicationDto updateApplication(
       @PathVariable String id,
-      @RequestBody ApplicationRequestDto request) {
-    throw new UnsupportedOperationException();
-  }
+      @RequestBody @Valid ApplicationRequestDto request) {
+    Application application = applicationRepository.getApplication(id)
+        .orElseThrow(() -> new ResponseStatusException(
+            HttpStatus.NOT_FOUND,
+            String.format("Application not found: %s", id)
+        ));
 
+    applicationMapper.updateDomainFromDto(request, application);
+    applicationRepository.saveApplication(application);
+
+    return applicationMapper.domainToDto(application);
+  }
 }
