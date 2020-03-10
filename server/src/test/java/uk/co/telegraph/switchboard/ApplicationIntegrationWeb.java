@@ -16,16 +16,20 @@
 
 package uk.co.telegraph.switchboard;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import org.junit.jupiter.api.Tag;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
-@SpringBootApplication
-@EnableSwagger2
-public class SwitchboardApplication {
-
-  public static void main(String[] args) {
-    SpringApplication.run(SwitchboardApplication.class, args);
-  }
-
+/**
+ * Integration test with spring environment bootstrapped and web port open.
+ */
+@Target({ElementType.TYPE, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@Tag("integration")
+public @interface ApplicationIntegrationWeb {
 }

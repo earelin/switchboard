@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy of the License at:
  *
  * https://www.apache.org/licenses/LICENSE-2.0
  *
@@ -18,22 +18,84 @@ package uk.co.telegraph.switchboard.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.apache.commons.lang3.StringUtils;
 
-/**
- * An application is a namespace that represents a particular software artifact
- * that will have its own set of contexts and feature flags.
- */
 @Entity
-@Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString
 public class Application {
 
   @Id
   @EqualsAndHashCode.Include
   private String id;
   private String name;
-  private String secret;
   private String description;
+  private String secret;
+
+  Application() {
+  }
+
+  public Application(String id, String name, String secret) {
+    if (StringUtils.isBlank(id)) {
+      throw new IllegalArgumentException("Application key cannot be empty or null");
+    }
+
+    if (StringUtils.isBlank(name)) {
+      throw new IllegalArgumentException("Application name cannot be empty or null");
+    }
+
+    if (StringUtils.isBlank(secret)) {
+      throw new IllegalArgumentException("Application secret cannot be empty or null");
+    }
+
+    this.id = id;
+    this.name = name;
+    this.secret = secret;
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  void setId(String id) {
+    if (StringUtils.isBlank(id)) {
+      throw new IllegalArgumentException("Application id cannot be empty or null");
+    }
+
+    this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    if (StringUtils.isBlank(name)) {
+      throw new IllegalArgumentException("Application name cannot be empty or null");
+    }
+
+    this.name = name;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public String getSecret() {
+    return secret;
+  }
+
+  public void setSecret(String secret) {
+    if (StringUtils.isBlank(secret)) {
+      throw new IllegalArgumentException("Application secret cannot be empty or null");
+    }
+
+    this.secret = secret;
+  }
 }

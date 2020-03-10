@@ -14,24 +14,20 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.repositories;
+package uk.co.telegraph.switchboard;
 
-import java.util.Optional;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import uk.co.telegraph.switchboard.domain.Application;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import org.junit.jupiter.api.Tag;
+import org.springframework.boot.test.context.SpringBootTest;
 
 /**
- * Application entity repository.
+ * Generic integration test.
  */
-public interface ApplicationRepository {
-  Optional<Application> getApplication(String id);
-
-  void saveApplication(Application application);
-
-  void removeApplication(String id);
-
-  boolean doesApplicationExists(String id);
-
-  Page<Application> getPagedApplicationList(Pageable pageable);
+@Target({ElementType.TYPE, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@Tag("integration")
+public @interface Integration {
 }

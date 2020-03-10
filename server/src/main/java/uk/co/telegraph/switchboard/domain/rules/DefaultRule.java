@@ -14,24 +14,24 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.repositories;
+package uk.co.telegraph.switchboard.domain.rules;
 
-import java.util.Optional;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import uk.co.telegraph.switchboard.domain.Application;
+import uk.co.telegraph.switchboard.domain.ClientInfo;
 
-/**
- * Application entity repository.
- */
-public interface ApplicationRepository {
-  Optional<Application> getApplication(String id);
+public class DefaultRule extends Rule {
 
-  void saveApplication(Application application);
+  private boolean enabled = false;
 
-  void removeApplication(String id);
+  @Override
+  public boolean isEnabledForClient(ClientInfo clientInfo) {
+    return enabled;
+  }
 
-  boolean doesApplicationExists(String id);
+  public boolean isEnabled() {
+    return enabled;
+  }
 
-  Page<Application> getPagedApplicationList(Pageable pageable);
+  public void setEnabled(boolean enabled) {
+    this.enabled = enabled;
+  }
 }

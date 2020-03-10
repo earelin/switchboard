@@ -16,37 +16,6 @@
 
 package uk.co.telegraph.switchboard.domain;
 
-import java.util.HashSet;
-import java.util.Set;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import uk.co.telegraph.switchboard.domain.Application;
-
-/**
- * Group of users to be used in group related strategies.
- */
-@Entity
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class UserGroup {
 
-  @Id @GeneratedValue
-  @EqualsAndHashCode.Include
-  private Long id;
-
-  @ManyToOne
-  private Application application;
-
-  private String name;
-
-  @ElementCollection
-  private Set<String> users = new HashSet<>();
-
-  public boolean hasUser(String user) {
-    return users.contains(user);
-  }
 }

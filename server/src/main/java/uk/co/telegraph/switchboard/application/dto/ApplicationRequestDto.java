@@ -14,34 +14,27 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.domain;
+package uk.co.telegraph.switchboard.application.dto;
 
-import lombok.EqualsAndHashCode;
+import java.io.Serializable;
+import javax.validation.constraints.NotBlank;
 import lombok.ToString;
 
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
-public class Context {
+public class ApplicationRequestDto implements Serializable {
 
-  @EqualsAndHashCode.Include
-  private Long id;
-  private Application application;
+  private static final long serialVersionUID = 5901042808680184056L;
+
+  @NotBlank
   private String name;
+  private String description;
 
-  protected Context() {
+  public ApplicationRequestDto() {
   }
 
-  public Context(Long id, Application application) {
-    this.id = id;
-    this.application = application;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public Application getApplication() {
-    return application;
+  public ApplicationRequestDto(String name, String description) {
+    this.name = name;
+    this.description = description;
   }
 
   public String getName() {
@@ -50,5 +43,13 @@ public class Context {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
   }
 }

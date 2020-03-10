@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy of the License at:
  *
  * https://www.apache.org/licenses/LICENSE-2.0
  *
@@ -17,177 +17,199 @@
 package uk.co.telegraph.switchboard.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class ApplicationTest {
 
-  private static final Long ID = 15L;
-  private static final String KEY = "newsroom-dashboard";
-  private static final String NAME = "Newsroom Dashboard";
-  private static final String SECRET = "K2I1JPxYp1pCWprzf4QaReiwntZXxmu4";
-  private static final String DESCRIPTION
-      = "An amazing application to be feature flagged";
-  private static final Set<Context> CONTEXTS = generateContexts();
+  private static final String APPLICATION_ID = "5cfd7920-1f9f-4fb3-a975-0393fccaa068";
+  private static final String APPLICATION_ID_ALT = "b6acb171-65f6-4000-837c-0cf1184a918e";
+  private static final String APPLICATION_NAME = "Authoring";
+  private static final String APPLICATION_NAME_ALT = "CMS";
+  private static final String APPLICATION_DESCRIPTION = "A great authoring application";
+  private static final String APPLICATION_SECRET = "XQqhNWDvEmnK777R";
+  private static final String APPLICATION_SECRET_ALT = "qR7yQdMEEZn7XsCU";
 
   private Application application;
 
   @BeforeEach
   void setUp() {
-    application = new Application();
-    application.setId(ID);
-    application.setKey(KEY);
-    application.setName(NAME);
-    application.setSecret(SECRET);
-    application.setDescription(DESCRIPTION);
-    application.setContexts(CONTEXTS);
+    application = new Application(APPLICATION_ID, APPLICATION_NAME, APPLICATION_SECRET);
   }
 
   @Test
-  void shouldSetId() {
+  void constructor_should_set_id_name_and_secret() {
+    assertThat(application)
+        .hasFieldOrPropertyWithValue("id", APPLICATION_ID)
+        .hasFieldOrPropertyWithValue("name", APPLICATION_NAME)
+        .hasFieldOrPropertyWithValue("secret", APPLICATION_SECRET);
+  }
+
+  @Test
+  void should_not_allow_to_construct_with_a_blank_id() {
+    assertThatThrownBy(() -> new Application("  ", APPLICATION_NAME, APPLICATION_SECRET))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  void should_not_allow_to_construct_with_a_null_id() {
+    assertThatThrownBy(() -> new Application(null, APPLICATION_NAME, APPLICATION_SECRET))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  void should_not_allow_to_construct_with_a_blank_name() {
+    assertThatThrownBy(() -> new Application(APPLICATION_ID, "   ", APPLICATION_SECRET))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  void should_not_allow_to_construct_with_a_null_name() {
+    assertThatThrownBy(() -> new Application(APPLICATION_ID, null, APPLICATION_SECRET))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  void should_not_allow_to_construct_with_a_blank_secret() {
+    assertThatThrownBy(() -> new Application(APPLICATION_ID, APPLICATION_NAME, "   "))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  void should_not_allow_to_construct_with_a_null_secret() {
+    assertThatThrownBy(() -> new Application(APPLICATION_ID, APPLICATION_NAME, null))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  void should_set_and_return_id() {
+    application.setId(APPLICATION_ID_ALT);
+
     assertThat(application.getId())
-        .isEqualTo(ID);
+        .isEqualTo(APPLICATION_ID_ALT);
   }
 
   @Test
-  void shouldSetKey() {
-    assertThat(application.getKey())
-        .isEqualTo(KEY);
+  void should_not_allow_to_set_a_null_id() {
+    assertThatThrownBy(() -> application.setId(null))
+        .isInstanceOf(IllegalArgumentException.class);
   }
 
   @Test
-  void shouldSetName() {
+  void should_not_allow_to_set_a_blank_id() {
+    assertThatThrownBy(() -> application.setId("   "))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  void should_set_and_return_name() {
+    application.setName(APPLICATION_NAME_ALT);
+
     assertThat(application.getName())
-        .isEqualTo(NAME);
+        .isEqualTo(APPLICATION_NAME_ALT);
   }
 
   @Test
-  void shouldSetSecret() {
-    assertThat(application.getSecret())
-        .isEqualTo(SECRET);
+  void should_not_allow_to_set_a_null_name() {
+    assertThatThrownBy(() -> application.setName(null))
+        .isInstanceOf(IllegalArgumentException.class);
   }
 
   @Test
-  void shouldSetDescription() {
+  void should_not_allow_to_set_a_blank_name() {
+    assertThatThrownBy(() -> application.setName("  "))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  void should_set_and_return_description() {
+    application.setDescription(APPLICATION_DESCRIPTION);
+
     assertThat(application.getDescription())
-        .isEqualTo(DESCRIPTION);
+        .isEqualTo(APPLICATION_DESCRIPTION);
   }
 
   @Test
-  void shouldSetContext() {
-    assertThat(application.getContexts())
-        .isEqualTo(CONTEXTS);
+  void should_set_and_return_secret() {
+    application.setSecret(APPLICATION_SECRET_ALT);
+
+    assertThat(application.getSecret())
+        .isEqualTo(APPLICATION_SECRET_ALT);
   }
 
   @Test
-  void shouldCanEqualSameClass() {
-    Application comparedObject = new Application();
+  void should_not_allow_to_set_a_null_secret() {
+    assertThatThrownBy(() -> application.setSecret(null))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
 
-    assertThat(application.canEqual(comparedObject))
+  @Test
+  void should_not_allow_to_set_a_blank_secret() {
+    assertThatThrownBy(() -> application.setSecret("  "))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  void should_be_equal_to_itself() {
+    assertThat(application.equals(application))
         .isTrue();
   }
 
   @Test
-  void shouldNotCanEqualDifferentClass() {
-    String comparedObject = "string";
+  void should_be_equal_to_an_object_with_same_id() {
+    Application compareObject = new Application();
+    compareObject.setId(APPLICATION_ID);
 
-    assertThat(application.canEqual(comparedObject))
+    assertThat(application.equals(compareObject))
+        .isTrue();
+  }
+
+  @Test
+  void should_not_be_equal_to_null() {
+    assertThat(application.equals(null))
         .isFalse();
   }
 
   @Test
-  void shouldNotCanEqualToNull() {
-    assertThat(application.canEqual(null))
+  void should_not_be_equal_to_a_different_class() {
+    String compareObject = "2wertgyhuji";
+
+    assertThat(application.equals(compareObject))
         .isFalse();
   }
 
   @Test
-  void shouldBeEqualToItself() {
-    assertThat(application)
-        .isEqualTo(application);
-  }
-
-  @Test
-  void shouldNotBeEqualToNull() {
-    assertThat(application)
-        .isNotEqualTo(null);
-  }
-
-  @Test
-  void shouldBeEqualToAnApplicationWithSameId() {
+  void should_not_be_equal_to_an_object_with_different_id() {
     Application compareObject = new Application();
-    compareObject.setId(ID);
+    compareObject.setId(APPLICATION_ID_ALT);
 
-    assertThat(application)
-        .isEqualTo(compareObject);
+    assertThat(application.equals(compareObject))
+        .isFalse();
   }
 
   @Test
-  void shouldNotBeEqualToAnApplicationWithADifferentKey() {
+  void should_have_the_same_hash_code_than_a_object_with_same_id() {
     Application compareObject = new Application();
-    compareObject.setId(1L);
-    compareObject.setKey(KEY);
-    compareObject.setName(NAME);
-    compareObject.setSecret(SECRET);
-    compareObject.setDescription(DESCRIPTION);
-
-    assertThat(application)
-        .isNotEqualTo(compareObject);
-  }
-
-  @Test
-  void shouldNotBeEqualToADifferentClass() {
-    String compareObject = "testing";
-
-    assertThat(application)
-        .isNotEqualTo(compareObject);
-  }
-
-  @Test
-  void sameInstanceShouldHaveSameHashCode() {
-    assertThat(application.hashCode())
-        .isEqualTo(application.hashCode());
-  }
-
-  @Test
-  void twoObjectsWithTheSameIdShouldHaveSameHashCode() {
-    Application compareObject = new Application();
-    compareObject.setId(ID);
+    compareObject.setId(APPLICATION_ID);
 
     assertThat(application.hashCode())
         .isEqualTo(compareObject.hashCode());
   }
 
   @Test
-  void twoObjectsWithDifferentIdShouldHaveDifferentHashCode() {
+  void should_not_have_the_same_hash_code_than_an_object_with_different_properties() {
     Application compareObject = new Application();
-    compareObject.setId(1L);
-    compareObject.setKey(KEY);
-    compareObject.setName(NAME);
-    compareObject.setSecret(SECRET);
-    compareObject.setDescription(DESCRIPTION);
+    compareObject.setId(APPLICATION_ID_ALT);
 
     assertThat(application.hashCode())
         .isNotEqualTo(compareObject.hashCode());
   }
 
   @Test
-  void shouldConvertToString() {
+  void should_return_string_representation() {
     assertThat(application.toString())
         .startsWith("Application");
-  }
-
-  private static Set<Context> generateContexts() {
-    Context staging = new Context();
-    staging.setId(1L);
-    staging.setKey("staging");
-
-    Context production = new Context();
-    production.setId(2L);
-    production.setKey("production");
-
-    return Set.of(staging, production);
   }
 }

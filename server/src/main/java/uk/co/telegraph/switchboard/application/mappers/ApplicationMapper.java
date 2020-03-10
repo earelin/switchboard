@@ -14,24 +14,20 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.repositories;
+package uk.co.telegraph.switchboard.application.mappers;
 
-import java.util.Optional;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import uk.co.telegraph.switchboard.application.dto.ApplicationDto;
+import uk.co.telegraph.switchboard.application.dto.ApplicationRequestDto;
 import uk.co.telegraph.switchboard.domain.Application;
 
-/**
- * Application entity repository.
- */
-public interface ApplicationRepository {
-  Optional<Application> getApplication(String id);
+@Mapper
+public interface ApplicationMapper {
+  ApplicationDto domainToDto(Application application);
 
-  void saveApplication(Application application);
-
-  void removeApplication(String id);
-
-  boolean doesApplicationExists(String id);
-
-  Page<Application> getPagedApplicationList(Pageable pageable);
+  @Mapping(target = "secret", ignore = true)
+  void updateDomainFromDto(ApplicationRequestDto applicationRequestDto,
+      @MappingTarget Application application);
 }

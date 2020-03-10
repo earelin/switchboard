@@ -14,24 +14,25 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.repositories;
+package uk.co.telegraph.switchboard.domain.rules;
 
-import java.util.Optional;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import uk.co.telegraph.switchboard.domain.Application;
+import java.time.ZonedDateTime;
+import uk.co.telegraph.switchboard.domain.ClientInfo;
 
-/**
- * Application entity repository.
- */
-public interface ApplicationRepository {
-  Optional<Application> getApplication(String id);
+public class DateTimeRule extends Rule {
 
-  void saveApplication(Application application);
+  private ZonedDateTime dateTime;
 
-  void removeApplication(String id);
+  @Override
+  public boolean isEnabledForClient(ClientInfo clientInfo) {
+    return dateTime.isBefore(clientInfo.getTime());
+  }
 
-  boolean doesApplicationExists(String id);
+  public void setDateTimeEnabledAfter(ZonedDateTime dateTime) {
+    this.dateTime = dateTime;
+  }
 
-  Page<Application> getPagedApplicationList(Pageable pageable);
+  public ZonedDateTime getDateTimeEnabledAfter() {
+    return dateTime;
+  }
 }

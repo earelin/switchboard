@@ -3,7 +3,7 @@
  #
  #  Licensed under the Apache License, Version 2.0 (the "License");
  #  you may not use this file except in compliance with the License.
- #  You may obtain a copy of the License at
+ #  You may obtain a copy of the License at:
  #
  #  https://www.apache.org/licenses/LICENSE-2.0
  #
@@ -25,16 +25,11 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: bigint
+                  type: char(36)
                   constraints:
                     nullable: false
                     primaryKey: true
                     primaryKeyName: pk_application
-              - column:
-                  name: key
-                  type: varchar(128)
-                  constraints:
-                    nullable: false
               - column:
                   name: name
                   type: varchar(128)
@@ -60,15 +55,20 @@ databaseChangeLog:
               - column:
                   name: id
                   type: bigint
+                  autoIncrement: true
                   constraints:
                     nullable: false
                     primaryKey: true
                     primaryKeyName: pk_context
               - column:
                   name: application_id
-                  type: bigint
+                  type: char(36)
                   constraints:
+                    deleteCascade: true
+                    foreignKeyName: fk_context_application_id
                     nullable: false
+                    referencedTableName: application
+                    referencedColumnNames: id
               - column:
                   name: key
                   type: varchar(64)

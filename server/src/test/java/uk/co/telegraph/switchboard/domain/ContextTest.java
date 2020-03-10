@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy of the License at:
  *
  * https://www.apache.org/licenses/LICENSE-2.0
  *
@@ -17,150 +17,108 @@
 package uk.co.telegraph.switchboard.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static uk.co.telegraph.switchboard.domain.Context.DEFAULT_KEY;
 
-import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import uk.co.telegraph.switchboard.domain.Application;
+import uk.co.telegraph.switchboard.domain.Context;
 
 class ContextTest {
 
-  private static final Long ID = 25L;
-  private static final String KEY = "production";
+  private static final Long CONTEXT_ID = 10L;
+  private static final String CONTEXT_NAME = "production";
 
   private Context context;
 
+  private Application application;
+
   @BeforeEach
   void setUp() {
-    context = new Context();
-    context.setId(ID);
-    context.setKey(KEY);
+    application = new Application();
+    context = new Context(CONTEXT_ID, application);
   }
 
   @Test
-  void shouldSetId() {
+  void constructor_should_set_id_and_application() {
+    assertThat(context)
+        .hasFieldOrPropertyWithValue("id", CONTEXT_ID)
+        .hasFieldOrPropertyWithValue("application", application);
+  }
+
+  @Test
+  void should_return_id() {
     assertThat(context.getId())
-        .isEqualTo(ID);
+        .isEqualTo(CONTEXT_ID);
   }
 
   @Test
-  void shouldSetKey() {
-    assertThat(context.getKey())
-        .isEqualTo(KEY);
+  void should_return_application() {
+    assertThat(context.getApplication())
+        .isEqualTo(application);
   }
 
   @Test
-  void shouldGenerateADefaultContext() {
-    context = Context.buildDefault();
+  void should_set_and_return_name() {
+    context.setName(CONTEXT_NAME);
+    assertThat(context.getName())
+        .isEqualTo(CONTEXT_NAME);
+  }
 
-    assertThat(context.isDefault())
+  @Test
+  void should_be_equal_to_itself() {
+    assertThat(context.equals(context))
         .isTrue();
   }
 
   @Test
-  void shouldCanEqualSameClass() {
-    Context comparedObject = new Context();
+  void should_be_equal_to_an_object_with_same_id() {
+    Context compareObject = new Context(CONTEXT_ID, application);
 
-    assertThat(context.canEqual(comparedObject))
+    assertThat(context.equals(compareObject))
         .isTrue();
   }
 
   @Test
-  void shouldNotCanEqualDifferentClass() {
-    String comparedObject = "some string";
-
-    assertThat(context.canEqual(comparedObject))
+  void should_not_be_equal_to_null() {
+    assertThat(context.equals(null))
         .isFalse();
   }
 
   @Test
-  void shouldNotCanEqualToNull() {
-    assertThat(context.canEqual(null))
+  void should_not_be_equal_to_a_different_class() {
+    String compareObject = "2wertgyhuji";
+
+    assertThat(context.equals(compareObject))
         .isFalse();
   }
 
   @Test
-  void shouldBeEqualToItself() {
-    assertThat(context)
-        .isEqualTo(context);
-  }
+  void should_be_equal_to_an_object_with_different_id() {
+    Context compareObject = new Context(20L, application);
 
-  @Test
-  void shouldNotBeEqualToNull() {
-    assertThat(context)
-        .isNotEqualTo(null);
-  }
-
-  @Test
-  void shouldIsDefaultReturnTrueIfKeyIsDefault() {
-    context = new Context();
-    context.setKey(DEFAULT_KEY);
-
-    assertThat(context.isDefault())
-        .isTrue();
-  }
-
-  @Test
-  void shouldIsDefaultReturnFalseIfKeyIsNotDefault() {
-    assertThat(context.isDefault())
+    assertThat(context.equals(compareObject))
         .isFalse();
   }
 
   @Test
-  void shouldBeEqualToAnContextWithSameId() {
-    Context compareObject = new Context();
-    compareObject.setId(ID);
-
-    assertThat(context)
-        .isEqualTo(compareObject);
-  }
-
-  @Test
-  void shouldNotBeEqualToAnContextWithADifferentKey() {
-    Context compareObject = new Context();
-    compareObject.setId(15L);
-    compareObject.setKey(KEY);
-
-    assertThat(context)
-        .isNotEqualTo(compareObject);
-  }
-
-  @Test
-  void shouldNotBeEqualToADifferentClass() {
-    String compareObject = "testing";
-
-    assertThat(context)
-        .isNotEqualTo(compareObject);
-  }
-
-  @Test
-  void sameObjectShouldHaveSameHashCode() {
+  void should_have_the_same_hash_code_than_itself() {
     assertThat(context.hashCode())
         .isEqualTo(context.hashCode());
   }
 
   @Test
-  void twoObjectWithTheSameIdShouldHaveSameHashCode() {
-    Context compareObject = new Context();
-    compareObject.setId(ID);
+  void should_have_the_same_hash_code_than_a_object_with_same_id() {
+    Context compareObject = new Context(CONTEXT_ID, new Application());
 
     assertThat(context.hashCode())
         .isEqualTo(compareObject.hashCode());
   }
 
   @Test
-  void twoObjectWithDifferentIdShouldHaveDifferentHashCode() {
-    Context compareObject = new Context();
-    compareObject.setId(15L);
-    compareObject.setKey(KEY);
+  void should_have_a_different_hash_code_than_a_object_with_differnt_id() {
+    Context compareObject = new Context(20L, application);
 
     assertThat(context.hashCode())
         .isNotEqualTo(compareObject.hashCode());
-  }
-
-  @Test
-  void shouldConvertToString() {
-    assertThat(context.toString())
-        .startsWith("Context");
   }
 }

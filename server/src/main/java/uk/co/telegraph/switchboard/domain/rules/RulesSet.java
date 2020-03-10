@@ -14,24 +14,27 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.repositories;
+package uk.co.telegraph.switchboard.domain.rules;
 
-import java.util.Optional;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import uk.co.telegraph.switchboard.domain.Application;
+import java.util.Set;
+import uk.co.telegraph.switchboard.domain.ClientInfo;
+import uk.co.telegraph.switchboard.domain.rules.Rule;
 
-/**
- * Application entity repository.
- */
-public interface ApplicationRepository {
-  Optional<Application> getApplication(String id);
+public class RulesSet {
 
-  void saveApplication(Application application);
+  public void addRule(Rule rule) {
+    throw new UnsupportedOperationException();
+  }
 
-  void removeApplication(String id);
+  public void removeRule(Rule rule) {
+    throw new UnsupportedOperationException();
+  }
 
-  boolean doesApplicationExists(String id);
+  public Set<Rule> getRules() {
+    throw new UnsupportedOperationException();
+  }
 
-  Page<Application> getPagedApplicationList(Pageable pageable);
+  public boolean isEnabledForClient(ClientInfo clientInfo) {
+    throw new UnsupportedOperationException();
+  }
 }

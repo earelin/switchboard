@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy of the License at:
  *
  * https://www.apache.org/licenses/LICENSE-2.0
  *
@@ -17,17 +17,46 @@
 package uk.co.telegraph.switchboard.domain;
 
 import java.time.ZonedDateTime;
-import lombok.Builder;
-import lombok.Data;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
-@Data
-@Builder
 @EqualsAndHashCode
+@ToString
 public class ClientInfo {
   private final String application;
-  private final String context;
-  private final String instance;
-  private final String user;
-  private final ZonedDateTime dateTime;
+  private final ZonedDateTime time;
+  private final Map<String, String> properties;
+
+  public ClientInfo(String application, ZonedDateTime time, Map<String, String> properties) {
+    this.application = application;
+    this.time = time;
+    this.properties = Map.copyOf(properties);
+  }
+
+  public String getApplication() {
+    return application;
+  }
+
+  public ZonedDateTime getTime() {
+    return time;
+  }
+
+  public Optional<String> getPropertyValue(String key) {
+    return Optional.ofNullable(properties.get(key));
+  }
+
+  public boolean doesPropertyExists(String key) {
+    return properties.containsKey(key);
+  }
+
+  public Set<String> getPropertyKeys() {
+    return properties.keySet();
+  }
+
+  public Map<String, String> getProperties() {
+    return properties;
+  }
 }

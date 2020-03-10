@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy of the License at:
  *
  * https://www.apache.org/licenses/LICENSE-2.0
  *
@@ -16,17 +16,35 @@
 
 package uk.co.telegraph.switchboard;
 
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
+import static org.hamcrest.Matchers.equalTo;
 
-@SpringBootTest
-@Tag("integration")
+import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.context.WebApplicationContext;
+
+@ApplicationIntegrationWeb
 class SwitchboardApplicationTests {
 
-  @Test
-  void contextLoads() {
+  @Autowired
+  private WebApplicationContext webApplicationContext;
 
+  @BeforeEach
+  public void initialiseRestAssuredMockMvcWebApplicationContext() {
+    RestAssuredMockMvc.webAppContextSetup(webApplicationContext);
+  }
+
+  @Test
+  void checkHealth() {
+    given()
+      .when()
+        .get("/actuator/health")
+      .then()
+        .statusCode(HttpStatus.OK.value())
+        .body("status", equalTo("UP"));
   }
 
 }
