@@ -16,29 +16,84 @@
 
 package uk.co.telegraph.switchboard.application;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 
 public class SortablePageableBuilder {
 
-  private final String[] sortingProperties;
+  private final Set<String> allowedSortingProperties;
 
   /**
    * Constructor allows to specify supported property names for sorting.
-   * @param sortingProperties Allowed property names for sorting.
+   *
+   * @param allowedSortingProperties Allowed property names for sorting.
    */
-  public SortablePageableBuilder(String... sortingProperties) {
-    this.sortingProperties = sortingProperties;
+  public SortablePageableBuilder(String... allowedSortingProperties) {
+    this.allowedSortingProperties = Set.of(allowedSortingProperties);
   }
 
   /**
    * Builds a Pageable object.
+   *
    * @param page Page number.
    * @param size Number of items per page.
-   * @param sortColumn Sorting column name.
-   * @param sortDirection Sorting direction ("asc" or "desc")
+   * @param sortingProperties Sorting properties names plus optional direction in the form
+   *     columnName|[asc,desc].
    * @return Pageable object
    */
-  public Pageable buildPageable(int page, int size, String sortColumn, String sortDirection) {
-    throw new UnsupportedOperationException();
+  public Pageable buildPageable(int page, int size, String[] sortingProperties) {
+    if (page < 0) {
+      throw new IllegalArgumentException("Page number must not be less than 0: " + page);
+    }
+
+    if (size < 1) {
+      throw new IllegalArgumentException("Page size must not be less than 1: " + size);
+    }
+
+    return PageRequest.of(page, size, buildSorting(sortingProperties));
+  }
+
+  private Sort buildSorting(String[] sortingProperties) {
+    if (sortingProperties != null && sortingProperties.length > 0) {
+      List<Sort.Order> orders = new ArrayList<>(sortingProperties.length);
+
+      for (String sortProperty : sortingProperties) {
+        orders.add(buildSortOrder(sortProperty));
+      }
+
+      return Sort.by(orders);
+    }
+
+    return Sort.unsorted();
+  }
+
+  private Sort.Order buildSortOrder(String sortingProperty) {
+    Sort.Direction direction = Direction.ASC;
+    String[] sortingComponents = sortingProperty.split(":");
+
+    if (sortingComponents.length > 2) {
+      throw new IllegalArgumentException("Malformed sorting request: " + sortingProperty);
+    }
+
+    if (sortingComponents.length == 2) {
+      if (sortingComponents[1].equals("asc") || sortingComponents[1].equals("desc")) {
+        direction = Direction.valueOf(sortingComponents[1].toUpperCase());
+      } else {
+        throw new IllegalArgumentException("Sorting direction value has to be 'asc' or 'desc': "
+            + sortingComponents[1]);
+      }
+    }
+
+    if (!allowedSortingProperties.contains(sortingComponents[0])) {
+      throw new IllegalArgumentException("Illegal sorting property: " + sortingComponents[0]);
+    }
+
+    return new Order(direction, sortingComponents[0]);
   }
 }
