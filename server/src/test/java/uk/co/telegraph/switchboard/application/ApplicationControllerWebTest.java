@@ -16,6 +16,7 @@
 
 package uk.co.telegraph.switchboard.application;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -25,6 +26,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static uk.co.telegraph.switchboard.utils.ApplicationContentGenerator.getApplicationList;
 
 import com.google.gson.Gson;
 import java.nio.charset.StandardCharsets;
@@ -33,6 +35,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import uk.co.telegraph.switchboard.Integration;
@@ -73,7 +78,8 @@ public class ApplicationControllerWebTest {
     when(applicationFactory.createApplication(APPLICATION_NAME, APPLICATION_DESCRIPTION))
         .thenReturn(application);
 
-    ApplicationRequestDto request = new ApplicationRequestDto(APPLICATION_NAME, APPLICATION_DESCRIPTION);
+    ApplicationRequestDto request
+        = new ApplicationRequestDto(APPLICATION_NAME, APPLICATION_DESCRIPTION);
 
     mockMvc.perform(post("/api/application")
           .contentType(MediaType.APPLICATION_JSON)
@@ -199,5 +205,21 @@ public class ApplicationControllerWebTest {
           .content(gson.toJson(request)))
         .andDo(print())
         .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void should_return_application_list() throws Exception {
+    Page<Application> applications
+        = new PageImpl<>(getApplicationList(), PageRequest.of(2, 10), 30);
+    when(applicationRepository.getPagedApplicationList(any()))
+        .thenReturn(applications);
+
+    mockMvc.perform(get("/api/application"))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.content").isArray())
+        .andExpect(jsonPath("$.last").value(true))
+        .andExpect(jsonPath("$.number").value(2))
+        .andExpect(jsonPath("$.size").value(10));
   }
 }

@@ -19,6 +19,7 @@ package uk.co.telegraph.switchboard.application;
 import javax.validation.Valid;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,6 +46,7 @@ public class ApplicationController {
   private final ApplicationFactory applicationFactory;
   private final ApplicationRepository applicationRepository;
   private final ApplicationMapper applicationMapper;
+  private final SortablePageableBuilder pageableBuilder;
 
   public ApplicationController(
       ApplicationFactory applicationFactory,
@@ -52,6 +54,7 @@ public class ApplicationController {
     this.applicationFactory = applicationFactory;
     this.applicationRepository = applicationRepository;
     this.applicationMapper = Mappers.getMapper(ApplicationMapper.class);
+    this.pageableBuilder = new SortablePageableBuilder("name");
   }
 
   @PostMapping
@@ -70,10 +73,12 @@ public class ApplicationController {
 
   @GetMapping
   public Page<ApplicationDto> getApplicationList(
-      @RequestParam(defaultValue = "0", required = false) Integer page,
-      @RequestParam(defaultValue = "20", required = false) Integer size,
-      @RequestParam(defaultValue = "name", required = false) String[] sort) {
-    throw new UnsupportedOperationException();
+      @RequestParam(defaultValue = "0", required = false) int page,
+      @RequestParam(defaultValue = "20", required = false) int size,
+      @RequestParam(defaultValue = "name", required = false) String[] sortedProperties) {
+    Pageable pageable = pageableBuilder.buildPageable(page, size, sortedProperties);
+    return applicationRepository.getPagedApplicationList(pageable)
+        .map(applicationMapper::domainToDto);
   }
 
   @GetMapping("/{id}")
