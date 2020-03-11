@@ -35,7 +35,7 @@ class ApplicationMapperTest {
   private static final String APPLICATION_UPDATED_NAME = "Old Website";
   private static final String APPLICATION_UPDATED_DESCRIPTION = "Old public website";
 
-  private ApplicationMapper applicationMapper = Mappers.getMapper(ApplicationMapper.class);
+  private ApplicationMapper applicationMapper;
 
   private Application application;
 
@@ -43,6 +43,8 @@ class ApplicationMapperTest {
   void setUp() {
     application = new Application(APPLICATION_ID, APPLICATION_NAME, APPLICATION_SECRET);
     application.setDescription(APPLICATION_DESCRIPTION);
+
+    applicationMapper = Mappers.getMapper(ApplicationMapper.class);
   }
 
   @Test

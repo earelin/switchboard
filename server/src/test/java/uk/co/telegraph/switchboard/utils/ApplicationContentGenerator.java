@@ -21,17 +21,24 @@ import com.google.gson.reflect.TypeToken;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.List;
+import uk.co.telegraph.switchboard.application.dto.ApplicationDto;
 import uk.co.telegraph.switchboard.domain.Application;
 
 public class ApplicationContentGenerator {
 
-  private static Gson gson = new Gson();
-  private static ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+  private static final Gson gson = new Gson();
+  private static final ClassLoader classLoader = ClassLoader.getSystemClassLoader();
 
   public static List<Application> getApplicationList() throws FileNotFoundException {
     String fileName = classLoader.getResource("data/applications.json").getFile();
     FileReader fileReader = new FileReader(fileName);
     return gson.fromJson(fileReader, new TypeToken<List<Application>>() {}.getType());
+  }
+
+  public static List<ApplicationDto> getApplicationDtoList() throws FileNotFoundException {
+    String fileName = classLoader.getResource("data/applications.json").getFile();
+    FileReader fileReader = new FileReader(fileName);
+    return gson.fromJson(fileReader, new TypeToken<List<ApplicationDto>>() {}.getType());
   }
 
 }

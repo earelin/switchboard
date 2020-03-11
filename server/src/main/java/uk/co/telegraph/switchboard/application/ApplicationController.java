@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import uk.co.telegraph.switchboard.application.dto.ApplicationDto;
 import uk.co.telegraph.switchboard.application.dto.ApplicationRequestDto;
+import uk.co.telegraph.switchboard.application.dto.PageDto;
 import uk.co.telegraph.switchboard.application.mappers.ApplicationMapper;
 import uk.co.telegraph.switchboard.domain.Application;
 import uk.co.telegraph.switchboard.factories.ApplicationFactory;
@@ -42,6 +43,8 @@ import uk.co.telegraph.switchboard.repositories.ApplicationRepository;
 @RestController
 @RequestMapping("/api/application")
 public class ApplicationController {
+
+  private static final String APPLICATION_NOT_FOUND_MESSAGE = "Application not found: %s";
 
   private final ApplicationFactory applicationFactory;
   private final ApplicationRepository applicationRepository;
@@ -72,13 +75,23 @@ public class ApplicationController {
   }
 
   @GetMapping
-  public Page<ApplicationDto> getApplicationList(
+  public PageDto<ApplicationDto> getApplicationList(
       @RequestParam(defaultValue = "0", required = false) int page,
       @RequestParam(defaultValue = "20", required = false) int size,
       @RequestParam(defaultValue = "name", required = false) String[] sortedProperties) {
-    Pageable pageable = pageableBuilder.buildPageable(page, size, sortedProperties);
-    return applicationRepository.getPagedApplicationList(pageable)
-        .map(applicationMapper::domainToDto);
+    Pageable pageable;
+
+    try {
+      pageable = pageableBuilder.buildPageable(page, size, sortedProperties);
+    } catch (IllegalArgumentException exception) {
+      throw new ResponseStatusException(
+          HttpStatus.BAD_REQUEST,
+          exception.getMessage()
+      );
+    }
+
+    Page<Application> applicationPage = applicationRepository.getPagedApplicationList(pageable);
+    return applicationMapper.domainPageToDto(applicationPage);
   }
 
   @GetMapping("/{id}")
@@ -86,7 +99,7 @@ public class ApplicationController {
     Application application = applicationRepository.getApplication(id)
         .orElseThrow(() -> new ResponseStatusException(
             HttpStatus.NOT_FOUND,
-            String.format("Application not found: %s", id)
+            String.format(APPLICATION_NOT_FOUND_MESSAGE, id)
         ));
     return applicationMapper.domainToDto(application);
   }
@@ -96,7 +109,7 @@ public class ApplicationController {
     if (!applicationRepository.doesApplicationExists(id)) {
       throw new ResponseStatusException(
           HttpStatus.NOT_FOUND,
-          String.format("Application not found: %s", id)
+          String.format(APPLICATION_NOT_FOUND_MESSAGE, id)
       );
     }
     applicationRepository.removeApplication(id);
@@ -109,7 +122,7 @@ public class ApplicationController {
     Application application = applicationRepository.getApplication(id)
         .orElseThrow(() -> new ResponseStatusException(
             HttpStatus.NOT_FOUND,
-            String.format("Application not found: %s", id)
+            String.format(APPLICATION_NOT_FOUND_MESSAGE, id)
         ));
 
     applicationMapper.updateDomainFromDto(request, application);

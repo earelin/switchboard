@@ -16,6 +16,7 @@
 
 package uk.co.telegraph.switchboard.repositories;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import uk.co.telegraph.switchboard.ApplicationIntegration;
@@ -33,6 +34,7 @@ class ApplicationRepositoryJpaImplTest {
   private ApplicationRepositoryJpaImpl applicationRepository;
 
   @Test
+  @Disabled
   void should_store_and_return_an_application() {
 
   }

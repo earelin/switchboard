@@ -53,14 +53,14 @@ import uk.co.telegraph.switchboard.repositories.ApplicationRepository;
 @WebMvcTest(ApplicationController.class)
 public class ApplicationControllerWebTest {
 
+  private static final Gson gson = new Gson();
+
   private static final String APPLICATION_ID = "8c42f1d8-f588-451c-8465-be0ea7ed8025";
   private static final String APPLICATION_NAME = "Website";
   private static final String APPLICATION_DESCRIPTION = "Public website";
   private static final String APPLICATION_SECRET = "RHzSD62mQe4BhH3E";
   private static final String APPLICATION_UPDATED_NAME = "Old Website";
   private static final String APPLICATION_UPDATED_DESCRIPTION = "Old public website";
-
-  private Gson gson = new Gson();
 
   @Autowired
   private MockMvc mockMvc;
@@ -219,7 +219,26 @@ public class ApplicationControllerWebTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.content").isArray())
         .andExpect(jsonPath("$.last").value(true))
-        .andExpect(jsonPath("$.number").value(2))
-        .andExpect(jsonPath("$.size").value(10));
+        .andExpect(jsonPath("$.first").value(false))
+        .andExpect(jsonPath("$.pageNumber").value(2))
+        .andExpect(jsonPath("$.pageSize").value(10))
+        .andExpect(jsonPath("$.totalPages").value(3))
+        .andExpect(jsonPath("$.totalElements").value(30));
+  }
+
+  @Test
+  void should_return_bad_request_error_if_page_number_is_less_that_0() throws Exception {
+    mockMvc.perform(get("/api/application")
+          .param("page", "-1"))
+        .andDo(print())
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void should_return_bad_request_error_if_page_size_is_less_that_1() throws Exception {
+    mockMvc.perform(get("/api/application")
+        .param("size", "0"))
+        .andDo(print())
+        .andExpect(status().isBadRequest());
   }
 }
