@@ -41,7 +41,7 @@ import uk.co.telegraph.switchboard.factories.ApplicationFactory;
 import uk.co.telegraph.switchboard.repositories.ApplicationRepository;
 
 @RestController
-@RequestMapping("/api/application")
+@RequestMapping("/rest/v1/application")
 public class ApplicationController {
 
   private static final String APPLICATION_NOT_FOUND_MESSAGE = "Application not found: %s";
@@ -78,7 +78,7 @@ public class ApplicationController {
   public PageDto<ApplicationDto> getApplicationList(
       @RequestParam(defaultValue = "0", required = false) int page,
       @RequestParam(defaultValue = "20", required = false) int size,
-      @RequestParam(defaultValue = "name", required = false) String[] sortedProperties) {
+      @RequestParam(value = "sort", defaultValue = "name", required = false) String[] sortedProperties) {
     Pageable pageable;
 
     try {
