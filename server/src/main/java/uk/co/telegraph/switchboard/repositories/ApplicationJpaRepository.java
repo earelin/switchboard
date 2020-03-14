@@ -16,9 +16,20 @@
 
 package uk.co.telegraph.switchboard.repositories;
 
+import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.Repository;
 import uk.co.telegraph.switchboard.domain.Application;
 
 interface ApplicationJpaRepository extends Repository<Application, String> {
+  Application save(Application application);
 
+  void deleteById(String id);
+
+  Optional<Application> findById(String id);
+
+  boolean existsById(String id);
+
+  Page<Application> findAll(Pageable pageable);
 }

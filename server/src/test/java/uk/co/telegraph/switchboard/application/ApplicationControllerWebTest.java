@@ -16,6 +16,7 @@
 
 package uk.co.telegraph.switchboard.application;
 
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -77,6 +78,8 @@ public class ApplicationControllerWebTest {
     application.setDescription(APPLICATION_DESCRIPTION);
     when(applicationFactory.createApplication(APPLICATION_NAME, APPLICATION_DESCRIPTION))
         .thenReturn(application);
+    when(applicationRepository.saveApplication(any()))
+        .then(returnsFirstArg());
 
     ApplicationRequestDto request
         = new ApplicationRequestDto(APPLICATION_NAME, APPLICATION_DESCRIPTION);
@@ -170,6 +173,8 @@ public class ApplicationControllerWebTest {
     application.setDescription(APPLICATION_DESCRIPTION);
     when(applicationRepository.getApplication(APPLICATION_ID))
         .thenReturn(Optional.of(application));
+    when(applicationRepository.saveApplication(any()))
+        .then(returnsFirstArg());
 
     ApplicationRequestDto request = new ApplicationRequestDto(
         APPLICATION_UPDATED_NAME,

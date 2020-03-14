@@ -16,6 +16,7 @@
 
 package uk.co.telegraph.switchboard.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import lombok.EqualsAndHashCode;
@@ -29,7 +30,9 @@ public class Application {
 
   @Id
   @EqualsAndHashCode.Include
+  @Column(columnDefinition = "char(36)")
   private String id;
+  @Column(length = 64)
   private String name;
   private String description;
   private String secret;
@@ -38,21 +41,9 @@ public class Application {
   }
 
   public Application(String id, String name, String secret) {
-    if (StringUtils.isBlank(id)) {
-      throw new IllegalArgumentException("Application key cannot be empty or null");
-    }
-
-    if (StringUtils.isBlank(name)) {
-      throw new IllegalArgumentException("Application name cannot be empty or null");
-    }
-
-    if (StringUtils.isBlank(secret)) {
-      throw new IllegalArgumentException("Application secret cannot be empty or null");
-    }
-
-    this.id = id;
-    this.name = name;
-    this.secret = secret;
+    setId(id);
+    setName(name);
+    setSecret(secret);
   }
 
   public String getId() {
@@ -62,6 +53,10 @@ public class Application {
   void setId(String id) {
     if (StringUtils.isBlank(id)) {
       throw new IllegalArgumentException("Application id cannot be empty or null");
+    }
+
+    if (id.length() > 36) {
+      throw new IllegalArgumentException("Application id cannot be longer than 36 characters");
     }
 
     this.id = id;
@@ -74,6 +69,10 @@ public class Application {
   public void setName(String name) {
     if (StringUtils.isBlank(name)) {
       throw new IllegalArgumentException("Application name cannot be empty or null");
+    }
+
+    if (name.length() > 64) {
+      throw new IllegalArgumentException("Application name cannot be longer than 64 characters");
     }
 
     this.name = name;

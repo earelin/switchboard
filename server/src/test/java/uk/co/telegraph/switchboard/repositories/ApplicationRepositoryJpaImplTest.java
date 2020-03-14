@@ -16,33 +16,119 @@
 
 package uk.co.telegraph.switchboard.repositories;
 
-import org.junit.jupiter.api.Disabled;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static uk.co.telegraph.switchboard.utils.ApplicationContentGenerator.APPLICATION_DESCRIPTION;
+import static uk.co.telegraph.switchboard.utils.ApplicationContentGenerator.APPLICATION_ID;
+import static uk.co.telegraph.switchboard.utils.ApplicationContentGenerator.APPLICATION_NAME;
+import static uk.co.telegraph.switchboard.utils.ApplicationContentGenerator.APPLICATION_SECRET;
+import static uk.co.telegraph.switchboard.utils.ApplicationContentGenerator.getApplication;
+import static uk.co.telegraph.switchboard.utils.ApplicationContentGenerator.getApplicationList;
+
+import java.io.FileNotFoundException;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import uk.co.telegraph.switchboard.ApplicationIntegration;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import uk.co.telegraph.switchboard.domain.Application;
 
-@ApplicationIntegration
+@ExtendWith(MockitoExtension.class)
 class ApplicationRepositoryJpaImplTest {
 
-  private static final String APPLICATION_ID = "0420d644-1cd3-4c77-aadf-0c70677ce041";
-  private static final String APPLICATION_NAME = "Pulse";
-  private static final String APPLICATION_DESCRIPTION = "Wonderful statistics application";
-  private static final String APPLICATION_SECRET = "VqMpFsVvPHmtd7XL";
+  @Mock
+  private ApplicationJpaRepository applicationJpaRepository;
 
-  @Autowired
+  @InjectMocks
   private ApplicationRepositoryJpaImpl applicationRepository;
 
   @Test
-  @Disabled
-  void should_store_and_return_an_application() {
+  void should_return_a_found_application() {
+    when(applicationJpaRepository.findById(APPLICATION_ID))
+        .thenReturn(Optional.of(getApplication()));
 
+    Optional<Application> application = applicationRepository.getApplication(APPLICATION_ID);
+
+    assertThat(application)
+        .isPresent()
+        .get()
+        .hasFieldOrPropertyWithValue("id", APPLICATION_ID)
+        .hasFieldOrPropertyWithValue("name", APPLICATION_NAME)
+        .hasFieldOrPropertyWithValue("secret", APPLICATION_SECRET)
+        .hasFieldOrPropertyWithValue("description", APPLICATION_DESCRIPTION);
   }
 
-  private Application applicationGenerator() {
-    Application application = new Application(APPLICATION_ID, APPLICATION_NAME, APPLICATION_SECRET);
-    application.setDescription(APPLICATION_DESCRIPTION);
-    return application;
+  @Test
+  void should_return_empty_if_an_application_is_not_found() {
+    when(applicationJpaRepository.findById(APPLICATION_ID))
+        .thenReturn(Optional.empty());
+
+    Optional<Application> application = applicationRepository.getApplication(APPLICATION_ID);
+
+    assertThat(application)
+        .isNotPresent();
   }
 
+  @Test
+  void should_save_an_application() {
+    Application application = getApplication();
+    when(applicationJpaRepository.save(application))
+        .thenAnswer(returnsFirstArg());
+
+    Application savedApplication = applicationRepository.saveApplication(application);
+
+    assertThat(savedApplication)
+        .hasFieldOrPropertyWithValue("id", APPLICATION_ID)
+        .hasFieldOrPropertyWithValue("name", APPLICATION_NAME)
+        .hasFieldOrPropertyWithValue("secret", APPLICATION_SECRET)
+        .hasFieldOrPropertyWithValue("description", APPLICATION_DESCRIPTION);
+    verify(applicationJpaRepository).save(application);
+  }
+
+  @Test
+  void should_remove_an_application() {
+    applicationRepository.removeApplication(APPLICATION_ID);
+
+    verify(applicationJpaRepository).deleteById(APPLICATION_ID);
+  }
+
+  @Test
+  void should_return_true_if_application_exists() {
+    when(applicationJpaRepository.existsById(APPLICATION_ID))
+        .thenReturn(true);
+
+    assertThat(applicationRepository.doesApplicationExists(APPLICATION_ID))
+        .isTrue();
+  }
+
+  @Test
+  void should_return_false_if_application_does_not_exists() {
+    when(applicationJpaRepository.existsById(APPLICATION_ID))
+        .thenReturn(false);
+
+    assertThat(applicationRepository.doesApplicationExists(APPLICATION_ID))
+        .isFalse();
+  }
+
+  @Test
+  void should_call_a_paged_application_list() throws FileNotFoundException {
+    List<Application> applications = getApplicationList();
+    Pageable pageable = PageRequest.of(0, 10);
+    when(applicationJpaRepository.findAll(pageable))
+        .thenReturn(new PageImpl<>(applications, pageable, 30));
+
+    Page<Application> applicationPage = applicationRepository.getPagedApplicationList(pageable);
+
+    assertThat(applicationPage)
+        .hasSize(10)
+        .containsExactly(applications.toArray(new Application[applications.size()]));
+  }
 }

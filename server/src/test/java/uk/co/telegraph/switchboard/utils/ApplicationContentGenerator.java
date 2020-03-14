@@ -26,6 +26,11 @@ import uk.co.telegraph.switchboard.domain.Application;
 
 public class ApplicationContentGenerator {
 
+  public static final String APPLICATION_ID = "0420d644-1cd3-4c77-aadf-0c70677ce041";
+  public static final String APPLICATION_NAME = "Pulse";
+  public static final String APPLICATION_DESCRIPTION = "Wonderful statistics application";
+  public static final String APPLICATION_SECRET = "VqMpFsVvPHmtd7XL";
+
   private static final Gson gson = new Gson();
   private static final ClassLoader classLoader = ClassLoader.getSystemClassLoader();
 
@@ -41,4 +46,9 @@ public class ApplicationContentGenerator {
     return gson.fromJson(fileReader, new TypeToken<List<ApplicationDto>>() {}.getType());
   }
 
+  public static Application getApplication() {
+    Application application = new Application(APPLICATION_ID, APPLICATION_NAME, APPLICATION_SECRET);
+    application.setDescription(APPLICATION_DESCRIPTION);
+    return application;
+  }
 }

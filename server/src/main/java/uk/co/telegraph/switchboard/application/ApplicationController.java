@@ -69,9 +69,9 @@ public class ApplicationController {
         request.getDescription()
     );
 
-    applicationRepository.saveApplication(application);
+    Application savedApplication = applicationRepository.saveApplication(application);
 
-    return applicationMapper.domainToDto(application);
+    return applicationMapper.domainToDto(savedApplication);
   }
 
   @GetMapping
@@ -126,8 +126,8 @@ public class ApplicationController {
         ));
 
     applicationMapper.updateDomainFromDto(request, application);
-    applicationRepository.saveApplication(application);
+    Application savedApplication = applicationRepository.saveApplication(application);
 
-    return applicationMapper.domainToDto(application);
+    return applicationMapper.domainToDto(savedApplication);
   }
 }

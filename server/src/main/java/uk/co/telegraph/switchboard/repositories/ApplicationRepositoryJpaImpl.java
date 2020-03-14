@@ -33,26 +33,26 @@ class ApplicationRepositoryJpaImpl implements ApplicationRepository {
 
   @Override
   public Optional<Application> getApplication(String id) {
-    return Optional.empty();
+    return jpaRepository.findById(id);
   }
 
   @Override
-  public void saveApplication(Application application) {
-
+  public Application saveApplication(Application application) {
+    return jpaRepository.save(application);
   }
 
   @Override
   public void removeApplication(String id) {
-
+    jpaRepository.deleteById(id);
   }
 
   @Override
   public boolean doesApplicationExists(String id) {
-    return false;
+    return jpaRepository.existsById(id);
   }
 
   @Override
   public Page<Application> getPagedApplicationList(Pageable pageable) {
-    return null;
+    return jpaRepository.findAll(pageable);
   }
 }

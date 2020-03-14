@@ -27,7 +27,7 @@ import uk.co.telegraph.switchboard.domain.Application;
 public interface ApplicationRepository {
   Optional<Application> getApplication(String id);
 
-  void saveApplication(Application application);
+  Application saveApplication(Application application);
 
   void removeApplication(String id);
 
