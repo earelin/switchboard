@@ -30,11 +30,15 @@ public class Application {
 
   @Id
   @EqualsAndHashCode.Include
-  @Column(columnDefinition = "char(36)")
+  @Column(columnDefinition = "char(36)", length = 36)
   private String id;
+
   @Column(length = 64)
   private String name;
+
   private String description;
+
+  @Column(columnDefinition = "char(12)", length = 12)
   private String secret;
 
   Application() {
@@ -93,6 +97,10 @@ public class Application {
   public void setSecret(String secret) {
     if (StringUtils.isBlank(secret)) {
       throw new IllegalArgumentException("Application secret cannot be empty or null");
+    }
+
+    if (secret.length() > 16) {
+      throw new IllegalArgumentException("Application name cannot be longer than 64 characters");
     }
 
     this.secret = secret;
