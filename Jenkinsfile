@@ -88,5 +88,12 @@ pipeline {
         sh './gradlew bootJar'
       }
     }
+    stage('Clean up') {
+      steps {
+        script {
+          deleteDir()
+        }
+      }
+    }
   }
 }
