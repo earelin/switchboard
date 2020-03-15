@@ -38,24 +38,24 @@ pipeline {
         not { buildingTag() }
       }
       stages {
-        stage('Code analisys and testing') {
-          steps {
-            sh './gradlew :server:check'
-          }
-          post {
-            always {
-              junit 'server/build/test-results/**/*.xml'
-              recordIssues aggregatingResults: true, sourceCodeEncoding: 'UTF-8', tools: [
-                checkStyle(pattern: 'server/build/reports/checkstyle/*.xml'),
-                cpd(pattern: 'server/build/reports/cpd/*.xml'),
-                spotBugs(pattern: 'server/build/reports/spotbugs/*.xml', useRankAsPriority: true)
-              ]
-            }
-            success {
-              jacoco classPattern: 'server/build/classes', execPattern: 'server/build/jacoco/*.exec', sourcePattern: 'server/src/main/java'
-            }
-          }
-        }
+        // stage('Code analisys and testing') {
+        //   steps {
+        //     sh './gradlew :server:check'
+        //   }
+        //   post {
+        //     always {
+        //       junit 'server/build/test-results/**/*.xml'
+        //       recordIssues aggregatingResults: true, sourceCodeEncoding: 'UTF-8', tools: [
+        //         checkStyle(pattern: 'server/build/reports/checkstyle/*.xml'),
+        //         cpd(pattern: 'server/build/reports/cpd/*.xml'),
+        //         spotBugs(pattern: 'server/build/reports/spotbugs/*.xml', useRankAsPriority: true)
+        //       ]
+        //     }
+        //     success {
+        //       jacoco classPattern: 'server/build/classes', execPattern: 'server/build/jacoco/*.exec', sourcePattern: 'server/src/main/java'
+        //     }
+        //   }
+        // }
 
         stage('Comment pull request') {
           when { changeRequest() }
