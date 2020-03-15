@@ -52,7 +52,7 @@ pipeline {
               ]
             }
             success {
-              jacoco()
+              jacoco classPattern: 'server/build/classes', execPattern: 'server/build/jacoco/*.exec', sourcePattern: 'server/src/main/java'
             }
           }
         }
