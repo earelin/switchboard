@@ -7,7 +7,8 @@
 
 Switchboard is a [feature flag](https://martinfowler.com/articles/feature-toggles.html) configuration service.
 
-Features:
+## Features
+
 - Allows to manage a set of applications with it own feature flags
 - Feature flags are enabled or disabled based on a configurable set of rules
 - Type of rules
