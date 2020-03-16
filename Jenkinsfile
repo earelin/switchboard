@@ -81,13 +81,30 @@ pipeline {
             ]])
           }
         }
-      }    
+
+        stage('Vulnerabilities analysis') {
+          when {
+            branch "${env.MAIN_BRANCH}"
+          }
+          tools {
+            snyk 'snyk-latest'
+          }
+          environment {
+            SNYK_TOKEN = credentials('snyk-newsroom')
+          }
+          steps {
+            sh 'snyk monitor --org=newsroom'
+          }
+        }
+      }
     }
+
     stage('Build') {
       steps {
         sh './gradlew bootJar'
       }
     }
+
     stage('Clean up') {
       steps {
         script {
