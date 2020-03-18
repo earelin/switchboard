@@ -1,6 +1,6 @@
 # Switchboard
 
-![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/telegraph/switchboard/Continuous%20Integration/1.x.x)
+[![Build Status](https://jenkins-prod.api-platforms.telegraph.co.uk/buildStatus/icon?job=Dashboard%2Fswitchboard%2F1.x.x)](https://jenkins-prod.api-platforms.telegraph.co.uk/job/Dashboard/view/Utils/job/switchboard/job/1.x.x/)
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/telegraph/switchboard?sort=semver)
 
 ![Switchboard photo by Joseph A. Carr](/media/switchboard.jpg "Switchboard photo by Joseph A. Carr")
