@@ -15,10 +15,10 @@
  */
 
 pipeline {
-  agent {
-    docker {
-      image 'openjdk:11.0-jdk'
-    }
+  agent any
+
+  tools {
+    jdk 'openjdk-11'
   }
 
   options {
@@ -102,6 +102,24 @@ pipeline {
     stage('Build') {
       steps {
         sh './gradlew bootJar'
+      }
+    }
+
+    stage('Functional testing') {
+      when { changeRequest() }
+      steps {
+        sh '''
+          ./gradlew docker
+          docker-compose up -d
+          timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w "%{http_code}" http://localhost:9000/actuator/health)" != "200" ]]; do sleep 5; done'
+          ./gradlew functionalTest
+          docker-compose down -v
+        '''
+      }
+      post {
+        always {
+          cucumber fileIncludePattern: '**/*.json', jsonReportDirectory: 'test/server-functional/build/surefire-reports'
+        }
       }
     }
 
