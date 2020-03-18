@@ -27,9 +27,10 @@ pipeline {
   }
 
   environment {
-    PROJECT_NAME = 'switchboard'
-    MAIN_BRANCH = '1.x.x'
     BUILD_VERSION = "${env.TAG_NAME ? env.TAG_NAME : 'commit-' + env.GIT_COMMIT.substring(0, 7)}"
+    GRADLE_OPTS = '-Dorg.gradle.daemon=false'
+    MAIN_BRANCH = '1.x.x'
+    PROJECT_NAME = 'switchboard'
   }
 
   stages {
@@ -106,18 +107,23 @@ pipeline {
     }
 
     stage('Functional testing') {
-      when { changeRequest() }
+      when {
+        anyOf {
+          branch "${env.MAIN_BRANCH}"
+          changeRequest()
+        }
+      }
       steps {
         sh '''
           ./gradlew docker
           docker-compose up -d
           timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w "%{http_code}" http://localhost:9000/actuator/health)" != "200" ]]; do sleep 5; done'
-          ./gradlew functionalTest
-          docker-compose down -v
+          ./gradlew functionalTest          
         '''
       }
       post {
         always {
+          sh 'docker-compose down -v'
           cucumber fileIncludePattern: '**/*.json', jsonReportDirectory: 'test/server-functional/build/surefire-reports'
         }
       }
