@@ -31,8 +31,22 @@ Run unit and integration tests
 ./gradlew check
 ```
 
-Run functional tests
+Run functional tests. Functional test expect by default a running instance listening on 
+port 9000.
 
 ```shell script
-./gradle functionalTest
+./gradlew functionalTest
+```
+
+Build application docker image
+
+```shell script
+./gradlew docker
+```
+
+Launch testing environment with docker compose
+
+```shell script
+./gradlew docker
+docker-compose up -d
 ```

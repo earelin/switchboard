@@ -6,7 +6,7 @@ Feature: Create an application
   So that I can define its feature flags
 
 Background:
-* url baseUrl
+  * url baseUrl
 
 Scenario: Create an application with name and description
 
@@ -14,7 +14,7 @@ Scenario: Create an application with name and description
     And request { name: 'Website', description: 'Public website' }
   When method post
   Then status 201
-    And match response == { id: '#notnull', name: 'Website', description: 'Public website', secret: '#notnull' }
+    And match response == { id: '#string', name: 'Website', description: 'Public website', secret: '#string' }
 
   * def id = response.id
   * def secret = response.secret

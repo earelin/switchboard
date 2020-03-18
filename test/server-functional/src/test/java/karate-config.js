@@ -12,7 +12,7 @@ function fn() {
 
   var host = karate.properties['server.host'];
   if (!host) {
-    host = '127.0.0.1';
+    host = 'localhost';
   }
 
   return { baseUrl: protocol + '://' + host + ':' + port };

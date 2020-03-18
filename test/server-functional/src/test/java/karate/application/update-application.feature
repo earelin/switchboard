@@ -5,46 +5,46 @@ As an user
 I want to update application name and description
 So that I can update the application information
 
-  Background:
-    * url baseUrl
+Background:
+  * url baseUrl
 
-  Scenario: Update application name and description
+Scenario: Update application name and description
 
-    Given path '/rest/v1/application'
-      And request { name: 'Some application' }
-    When method post
-    Then status 201
+  Given path '/rest/v1/application'
+    And request { name: 'Some application' }
+  When method post
+  Then status 201
 
-    * def id = response.id
+  * def id = response.id
 
-    Given path '/rest/v1/application/' + id
-      And request { name: 'Updated name', description: 'Updated description' }
-    When method put
-    Then status 200
-      And match response == { id: '#(id)', name: 'Updated name', description: 'Updated description', secret: '#notnull' }
+  Given path '/rest/v1/application/' + id
+    And request { name: 'Updated name', description: 'Updated description' }
+  When method put
+  Then status 200
+    And match response == { id: '#(id)', name: 'Updated name', description: 'Updated description', secret: '#string' }
 
-    Given path '/rest/v1/application/' + id
-    When method get
-    Then status 200
-      And match response == { id: '#(id)', name: 'Updated name', description: 'Updated description', secret: '#notnull' }
+  Given path '/rest/v1/application/' + id
+  When method get
+  Then status 200
+    And match response == { id: '#(id)', name: 'Updated name', description: 'Updated description', secret: '#string' }
 
-  Scenario: Update application with an empty name
+Scenario: Update application with an empty name
 
-    Given path '/rest/v1/application'
-      And request { name: 'Some application' }
-    When method post
-    Then status 201
+  Given path '/rest/v1/application'
+    And request { name: 'Some application' }
+  When method post
+  Then status 201
 
-    * def id = response.id
+  * def id = response.id
 
-    Given path '/rest/v1/application/' + id
-      And request { name: '   ' }
-    When method put
-    Then status 400
+  Given path '/rest/v1/application/' + id
+    And request { name: '   ' }
+  When method put
+  Then status 400
 
-  Scenario: Update a non existing application
+Scenario: Update a non existing application
 
-    Given path '/rest/v1/application/not-existing-app'
-      And request { name: 'Updated name', description: 'Updated description' }
-    When method put
-    Then status 404
+  Given path '/rest/v1/application/not-existing-app'
+    And request { name: 'Updated name', description: 'Updated description' }
+  When method put
+  Then status 404
