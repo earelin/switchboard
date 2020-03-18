@@ -1,7 +1,7 @@
 function fn() {
   var port = karate.properties['server.port'];
   if (!port) {
-    port =  8080;
+    port =  9000;
   }
 
   var protocol = 'http';

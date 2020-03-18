@@ -25,8 +25,13 @@ Then status 200
   And match response == { id: '#(id)', name: 'Website', description: 'Public website', secret: '#(secret)' }
 
 Scenario: Creating an application with empty name
+  Given path '/rest/v1/application'
+    And request { name: '   ' }
+  When method post
+  Then status 400
 
-Given path '/rest/v1/application'
-  And request { name: '   ' }
-When method post
-Then status 400
+Scenario: Creating an application without name
+  Given path '/rest/v1/application'
+    And request { }
+  When method post
+  Then status 400

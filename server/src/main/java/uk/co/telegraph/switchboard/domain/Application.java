@@ -36,6 +36,7 @@ public class Application {
   @Column(length = 64)
   private String name;
 
+  @Column(columnDefinition = "longtext")
   private String description;
 
   @Column(columnDefinition = "char(12)", length = 12)
