@@ -60,6 +60,16 @@ class ApplicationTest {
   }
 
   @Test
+  void should_not_allow_to_construct_with_a_id_longer_that_36_chars() {
+    assertThatThrownBy(() -> new Application(
+        "000-125c12a7-bf9a-4795-b673-564f9d9e369c",
+        APPLICATION_NAME,
+        APPLICATION_SECRET)
+    )
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
   void should_not_allow_to_construct_with_a_blank_name() {
     assertThatThrownBy(() -> new Application(APPLICATION_ID, "   ", APPLICATION_SECRET))
         .isInstanceOf(IllegalArgumentException.class);
@@ -72,6 +82,16 @@ class ApplicationTest {
   }
 
   @Test
+  void should_not_allow_to_construct_with_a_name_longer_than_64_chars() {
+    assertThatThrownBy(() -> new Application(
+        APPLICATION_ID,
+        "An amazing application that is improving our productivity a lot every day",
+        APPLICATION_SECRET)
+    )
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
   void should_not_allow_to_construct_with_a_blank_secret() {
     assertThatThrownBy(() -> new Application(APPLICATION_ID, APPLICATION_NAME, "   "))
         .isInstanceOf(IllegalArgumentException.class);
@@ -80,6 +100,16 @@ class ApplicationTest {
   @Test
   void should_not_allow_to_construct_with_a_null_secret() {
     assertThatThrownBy(() -> new Application(APPLICATION_ID, APPLICATION_NAME, null))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  void should_not_allow_to_construct_with_a_secret_longer_than_16_chars() {
+    assertThatThrownBy(() -> new Application(
+        APPLICATION_ID,
+        APPLICATION_NAME,
+        "qR7yQdMEEZn7XsCUasD4g5")
+    )
         .isInstanceOf(IllegalArgumentException.class);
   }
 
@@ -104,6 +134,12 @@ class ApplicationTest {
   }
 
   @Test
+  void should_not_allow_to_set_an_id_longer_than_16_chars() {
+    assertThatThrownBy(() -> application.setId("000-125c12a7-bf9a-4795-b673-564f9d9e369c"))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
   void should_set_and_return_name() {
     application.setName(APPLICATION_NAME_ALT);
 
@@ -120,6 +156,12 @@ class ApplicationTest {
   @Test
   void should_not_allow_to_set_a_blank_name() {
     assertThatThrownBy(() -> application.setName("  "))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  void should_not_allow_to_set_a_name_longer_than_64_chars() {
+    assertThatThrownBy(() -> application.setName("An amazing application that is improving our productivity a lot every day"))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
@@ -148,6 +190,12 @@ class ApplicationTest {
   @Test
   void should_not_allow_to_set_a_blank_secret() {
     assertThatThrownBy(() -> application.setSecret("  "))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  void should_not_allow_to_set_a_secret_longer_than_12_chars() {
+    assertThatThrownBy(() -> application.setSecret("qR7yQdMEEZn7XsCUasD4g5"))
         .isInstanceOf(IllegalArgumentException.class);
   }
 

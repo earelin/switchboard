@@ -1,0 +1,32 @@
+version: '3'
+services:
+
+  switchboard:
+    depends_on:
+      - db
+    image: telegraph/switchboard:latest
+    environment:
+      DATABASE_HOST: db
+    networks:
+      - switchboard-network
+    ports:
+      - '9000:8080'
+    command: wait-for-it.sh db:3306 -t 120 -- spring-boot.sh
+
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: switchboard
+      MYSQL_USER: switchboard
+      MYSQL_PASSWORD: secret
+      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+    networks:
+      - switchboard-network
+    volumes:
+      - db-volume:/var/lib/mysql
+
+networks:
+  switchboard-network:
+
+volumes:
+  db-volume:

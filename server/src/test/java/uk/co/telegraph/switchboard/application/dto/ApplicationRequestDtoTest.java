@@ -31,7 +31,8 @@ class ApplicationRequestDtoTest {
   private static final String APPLICATION_NAME = "Website";
   private static final String APPLICATION_DESCRIPTION = "Public website";
 
-  private static final ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+  private static final ValidatorFactory validatorFactory
+      = Validation.buildDefaultValidatorFactory();
 
   private Validator validator;
   private ApplicationRequestDto applicationRequestDto;

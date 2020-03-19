@@ -21,12 +21,18 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import org.junit.jupiter.api.Tag;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.TestPropertySource;
 
 /**
- * Generic integration test.
+ * JPA repositories integration tests.
  */
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
+@DataJpaTest
+@TestPropertySource(properties = {
+  "spring.jpa.hibernate.ddl-auto=validate"
+})
 @Tag("integration")
-public @interface Integration {
+public @interface RepositoryIntegration {
 }

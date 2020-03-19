@@ -16,6 +16,8 @@
 
 package uk.co.telegraph.switchboard.application;
 
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -25,6 +27,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static uk.co.telegraph.switchboard.utils.ApplicationContentGenerator.getApplicationList;
 
 import com.google.gson.Gson;
 import java.nio.charset.StandardCharsets;
@@ -33,6 +36,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import uk.co.telegraph.switchboard.Integration;
@@ -48,14 +54,14 @@ import uk.co.telegraph.switchboard.repositories.ApplicationRepository;
 @WebMvcTest(ApplicationController.class)
 public class ApplicationControllerWebTest {
 
+  private static final Gson gson = new Gson();
+
   private static final String APPLICATION_ID = "8c42f1d8-f588-451c-8465-be0ea7ed8025";
   private static final String APPLICATION_NAME = "Website";
   private static final String APPLICATION_DESCRIPTION = "Public website";
   private static final String APPLICATION_SECRET = "RHzSD62mQe4BhH3E";
   private static final String APPLICATION_UPDATED_NAME = "Old Website";
   private static final String APPLICATION_UPDATED_DESCRIPTION = "Old public website";
-
-  private Gson gson = new Gson();
 
   @Autowired
   private MockMvc mockMvc;
@@ -72,10 +78,13 @@ public class ApplicationControllerWebTest {
     application.setDescription(APPLICATION_DESCRIPTION);
     when(applicationFactory.createApplication(APPLICATION_NAME, APPLICATION_DESCRIPTION))
         .thenReturn(application);
+    when(applicationRepository.saveApplication(any()))
+        .then(returnsFirstArg());
 
-    ApplicationRequestDto request = new ApplicationRequestDto(APPLICATION_NAME, APPLICATION_DESCRIPTION);
+    ApplicationRequestDto request
+        = new ApplicationRequestDto(APPLICATION_NAME, APPLICATION_DESCRIPTION);
 
-    mockMvc.perform(post("/api/application")
+    mockMvc.perform(post("/rest/v1/application")
           .contentType(MediaType.APPLICATION_JSON)
           .characterEncoding(StandardCharsets.UTF_8.name())
           .content(gson.toJson(request)))
@@ -91,7 +100,7 @@ public class ApplicationControllerWebTest {
   void should_not_create_an_application_with_empty_name() throws Exception {
     ApplicationRequestDto request = new ApplicationRequestDto("  ", APPLICATION_DESCRIPTION);
 
-    mockMvc.perform(post("/api/application")
+    mockMvc.perform(post("/rest/v1/application")
           .contentType(MediaType.APPLICATION_JSON)
           .characterEncoding(StandardCharsets.UTF_8.name())
           .content(gson.toJson(request)))
@@ -100,13 +109,24 @@ public class ApplicationControllerWebTest {
   }
 
   @Test
+  void should_return_bad_request_if_the_create_body_is_not_valid() throws Exception {
+     mockMvc.perform(post("/rest/v1/application")
+          .contentType(MediaType.APPLICATION_JSON)
+          .characterEncoding(StandardCharsets.UTF_8.name())
+          .content("{\"no-sense-field\": \"value\"}"))
+        .andDo(print())
+        .andExpect(status().isBadRequest());
+  }
+
+
+  @Test
   void should_find_an_application_if_exists() throws Exception {
     Application application = new Application(APPLICATION_ID, APPLICATION_NAME, APPLICATION_SECRET);
     application.setDescription(APPLICATION_DESCRIPTION);
     when(applicationRepository.getApplication(APPLICATION_ID))
         .thenReturn(Optional.of(application));
 
-    mockMvc.perform(get("/api/application/{id}", APPLICATION_ID))
+    mockMvc.perform(get("/rest/v1/application/{id}", APPLICATION_ID))
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id").value(APPLICATION_ID))
@@ -120,7 +140,7 @@ public class ApplicationControllerWebTest {
     when(applicationRepository.getApplication(APPLICATION_ID))
         .thenReturn(Optional.empty());
 
-    mockMvc.perform(get("/api/application/{id}", APPLICATION_ID))
+    mockMvc.perform(get("/rest/v1/application/{id}", APPLICATION_ID))
         .andDo(print())
         .andExpect(status().isNotFound());
   }
@@ -130,7 +150,7 @@ public class ApplicationControllerWebTest {
     when(applicationRepository.doesApplicationExists(APPLICATION_ID))
         .thenReturn(true);
 
-    mockMvc.perform(delete("/api/application/{id}", APPLICATION_ID))
+    mockMvc.perform(delete("/rest/v1/application/{id}", APPLICATION_ID))
         .andDo(print())
         .andExpect(status().isOk());
     verify(applicationRepository).removeApplication(APPLICATION_ID);
@@ -142,7 +162,7 @@ public class ApplicationControllerWebTest {
     when(applicationRepository.doesApplicationExists(APPLICATION_ID))
         .thenReturn(false);
 
-    mockMvc.perform(delete("/api/application/{id}", APPLICATION_ID))
+    mockMvc.perform(delete("/rest/v1/application/{id}", APPLICATION_ID))
         .andDo(print())
         .andExpect(status().isNotFound());
   }
@@ -153,13 +173,15 @@ public class ApplicationControllerWebTest {
     application.setDescription(APPLICATION_DESCRIPTION);
     when(applicationRepository.getApplication(APPLICATION_ID))
         .thenReturn(Optional.of(application));
+    when(applicationRepository.saveApplication(any()))
+        .then(returnsFirstArg());
 
     ApplicationRequestDto request = new ApplicationRequestDto(
         APPLICATION_UPDATED_NAME,
         APPLICATION_UPDATED_DESCRIPTION
     );
 
-    mockMvc.perform(put("/api/application/{id}", APPLICATION_ID)
+    mockMvc.perform(put("/rest/v1/application/{id}", APPLICATION_ID)
           .contentType(MediaType.APPLICATION_JSON)
           .characterEncoding(StandardCharsets.UTF_8.name())
           .content(gson.toJson(request)))
@@ -181,7 +203,7 @@ public class ApplicationControllerWebTest {
         APPLICATION_UPDATED_DESCRIPTION
     );
 
-    mockMvc.perform(put("/api/application/{id}", APPLICATION_ID)
+    mockMvc.perform(put("/rest/v1/application/{id}", APPLICATION_ID)
           .contentType(MediaType.APPLICATION_JSON)
           .characterEncoding(StandardCharsets.UTF_8.name())
           .content(gson.toJson(request)))
@@ -193,10 +215,53 @@ public class ApplicationControllerWebTest {
   void should_not_update_an_application_with_empty_name() throws Exception {
     ApplicationRequestDto request = new ApplicationRequestDto("  ", APPLICATION_DESCRIPTION);
 
-    mockMvc.perform(put("/api/application/{id}", APPLICATION_ID)
+    mockMvc.perform(put("/rest/v1/application/{id}", APPLICATION_ID)
           .contentType(MediaType.APPLICATION_JSON)
           .characterEncoding(StandardCharsets.UTF_8.name())
           .content(gson.toJson(request)))
+        .andDo(print())
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void should_return_application_list() throws Exception {
+    Page<Application> applications
+        = new PageImpl<>(getApplicationList(), PageRequest.of(2, 10), 30);
+    when(applicationRepository.getPagedApplicationList(any()))
+        .thenReturn(applications);
+
+    mockMvc.perform(get("/rest/v1/application"))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.content").isArray())
+        .andExpect(jsonPath("$.last").value(true))
+        .andExpect(jsonPath("$.first").value(false))
+        .andExpect(jsonPath("$.pageNumber").value(2))
+        .andExpect(jsonPath("$.pageSize").value(10))
+        .andExpect(jsonPath("$.totalPages").value(3))
+        .andExpect(jsonPath("$.totalElements").value(30));
+  }
+
+  @Test
+  void should_return_bad_request_error_if_page_number_is_less_that_0() throws Exception {
+    mockMvc.perform(get("/rest/v1/application")
+          .param("page", "-1"))
+        .andDo(print())
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void should_return_bad_request_error_if_page_size_is_less_that_1() throws Exception {
+    mockMvc.perform(get("/rest/v1/application")
+          .param("size", "0"))
+        .andDo(print())
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void should_return_bad_request_error_if_sorting_property_does_not_exists() throws Exception {
+    mockMvc.perform(get("/rest/v1/application")
+          .param("sort", "surname"))
         .andDo(print())
         .andExpect(status().isBadRequest());
   }

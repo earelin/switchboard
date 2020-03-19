@@ -18,7 +18,6 @@ package uk.co.telegraph.switchboard.domain.rules;
 
 import java.util.Set;
 import uk.co.telegraph.switchboard.domain.ClientInfo;
-import uk.co.telegraph.switchboard.domain.rules.Rule;
 
 public class RulesSet {
 

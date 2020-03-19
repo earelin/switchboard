@@ -1,0 +1,23 @@
+logging:
+  level:
+    uk:
+      co:
+        telegraph:
+          switchboard: INFO
+
+spring:
+  datasource:
+    url: jdbc:mysql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}
+    password: ${DATABASE_PASSWORD}
+    username: ${DATABASE_USERNAME}
+  jpa:
+    open-in-view: false
+    show-sql: false
+  h2:
+    console:
+      enabled: false
+  liquibase:
+    enabled: true
+  output:
+    ansi:
+      enabled: NEVER

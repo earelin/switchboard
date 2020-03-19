@@ -80,37 +80,44 @@ class SortablePageableBuilderTest {
 
   @Test
   void should_throw_error_if_page_is_less_than_0() {
-    assertThatThrownBy(() -> sortablePageableBuilder.buildPageable(-1, 1, null))
+    assertThatThrownBy(() -> sortablePageableBuilder
+        .buildPageable(-1, 1, null))
         .isInstanceOf(IllegalArgumentException.class);
 
-    assertThatThrownBy(() -> sortablePageableBuilder.buildPageable(-10, 1, null))
+    assertThatThrownBy(() -> sortablePageableBuilder
+        .buildPageable(-10, 1, null))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
   @Test
   void should_throw_error_if_size_is_less_than_1() {
-    assertThatThrownBy(() -> sortablePageableBuilder.buildPageable(1, 0, null))
+    assertThatThrownBy(() -> sortablePageableBuilder
+        .buildPageable(1, 0, null))
         .isInstanceOf(IllegalArgumentException.class);
 
-    assertThatThrownBy(() -> sortablePageableBuilder.buildPageable(1, -10, null))
+    assertThatThrownBy(() -> sortablePageableBuilder
+        .buildPageable(1, -10, null))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
   @Test
   void should_throw_error_if_column_name_is_not_in_list() {
-    assertThatThrownBy(() -> sortablePageableBuilder.buildPageable(2, 10, new String[] {"surname"}))
+    assertThatThrownBy(() -> sortablePageableBuilder
+        .buildPageable(2, 10, new String[] {"surname"}))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
   @Test
   void should_throw_error_if_sorting_direction_does_not_match() {
-    assertThatThrownBy(() -> sortablePageableBuilder.buildPageable(2, 10, new String[] {"name:esc"}))
+    assertThatThrownBy(() -> sortablePageableBuilder
+        .buildPageable(2, 10, new String[] {"name:esc"}))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
   @Test
   void should_throw_error_if_sorting_request_is_malformed() {
-    assertThatThrownBy(() -> sortablePageableBuilder.buildPageable(2, 10, new String[] {"name:asc:desc"}))
+    assertThatThrownBy(() -> sortablePageableBuilder
+        .buildPageable(2, 10, new String[] {"name:asc:desc"}))
         .isInstanceOf(IllegalArgumentException.class);
   }
 }

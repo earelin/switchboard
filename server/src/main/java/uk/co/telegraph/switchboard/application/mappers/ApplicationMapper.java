@@ -19,8 +19,10 @@ package uk.co.telegraph.switchboard.application.mappers;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.springframework.data.domain.Page;
 import uk.co.telegraph.switchboard.application.dto.ApplicationDto;
 import uk.co.telegraph.switchboard.application.dto.ApplicationRequestDto;
+import uk.co.telegraph.switchboard.application.dto.PageDto;
 import uk.co.telegraph.switchboard.domain.Application;
 
 @Mapper
@@ -30,4 +32,8 @@ public interface ApplicationMapper {
   @Mapping(target = "secret", ignore = true)
   void updateDomainFromDto(ApplicationRequestDto applicationRequestDto,
       @MappingTarget Application application);
+
+  default PageDto<ApplicationDto> domainPageToDto(Page<Application> domainPage) {
+    return new PageDto<>(domainPage.map(this::domainToDto));
+  }
 }

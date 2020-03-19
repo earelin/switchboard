@@ -49,11 +49,13 @@ public class SortablePageableBuilder {
    */
   public Pageable buildPageable(int page, int size, String[] sortingProperties) {
     if (page < 0) {
-      throw new IllegalArgumentException("Page number must not be less than 0: " + page);
+      throw new IllegalArgumentException(
+          "Page number must not be less than 0, current value: " + page);
     }
 
     if (size < 1) {
-      throw new IllegalArgumentException("Page size must not be less than 1: " + size);
+      throw new IllegalArgumentException(
+          "Page size must not be less than 1, current value " + size);
     }
 
     return PageRequest.of(page, size, buildSorting(sortingProperties));
@@ -85,7 +87,8 @@ public class SortablePageableBuilder {
       if (sortingComponents[1].equals("asc") || sortingComponents[1].equals("desc")) {
         direction = Direction.valueOf(sortingComponents[1].toUpperCase());
       } else {
-        throw new IllegalArgumentException("Sorting direction value has to be 'asc' or 'desc': "
+        throw new IllegalArgumentException(
+            "Sorting direction value has to be 'asc' or 'desc', current value: "
             + sortingComponents[1]);
       }
     }
