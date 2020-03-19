@@ -16,6 +16,7 @@ Switchboard is a [feature flag](https://martinfowler.com/articles/feature-toggle
   - Enable feature after a date
   - Enable a feature for a group of users
   - Enable a feature for a context
+- Client application can query features status
 
 ## Development
 

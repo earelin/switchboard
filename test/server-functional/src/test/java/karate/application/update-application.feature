@@ -21,12 +21,28 @@ Scenario: Update application name and description
     And request { name: 'Updated name', description: 'Updated description' }
   When method put
   Then status 200
-    And match response == { id: '#(id)', name: 'Updated name', description: 'Updated description', secret: '#string' }
+    And match response ==
+      """
+      {
+        id: '#(id)',
+        name: 'Updated name',
+        description: 'Updated description',
+        secret: '#string'
+      }
+      """
 
   Given path '/rest/v1/application/' + id
   When method get
   Then status 200
-    And match response == { id: '#(id)', name: 'Updated name', description: 'Updated description', secret: '#string' }
+    And match response ==
+      """
+      {
+        id: '#(id)',
+        name: 'Updated name',
+        description: 'Updated description',
+        secret: '#string'
+      }
+      """
 
 Scenario: Update application with an empty name
 
