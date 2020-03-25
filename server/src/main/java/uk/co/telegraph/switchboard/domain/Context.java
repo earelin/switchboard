@@ -16,32 +16,51 @@
 
 package uk.co.telegraph.switchboard.domain;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.apache.commons.lang3.StringUtils;
 
+@Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
 public class Context {
 
+  @Id
   @EqualsAndHashCode.Include
   private Long id;
-  private Application application;
+
+  @ManyToOne
+  private ContextsAggregator contextsAggregator;
+
+  @Column(length = 32)
   private String name;
 
-  protected Context() {
+  Context() {
   }
 
-  public Context(Long id, Application application) {
-    this.id = id;
-    this.application = application;
+  public Context(ContextsAggregator contextsAggregator, String name) {
+    this.contextsAggregator = contextsAggregator;
+    this.name = name;
   }
 
   public Long getId() {
     return id;
   }
 
-  public Application getApplication() {
-    return application;
+  void setId(Long id) {
+    this.id = id;
+  }
+
+  public ContextsAggregator getContextsAggregator() {
+    return contextsAggregator;
+  }
+
+  void setContextsAggregator(ContextsAggregator application) {
+    this.contextsAggregator = contextsAggregator;
   }
 
   public String getName() {
@@ -49,6 +68,14 @@ public class Context {
   }
 
   public void setName(String name) {
+    if (StringUtils.isBlank(name)) {
+      throw new IllegalArgumentException("Context name cannot be empty or null");
+    }
+
+    if (name.length() > 32) {
+      throw new IllegalArgumentException("Context name cannot be longer than 64 characters");
+    }
+
     this.name = name;
   }
 }

@@ -101,7 +101,7 @@ public class Application {
     }
 
     if (secret.length() > 16) {
-      throw new IllegalArgumentException("Application name cannot be longer than 64 characters");
+      throw new IllegalArgumentException("Application secret cannot be longer than 16 characters");
     }
 
     this.secret = secret;

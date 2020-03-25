@@ -70,8 +70,8 @@ databaseChangeLog:
                     referencedTableName: application
                     referencedColumnNames: id
               - column:
-                  name: key
-                  type: varchar(64)
+                  name: name
+                  type: varchar(32)
                   constraints:
                     nullable: false
 
