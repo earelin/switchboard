@@ -49,7 +49,7 @@ class ContextTest {
   @Test
   void constructor_should_set_application_context_and_name() {
     assertThat(context)
-        .hasFieldOrPropertyWithValue("applicationContexts", contextsAggregator)
+        .hasFieldOrPropertyWithValue("contextsAggregator", contextsAggregator)
         .hasFieldOrPropertyWithValue("name", CONTEXT_NAME);
   }
 

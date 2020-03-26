@@ -59,7 +59,7 @@ public class Context {
     return contextsAggregator;
   }
 
-  void setContextsAggregator(ContextsAggregator application) {
+  void setContextsAggregator(ContextsAggregator contextsAggregator) {
     this.contextsAggregator = contextsAggregator;
   }
 

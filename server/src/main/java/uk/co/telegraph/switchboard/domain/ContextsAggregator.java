@@ -16,13 +16,14 @@
 
 package uk.co.telegraph.switchboard.domain;
 
-import java.util.List;
+import java.util.*;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Context aggregator.
@@ -38,7 +39,7 @@ public class ContextsAggregator {
   private Application application;
 
   @OneToMany
-  private List<Context> contexts;
+  private Map<String, Context> contexts = new HashMap<>();
 
   ContextsAggregator() {
   }
@@ -48,30 +49,66 @@ public class ContextsAggregator {
   }
 
   public void addContext(String name) {
-    throw new UnsupportedOperationException();
+    if (Objects.isNull(name)) {
+      throw new NullPointerException("Not allowed null value on context name");
+    }
+
+    if (StringUtils.isBlank(name)) {
+      throw new IllegalArgumentException("Not allowed empty string value on context name");
+    }
+
+    if (contexts.containsKey(name)) {
+      throw new ObjectAlreadyExistsInAggregate(
+          String.format("A context with the name %s already exists", name)
+      );
+    }
+
+    Context context = new Context(this, name);
+
+    contexts.put(name, context);
+  }
+
+  public boolean containsContext(String name) {
+    return contexts.containsKey(name);
+  }
+
+  public Optional<Context> getContext(String name) {
+    if (Objects.isNull(name)) {
+      throw new NullPointerException("Not allowed null value on context name");
+    }
+
+    return Optional.ofNullable(
+        contexts.get(name)
+    );
   }
 
   public void removeContext(String name) {
-    throw new UnsupportedOperationException();
-  }
+    if (Objects.isNull(name)) {
+      throw new NullPointerException("Could not remove a null context");
+    }
 
-  public Context getContext(String name) {
-    throw new UnsupportedOperationException();
+    if (!contexts.containsKey(name)) {
+      throw new ObjectDoesNotExists(
+          String.format("A context with name %s does not exists", name)
+      );
+    }
+
+    contexts.remove(name);
   }
 
   public Application getApplication() {
-    throw new UnsupportedOperationException();
+    return this.application;
   }
 
   void setApplication(Application application) {
-    throw new UnsupportedOperationException();
+    this.application = application;
   }
 
-  public List<Context> getContexts() {
-    throw new UnsupportedOperationException();
+  public Map<String, Context> getContexts() {
+    return Map.copyOf(this.contexts);
   }
 
-  void setContexts(List<Context> contexts) {
-    throw new UnsupportedOperationException();
+  void setContexts(Map<String, Context> contexts) {
+    this.contexts = contexts;
   }
 }
