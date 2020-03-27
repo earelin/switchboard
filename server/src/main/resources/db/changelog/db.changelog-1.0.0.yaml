@@ -45,6 +45,26 @@ databaseChangeLog:
                   type: longvarchar
 
   - changeSet:
+      id: '1.0.0-contexts-aggregator-table'
+      author: switchboard
+      comment: Contexts aggregator entity table
+      changes:
+        - createTable:
+            tableName: contexts_aggregator
+            columns:
+              - column:
+                  name: application_id
+                  type: char(36)
+                  constraints:
+                    deleteCascade: true
+                    foreignKeyName: fk_contexts_aggregator_application_id
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_contexts_aggregator
+                    referencedTableName: application
+                    referencedColumnNames: id
+
+  - changeSet:
       id: '1.0.0-context-table'
       author: switchboard
       comment: Context entity table
@@ -61,14 +81,14 @@ databaseChangeLog:
                     primaryKey: true
                     primaryKeyName: pk_context
               - column:
-                  name: application_id
+                  name: application
                   type: char(36)
                   constraints:
                     deleteCascade: true
-                    foreignKeyName: fk_context_application_id
+                    foreignKeyName: fk_context_contexts_aggregator_application_id
                     nullable: false
-                    referencedTableName: application
-                    referencedColumnNames: id
+                    referencedTableName: contexts_aggregator
+                    referencedColumnNames: application_id
               - column:
                   name: name
                   type: varchar(32)

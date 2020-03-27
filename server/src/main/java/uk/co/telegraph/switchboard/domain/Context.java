@@ -19,6 +19,7 @@ package uk.co.telegraph.switchboard.domain;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -34,6 +35,7 @@ public class Context {
   private Long id;
 
   @ManyToOne
+  @JoinColumn(name = "application", referencedColumnName = "application_id")
   private ContextsAggregator contextsAggregator;
 
   @Column(length = 32)

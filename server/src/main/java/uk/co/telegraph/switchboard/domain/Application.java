@@ -23,6 +23,8 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.Serializable;
+
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString

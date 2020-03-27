@@ -16,9 +16,11 @@
 
 package uk.co.telegraph.switchboard.domain;
 
+import java.io.Serializable;
 import java.util.*;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import lombok.EqualsAndHashCode;
@@ -31,14 +33,17 @@ import org.apache.commons.lang3.StringUtils;
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
-public class ContextsAggregator {
+public class ContextsAggregator implements Serializable {
+
+  private static final long serialVersionUID = 4576840214871672539L;
 
   @Id
   @OneToOne
   @EqualsAndHashCode.Include
   private Application application;
 
-  @OneToMany
+  @OneToMany(mappedBy = "contextsAggregator")
+  @MapKey(name = "name")
   private Map<String, Context> contexts = new HashMap<>();
 
   ContextsAggregator() {
