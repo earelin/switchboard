@@ -30,8 +30,8 @@ public interface ApplicationMapper {
   ApplicationDto domainToDto(Application application);
 
   @Mapping(target = "secret", ignore = true)
-  void updateDomainFromDto(ApplicationRequestDto applicationRequestDto,
-      @MappingTarget Application application);
+  void updateDomainFromDto(
+      ApplicationRequestDto applicationRequestDto, @MappingTarget Application application);
 
   default PageDto<ApplicationDto> domainPageToDto(Page<Application> domainPage) {
     return new PageDto<>(domainPage.map(this::domainToDto));

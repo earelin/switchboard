@@ -31,8 +31,8 @@ class ApplicationRequestDtoTest {
   private static final String APPLICATION_NAME = "Website";
   private static final String APPLICATION_DESCRIPTION = "Public website";
 
-  private static final ValidatorFactory validatorFactory
-      = Validation.buildDefaultValidatorFactory();
+  private static final ValidatorFactory validatorFactory =
+      Validation.buildDefaultValidatorFactory();
 
   private Validator validator;
   private ApplicationRequestDto applicationRequestDto;
@@ -56,58 +56,50 @@ class ApplicationRequestDtoTest {
   void should_set_and_return_name() {
     applicationRequestDto.setName(APPLICATION_NAME);
 
-    assertThat(applicationRequestDto.getName())
-        .isEqualTo(APPLICATION_NAME);
+    assertThat(applicationRequestDto.getName()).isEqualTo(APPLICATION_NAME);
   }
 
   @Test
   void should_set_and_return_description() {
     applicationRequestDto.setDescription(APPLICATION_DESCRIPTION);
 
-    assertThat(applicationRequestDto.getDescription())
-        .isEqualTo(APPLICATION_DESCRIPTION);
+    assertThat(applicationRequestDto.getDescription()).isEqualTo(APPLICATION_DESCRIPTION);
   }
 
   @Test
   void should_validate() {
     applicationRequestDto.setName(APPLICATION_NAME);
 
-    Set<ConstraintViolation<ApplicationRequestDto>> violations
-        = validator.validate(applicationRequestDto);
+    Set<ConstraintViolation<ApplicationRequestDto>> violations =
+        validator.validate(applicationRequestDto);
 
-    assertThat(violations)
-        .isEmpty();
+    assertThat(violations).isEmpty();
   }
 
   @Test
   void should_not_validate_if_name_is_null() {
-    Set<ConstraintViolation<ApplicationRequestDto>> violations
-        = validator.validate(applicationRequestDto);
+    Set<ConstraintViolation<ApplicationRequestDto>> violations =
+        validator.validate(applicationRequestDto);
 
-    assertThat(violations)
-        .hasSize(1);
+    assertThat(violations).hasSize(1);
     ConstraintViolation<ApplicationRequestDto> violation = violations.iterator().next();
-    assertThat(violation.getPropertyPath().toString())
-        .isEqualTo("name");
+    assertThat(violation.getPropertyPath().toString()).isEqualTo("name");
   }
 
   @Test
   void should_not_validate_if_name_is_empty() {
     applicationRequestDto.setName("   ");
 
-    Set<ConstraintViolation<ApplicationRequestDto>> violations
-        = validator.validate(applicationRequestDto);
+    Set<ConstraintViolation<ApplicationRequestDto>> violations =
+        validator.validate(applicationRequestDto);
 
-    assertThat(violations)
-        .hasSize(1);
+    assertThat(violations).hasSize(1);
     ConstraintViolation<ApplicationRequestDto> violation = violations.iterator().next();
-    assertThat(violation.getPropertyPath().toString())
-        .isEqualTo("name");
+    assertThat(violation.getPropertyPath().toString()).isEqualTo("name");
   }
 
   @Test
   void should_return_string_representation() {
-    assertThat(applicationRequestDto.toString())
-        .startsWith("ApplicationRequest");
+    assertThat(applicationRequestDto.toString()).startsWith("ApplicationRequest");
   }
 }

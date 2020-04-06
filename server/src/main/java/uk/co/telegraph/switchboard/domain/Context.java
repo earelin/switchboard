@@ -16,6 +16,7 @@
 
 package uk.co.telegraph.switchboard.domain;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -28,7 +29,11 @@ import org.apache.commons.lang3.StringUtils;
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
-public class Context {
+public class Context implements Serializable {
+
+  private static final long serialVersionUID = 6484811162702249867L;
+
+  public static final int NAME_MAX_LENGTH = 32;
 
   @Id
   @EqualsAndHashCode.Include
@@ -36,16 +41,17 @@ public class Context {
 
   @ManyToOne
   @JoinColumn(name = "application", referencedColumnName = "application_id")
+  @ToString.Exclude
   private ContextsAggregator contextsAggregator;
 
   @Column(length = 32)
   private String name;
 
-  Context() {
-  }
+  Context() {}
 
   public Context(ContextsAggregator contextsAggregator, String name) {
     this.contextsAggregator = contextsAggregator;
+    nameValidation(name);
     this.name = name;
   }
 
@@ -70,14 +76,17 @@ public class Context {
   }
 
   public void setName(String name) {
+    nameValidation(name);
+    this.name = name;
+  }
+
+  private void nameValidation(String name) {
     if (StringUtils.isBlank(name)) {
-      throw new IllegalArgumentException("Context name cannot be empty or null");
+      throw new IllegalArgumentException("Context name cannot be null or empty");
     }
 
-    if (name.length() > 32) {
+    if (name.length() > NAME_MAX_LENGTH) {
       throw new IllegalArgumentException("Context name cannot be longer than 64 characters");
     }
-
-    this.name = name;
   }
 }

@@ -15,143 +15,141 @@
  */
 
 plugins {
-	id 'checkstyle'
-	id 'com.github.ben-manes.versions' version "${gradleVersionsPlugin}"
-	id 'com.github.spotbugs' version "${spotbugsVersion}"
-	id 'com.palantir.docker' version "${dockerGradleVersion}"
-	id 'de.aaschmid.cpd' version "${cpdVersion}"
-	id 'io.spring.dependency-management' version "${springDependencyManagementVersion}"
-	id 'jacoco'
-	id 'java'
-	id 'org.springframework.boot' version "${springBootVersion}"
+  id 'checkstyle'
+  id 'com.github.ben-manes.versions' version "${gradleVersionsPlugin}"
+  id 'com.github.spotbugs' version "${spotbugsVersion}"
+  id 'com.palantir.docker' version "${dockerGradleVersion}"
+  id 'de.aaschmid.cpd' version "${cpdVersion}"
+  id 'io.spring.dependency-management' version "${springDependencyManagementVersion}"
+  id 'jacoco'
+  id 'java'
+  id 'org.springframework.boot' version "${springBootVersion}"
 }
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_11
-	targetCompatibility = JavaVersion.VERSION_11
+  sourceCompatibility = JavaVersion.VERSION_11
+  targetCompatibility = JavaVersion.VERSION_11
 }
 
 compileJava {
-	options.compilerArgs << '-Xlint:all,-processing'
+  options.compilerArgs << '-Xlint:all,-processing'
 }
 
 configurations {
-	checkstyleConfig
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-	developmentOnly
-	runtimeClasspath {
-		extendsFrom developmentOnly
-	}
+  checkstyleConfig
+  compileOnly {
+    extendsFrom annotationProcessor
+  }
+  developmentOnly
+  runtimeClasspath {
+    extendsFrom developmentOnly
+  }
 }
 
 bootJar {
-	manifest {
-		attributes(
-				'Implementation-Title': 'Switchboard',
-				'Implementation-Version': rootProject.version
-		)
-	}
+  manifest {
+    attributes(
+        'Implementation-Title': 'Switchboard',
+        'Implementation-Version': rootProject.version
+    )
+  }
 }
 
 test {
-	useJUnitPlatform {
-		excludeTags "integration"
-	}
+  useJUnitPlatform {
+    excludeTags "integration"
+  }
 }
 
 task('integrationTest', type: Test) {
-	group "Verification"
-	description "Runs integration tests."
-	useJUnitPlatform {
-		includeTags "integration"
-	}
+  group "Verification"
+  description "Runs integration tests."
+  useJUnitPlatform {
+    includeTags "integration"
+  }
 }
 
 check {
-	dependsOn test
-	dependsOn integrationTest
-	jacocoTestReport {
-		executionData test, integrationTest
-	}
-	finalizedBy jacocoTestReport
+  dependsOn test
+  dependsOn integrationTest
+  jacocoTestReport {
+    executionData test, integrationTest
+  }
+  finalizedBy jacocoTestReport
 }
 
 repositories {
-	mavenCentral()
+  mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+  implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
-	implementation('org.springframework.boot:spring-boot-starter-web') {
-		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
-	}
-	implementation 'org.springframework.boot:spring-boot-starter-jetty'
+  implementation('org.springframework.boot:spring-boot-starter-web') {
+    exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+  }
+  implementation 'org.springframework.boot:spring-boot-starter-jetty'
 
-	implementation "io.springfox:springfox-swagger2:${springfoxSwaggerVersion}"
-	implementation "io.springfox:springfox-swagger-ui:${springfoxSwaggerVersion}"
+  implementation "io.springfox:springfox-swagger2:${springfoxSwaggerVersion}"
+  implementation "io.springfox:springfox-swagger-ui:${springfoxSwaggerVersion}"
 
-	annotationProcessor 'org.projectlombok:lombok'
-	compileOnly 'org.projectlombok:lombok'
+  annotationProcessor 'org.projectlombok:lombok'
+  compileOnly 'org.projectlombok:lombok'
 
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.liquibase:liquibase-core'
-	runtimeOnly 'com.h2database:h2'
-	runtimeOnly 'mysql:mysql-connector-java'
+  implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+  implementation 'org.liquibase:liquibase-core'
+  runtimeOnly 'com.h2database:h2'
+  runtimeOnly 'mysql:mysql-connector-java'
 
-	implementation "org.apache.commons:commons-lang3:${commonsLangVersion}"
+  implementation "org.apache.commons:commons-lang3:${commonsLangVersion}"
 
-	implementation "org.mapstruct:mapstruct:${mapstructVersion}"
-	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+  implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+  annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 
-	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+  annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+  developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
-	checkstyleConfig("com.puppycrawl.tools:checkstyle:${checkstyleToolVersion}") {
-		transitive = false
-	}
-	spotbugsPlugins "com.h3xstream.findsecbugs:findsecbugs-plugin:${findsecbugsVersion}"
-	spotbugsPlugins "com.mebigfatguy.fb-contrib:fb-contrib:${findBugsContribVersion}"
+  checkstyleConfig("com.puppycrawl.tools:checkstyle:${checkstyleToolVersion}") {
+    transitive = false
+  }
+  spotbugsPlugins "com.h3xstream.findsecbugs:findsecbugs-plugin:${findsecbugsVersion}"
+  spotbugsPlugins "com.mebigfatguy.fb-contrib:fb-contrib:${findBugsContribVersion}"
 
-	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-	}
-	testImplementation "io.rest-assured:rest-assured-all:${restAssuredVersion}"
-	testImplementation "io.rest-assured:spring-mock-mvc:${restAssuredVersion}"
-	testImplementation "com.google.code.gson:gson:${gsonVersion}"
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  testImplementation "io.rest-assured:rest-assured-all:${restAssuredVersion}"
+  testImplementation "io.rest-assured:spring-mock-mvc:${restAssuredVersion}"
+  testImplementation "com.google.code.gson:gson:${gsonVersion}"
 }
 
 checkstyle {
-	toolVersion "${checkstyleToolVersion}"
-	maxErrors 0
-	config = resources.text.fromArchiveEntry(configurations.checkstyleConfig, 'google_checks.xml')
+  toolVersion "${checkstyleToolVersion}"
+  maxErrors 0
+  config = resources.text.fromArchiveEntry(configurations.checkstyleConfig, 'google_checks.xml')
 }
 
 cpdCheck {
-	ignoreFailures = true
-	source = sourceSets.main.allJava
+  ignoreFailures = true
+  source = sourceSets.main.allJava
 }
 
 spotbugs {
-	effort = 'max'
-	ignoreFailures = true
-	reportLevel = 'low'
-	showProgress = true
+  effort = 'max'
+  ignoreFailures = true
+  reportLevel = 'low'
+  showProgress = true
 }
 
 spotbugsMain {
-	reports {
-		xml {
-			enabled = true
-		}
-	}
+  reports {
+    xml {
+      enabled = true
+    }
+  }
 }
 
 docker {
-	name 'telegraph/switchboard'
-	tags 'latest'
-	dockerfile file('src/main/docker/Dockerfile')
-	files tasks.bootJar.outputs, 'src/main/docker/wait-for-it.sh', 'src/main/docker/spring-boot.sh'
+  name 'telegraph/switchboard'
+  tags 'latest'
+  dockerfile file('src/main/docker/Dockerfile')
+  files tasks.bootJar.outputs, 'src/main/docker/wait-for-it.sh', 'src/main/docker/spring-boot.sh'
 }

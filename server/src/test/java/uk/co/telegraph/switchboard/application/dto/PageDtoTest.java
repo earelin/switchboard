@@ -17,7 +17,7 @@
 package uk.co.telegraph.switchboard.application.dto;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static uk.co.telegraph.switchboard.utils.ApplicationContentGenerator.getApplicationDtoList;
+import static uk.co.telegraph.switchboard.generators.ApplicationContentGenerator.getApplicationDtoList;
 
 import java.io.FileNotFoundException;
 import java.util.List;
@@ -48,44 +48,36 @@ class PageDtoTest {
 
   @Test
   void should_return_and_set_content_on_constructor() {
-    assertThat(pageDto.getContent())
-        .isEqualTo(applicationDtoList);
+    assertThat(pageDto.getContent()).isEqualTo(applicationDtoList);
   }
 
   @Test
   void should_return_and_set_total_elements_on_constructor() {
-    assertThat(pageDto.getTotalElements())
-        .isEqualTo(TOTAL_ELEMENTS);
+    assertThat(pageDto.getTotalElements()).isEqualTo(TOTAL_ELEMENTS);
   }
 
   @Test
   void should_return_and_set_total_pages_on_constructor() {
-    assertThat(pageDto.getTotalPages())
-        .isEqualTo(4);
+    assertThat(pageDto.getTotalPages()).isEqualTo(4);
   }
 
   @Test
   void should_return_and_set_page_number_on_constructor() {
-    assertThat(pageDto.getPageNumber())
-        .isEqualTo(PAGE_NUMBER);
+    assertThat(pageDto.getPageNumber()).isEqualTo(PAGE_NUMBER);
   }
 
   @Test
   void should_return_and_set_page_size_on_constructor() {
-    assertThat(pageDto.getPageSize())
-        .isEqualTo(PAGE_SIZE);
+    assertThat(pageDto.getPageSize()).isEqualTo(PAGE_SIZE);
   }
 
   @Test
   void should_return_and_set_if_is_last_page_on_constructor() {
-    assertThat(pageDto.isLast())
-        .isFalse();
+    assertThat(pageDto.isLast()).isFalse();
   }
 
   @Test
   void should_return_and_set_if_is_first_page_on_constructor() {
-    assertThat(pageDto.isFirst())
-        .isFalse();
+    assertThat(pageDto.isFirst()).isFalse();
   }
-
 }

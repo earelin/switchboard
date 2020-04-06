@@ -21,6 +21,7 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,7 +42,10 @@ import uk.co.telegraph.switchboard.factories.ApplicationFactory;
 import uk.co.telegraph.switchboard.repositories.ApplicationRepository;
 
 @RestController
-@RequestMapping("/rest/v1/application")
+@RequestMapping(
+    value = "/rest/v1/application",
+    produces = {MediaType.APPLICATION_JSON_VALUE}
+)
 public class ApplicationController {
 
   private static final String APPLICATION_NOT_FOUND_MESSAGE = "Application not found: %s";
@@ -52,8 +56,7 @@ public class ApplicationController {
   private final SortablePageableBuilder pageableBuilder;
 
   public ApplicationController(
-      ApplicationFactory applicationFactory,
-      ApplicationRepository applicationRepository) {
+      ApplicationFactory applicationFactory, ApplicationRepository applicationRepository) {
     this.applicationFactory = applicationFactory;
     this.applicationRepository = applicationRepository;
     this.applicationMapper = Mappers.getMapper(ApplicationMapper.class);
@@ -62,14 +65,11 @@ public class ApplicationController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public ApplicationDto createApplication(
-      @RequestBody @Valid ApplicationRequestDto request) {
-    Application application = applicationFactory.createApplication(
-        request.getName(),
-        request.getDescription()
-    );
+  public ApplicationDto createApplication(@RequestBody @Valid ApplicationRequestDto request) {
+    Application application =
+        applicationFactory.createApplication(request.getName(), request.getDescription());
 
-    Application savedApplication = applicationRepository.saveApplication(application);
+    Application savedApplication = applicationRepository.save(application);
 
     return applicationMapper.domainToDto(savedApplication);
   }
@@ -78,55 +78,54 @@ public class ApplicationController {
   public PageDto<ApplicationDto> getApplicationList(
       @RequestParam(defaultValue = "0", required = false) int page,
       @RequestParam(defaultValue = "20", required = false) int size,
-      @RequestParam(value = "sort", defaultValue = "name", required = false) String[] sortedProperties) {
+      @RequestParam(value = "sort", defaultValue = "name", required = false)
+          String[] sortedProperties) {
     Pageable pageable;
 
     try {
       pageable = pageableBuilder.buildPageable(page, size, sortedProperties);
     } catch (IllegalArgumentException exception) {
-      throw new ResponseStatusException(
-          HttpStatus.BAD_REQUEST,
-          exception.getMessage()
-      );
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 
-    Page<Application> applicationPage = applicationRepository.getPagedApplicationList(pageable);
+    Page<Application> applicationPage = applicationRepository.getPagedList(pageable);
     return applicationMapper.domainPageToDto(applicationPage);
   }
 
   @GetMapping("/{id}")
   public ApplicationDto findApplication(@PathVariable String id) {
-    Application application = applicationRepository.getApplication(id)
-        .orElseThrow(() -> new ResponseStatusException(
-            HttpStatus.NOT_FOUND,
-            String.format(APPLICATION_NOT_FOUND_MESSAGE, id)
-        ));
+    Application application =
+        applicationRepository
+            .getById(id)
+            .orElseThrow(
+                () ->
+                    new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, String.format(APPLICATION_NOT_FOUND_MESSAGE, id)));
     return applicationMapper.domainToDto(application);
   }
 
   @DeleteMapping("/{id}")
   public void deleteApplication(@PathVariable String id) {
-    if (!applicationRepository.doesApplicationExists(id)) {
+    if (!applicationRepository.existsById(id)) {
       throw new ResponseStatusException(
-          HttpStatus.NOT_FOUND,
-          String.format(APPLICATION_NOT_FOUND_MESSAGE, id)
-      );
+          HttpStatus.NOT_FOUND, String.format(APPLICATION_NOT_FOUND_MESSAGE, id));
     }
-    applicationRepository.removeApplication(id);
+    applicationRepository.removeById(id);
   }
 
   @PutMapping("/{id}")
   public ApplicationDto updateApplication(
-      @PathVariable String id,
-      @RequestBody @Valid ApplicationRequestDto request) {
-    Application application = applicationRepository.getApplication(id)
-        .orElseThrow(() -> new ResponseStatusException(
-            HttpStatus.NOT_FOUND,
-            String.format(APPLICATION_NOT_FOUND_MESSAGE, id)
-        ));
+      @PathVariable String id, @RequestBody @Valid ApplicationRequestDto request) {
+    Application application =
+        applicationRepository
+            .getById(id)
+            .orElseThrow(
+                () ->
+                    new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, String.format(APPLICATION_NOT_FOUND_MESSAGE, id)));
 
     applicationMapper.updateDomainFromDto(request, application);
-    Application savedApplication = applicationRepository.saveApplication(application);
+    Application savedApplication = applicationRepository.save(application);
 
     return applicationMapper.domainToDto(savedApplication);
   }

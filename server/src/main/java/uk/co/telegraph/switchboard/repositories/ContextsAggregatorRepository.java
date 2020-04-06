@@ -17,19 +17,18 @@
 package uk.co.telegraph.switchboard.repositories;
 
 import java.util.Optional;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import uk.co.telegraph.switchboard.domain.Application;
+import uk.co.telegraph.switchboard.domain.ContextsAggregator;
 
-/** Application entity repository. */
-public interface ApplicationRepository {
-  Optional<Application> getById(String id);
+/** ContextAggregator domain object repository. */
+public interface ContextsAggregatorRepository {
+  Optional<ContextsAggregator> getByApplication(Application application);
 
-  Application save(Application application);
+  Optional<ContextsAggregator> getByApplicationId(String applicationId);
 
-  void removeById(String id);
+  ContextsAggregator save(ContextsAggregator contextsAggregator);
 
-  boolean existsById(String id);
+  boolean existsByApplication(Application application);
 
-  Page<Application> getPagedList(Pageable pageable);
+  boolean existsByApplicationId(String applicationId);
 }

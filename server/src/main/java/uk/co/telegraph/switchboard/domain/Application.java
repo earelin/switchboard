@@ -16,6 +16,7 @@
 
 package uk.co.telegraph.switchboard.domain;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -23,12 +24,12 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.Serializable;
-
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
-public class Application {
+public class Application implements Serializable {
+
+  private static final long serialVersionUID = -8434329592259214281L;
 
   @Id
   @EqualsAndHashCode.Include
@@ -44,8 +45,7 @@ public class Application {
   @Column(columnDefinition = "char(12)", length = 12)
   private String secret;
 
-  Application() {
-  }
+  Application() {}
 
   public Application(String id, String name, String secret) {
     setId(id);

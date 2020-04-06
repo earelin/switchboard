@@ -34,8 +34,7 @@ class DateTimeRuleTest {
 
   private DateTimeRule dateTimeRule;
 
-  @Mock
-  private ClientInfo clientInfo;
+  @Mock private ClientInfo clientInfo;
 
   @BeforeEach
   void setUp() {
@@ -45,26 +44,20 @@ class DateTimeRuleTest {
 
   @Test
   void should_set_and_get_date_time_that_is_enabled_after() {
-    assertThat(dateTimeRule.getDateTimeEnabledAfter())
-        .isEqualTo(DATE_TIME);
+    assertThat(dateTimeRule.getDateTimeEnabledAfter()).isEqualTo(DATE_TIME);
   }
 
   @Test
   void should_be_enabled_when_client_request_is_after_date_time_field_value() {
-    when(clientInfo.getTime())
-        .thenReturn(DATE_TIME.plusDays(2));
+    when(clientInfo.getTime()).thenReturn(DATE_TIME.plusDays(2));
 
-    assertThat(dateTimeRule.isEnabledForClient(clientInfo))
-        .isTrue();
+    assertThat(dateTimeRule.isEnabledForClient(clientInfo)).isTrue();
   }
 
   @Test
   void should_not_be_enabled_when_client_request_is_before_date_time_field_value() {
-    when(clientInfo.getTime())
-        .thenReturn(DATE_TIME.minusDays(2));
+    when(clientInfo.getTime()).thenReturn(DATE_TIME.minusDays(2));
 
-    assertThat(dateTimeRule.isEnabledForClient(clientInfo))
-        .isFalse();
+    assertThat(dateTimeRule.isEnabledForClient(clientInfo)).isFalse();
   }
-
 }

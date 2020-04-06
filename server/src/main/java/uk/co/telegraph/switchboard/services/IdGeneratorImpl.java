@@ -32,13 +32,16 @@ public class IdGeneratorImpl implements IdGenerator {
   public IdGeneratorImpl() {
     Random random = new Random(System.currentTimeMillis());
 
-    randomSeed = random.ints(32)
-        .mapToObj(i -> {
-          byte[] result = new byte[4];
-          return intToByteArray(i, 0, result, 0, 4);
-        })
-        .reduce(ArrayUtils::addAll)
-        .orElseThrow();
+    randomSeed =
+        random
+            .ints(32)
+            .mapToObj(
+                i -> {
+                  byte[] result = new byte[4];
+                  return intToByteArray(i, 0, result, 0, 4);
+                })
+            .reduce(ArrayUtils::addAll)
+            .orElseThrow();
   }
 
   @Override
@@ -48,7 +51,6 @@ public class IdGeneratorImpl implements IdGenerator {
     byte[] seed = ArrayUtils.addAll(randomSeed, timestampBytes);
     byte[] uuidSeed = ArrayUtils.addAll(nameBytes, seed);
 
-    return UUID.nameUUIDFromBytes(uuidSeed)
-        .toString();
+    return UUID.nameUUIDFromBytes(uuidSeed).toString();
   }
 }

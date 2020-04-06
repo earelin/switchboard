@@ -57,8 +57,7 @@ class ContextTest {
   void should_set_and_return_id() {
     context.setId(CONTEXT_ID_ALT);
 
-    assertThat(context.getId())
-        .isEqualTo(CONTEXT_ID_ALT);
+    assertThat(context.getId()).isEqualTo(CONTEXT_ID_ALT);
   }
 
   @Test
@@ -69,40 +68,36 @@ class ContextTest {
 
     context.setContextsAggregator(contextsAggregator);
 
-    assertThat(context.getContextsAggregator())
-        .isEqualTo(contextsAggregator);
+    assertThat(context.getContextsAggregator()).isEqualTo(contextsAggregator);
   }
 
   @Test
   void should_set_and_return_name() {
     context.setName(CONTEXT_NAME_ALT);
 
-    assertThat(context.getName())
-        .isEqualTo(CONTEXT_NAME_ALT);
+    assertThat(context.getName()).isEqualTo(CONTEXT_NAME_ALT);
   }
 
   @Test
   void should_throw_error_if_null_name_is_set() {
-    assertThatThrownBy(() -> context.setName(null))
-      .isInstanceOf(IllegalArgumentException.class);
+    assertThatThrownBy(() -> context.setName(null)).isInstanceOf(IllegalArgumentException.class);
   }
 
   @ParameterizedTest
-  @ValueSource(strings = {
-      "",
-      "   ",
-      "CxQdrPbLJFZDsdE55z482zC5k1Xlcv4Ju",
-      "NyLJWskvH6TLR9bzLzscI6Ol6vr2Av2bOVKA3FXFdjQX2wEZsTzqn5pYvkg96nKS"
-  })
+  @ValueSource(
+      strings = {
+        "",
+        "   ",
+        "CxQdrPbLJFZDsdE55z482zC5k1Xlcv4Ju",
+        "NyLJWskvH6TLR9bzLzscI6Ol6vr2Av2bOVKA3FXFdjQX2wEZsTzqn5pYvkg96nKS"
+      })
   void should_throw_error_if_invalid_name_is_set(String name) {
-    assertThatThrownBy(() -> context.setName(name))
-      .isInstanceOf(IllegalArgumentException.class);
+    assertThatThrownBy(() -> context.setName(name)).isInstanceOf(IllegalArgumentException.class);
   }
 
   @Test
   void should_be_equal_to_itself() {
-    assertThat(context.equals(context))
-        .isTrue();
+    assertThat(context.equals(context)).isTrue();
   }
 
   @Test
@@ -110,22 +105,19 @@ class ContextTest {
     Context compareObject = new Context(contextsAggregator, CONTEXT_NAME_ALT);
     compareObject.setId(CONTEXT_ID);
 
-    assertThat(context.equals(compareObject))
-        .isTrue();
+    assertThat(context.equals(compareObject)).isTrue();
   }
 
   @Test
   void should_not_be_equal_to_null() {
-    assertThat(context.equals(null))
-        .isFalse();
+    assertThat(context.equals(null)).isFalse();
   }
 
   @Test
   void should_not_be_equal_to_a_different_class() {
     String compareObject = "2wertgyhuji";
 
-    assertThat(context.equals(compareObject))
-        .isFalse();
+    assertThat(context.equals(compareObject)).isFalse();
   }
 
   @Test
@@ -133,14 +125,12 @@ class ContextTest {
     Context compareObject = new Context(contextsAggregator, CONTEXT_NAME);
     compareObject.setId(CONTEXT_ID_ALT);
 
-    assertThat(context.equals(compareObject))
-        .isFalse();
+    assertThat(context.equals(compareObject)).isFalse();
   }
 
   @Test
   void should_have_the_same_hash_code_than_itself() {
-    assertThat(context.hashCode())
-        .isEqualTo(context.hashCode());
+    assertThat(context.hashCode()).isEqualTo(context.hashCode());
   }
 
   @Test
@@ -148,8 +138,7 @@ class ContextTest {
     Context compareObject = new Context(new ContextsAggregator(), CONTEXT_NAME_ALT);
     compareObject.setId(CONTEXT_ID);
 
-    assertThat(context.hashCode())
-        .isEqualTo(compareObject.hashCode());
+    assertThat(context.hashCode()).isEqualTo(compareObject.hashCode());
   }
 
   @Test
@@ -157,13 +146,11 @@ class ContextTest {
     Context compareObject = new Context(contextsAggregator, CONTEXT_NAME);
     compareObject.setId(CONTEXT_ID_ALT);
 
-    assertThat(context.hashCode())
-        .isNotEqualTo(compareObject.hashCode());
+    assertThat(context.hashCode()).isNotEqualTo(compareObject.hashCode());
   }
 
   @Test
   void should_return_string_representation() {
-    assertThat(context.toString())
-        .startsWith("Context");
+    assertThat(context.toString()).startsWith("Context");
   }
 }

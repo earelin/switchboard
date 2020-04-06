@@ -39,37 +39,32 @@ class ApplicationDtoTest {
   void should_set_and_return_id() {
     applicationDto.setId(APPLICATION_ID);
 
-    assertThat(applicationDto.getId())
-        .isEqualTo(APPLICATION_ID);
+    assertThat(applicationDto.getId()).isEqualTo(APPLICATION_ID);
   }
 
   @Test
   void should_set_and_return_name() {
     applicationDto.setName(APPLICATION_NAME);
 
-    assertThat(applicationDto.getName())
-        .isEqualTo(APPLICATION_NAME);
+    assertThat(applicationDto.getName()).isEqualTo(APPLICATION_NAME);
   }
 
   @Test
   void should_set_and_return_description() {
     applicationDto.setDescription(APPLICATION_DESCRIPTION);
 
-    assertThat(applicationDto.getDescription())
-        .isEqualTo(APPLICATION_DESCRIPTION);
+    assertThat(applicationDto.getDescription()).isEqualTo(APPLICATION_DESCRIPTION);
   }
 
   @Test
   void should_set_and_return_secret() {
     applicationDto.setSecret(APPLICATION_SECRET);
 
-    assertThat(applicationDto.getSecret())
-        .isEqualTo(APPLICATION_SECRET);
+    assertThat(applicationDto.getSecret()).isEqualTo(APPLICATION_SECRET);
   }
 
   @Test
   void should_return_string_representation() {
-    assertThat(applicationDto.toString())
-        .startsWith("ApplicationDto");
+    assertThat(applicationDto.toString()).startsWith("ApplicationDto");
   }
 }

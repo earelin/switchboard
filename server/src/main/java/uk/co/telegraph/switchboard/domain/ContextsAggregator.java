@@ -17,19 +17,21 @@
 package uk.co.telegraph.switchboard.domain;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.MapKey;
+import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 
-/**
- * Context aggregator.
- */
+/** Context aggregator. */
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
@@ -38,6 +40,9 @@ public class ContextsAggregator implements Serializable {
   private static final long serialVersionUID = 4576840214871672539L;
 
   @Id
+  private String id;
+
+  @MapsId
   @OneToOne
   @EqualsAndHashCode.Include
   private Application application;
@@ -46,8 +51,7 @@ public class ContextsAggregator implements Serializable {
   @MapKey(name = "name")
   private Map<String, Context> contexts = new HashMap<>();
 
-  ContextsAggregator() {
-  }
+  ContextsAggregator() {}
 
   public ContextsAggregator(Application application) {
     this.application = application;
@@ -64,8 +68,7 @@ public class ContextsAggregator implements Serializable {
 
     if (contexts.containsKey(name)) {
       throw new ObjectAlreadyExistsInAggregate(
-          String.format("A context with the name %s already exists", name)
-      );
+          String.format("A context with the name %s already exists", name));
     }
 
     Context context = new Context(this, name);
@@ -82,9 +85,7 @@ public class ContextsAggregator implements Serializable {
       throw new NullPointerException("Not allowed null value on context name");
     }
 
-    return Optional.ofNullable(
-        contexts.get(name)
-    );
+    return Optional.ofNullable(contexts.get(name));
   }
 
   public void removeContext(String name) {
@@ -93,9 +94,7 @@ public class ContextsAggregator implements Serializable {
     }
 
     if (!contexts.containsKey(name)) {
-      throw new ObjectDoesNotExists(
-          String.format("A context with name %s does not exists", name)
-      );
+      throw new ObjectDoesNotExists(String.format("A context with name %s does not exists", name));
     }
 
     contexts.remove(name);

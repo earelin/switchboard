@@ -23,36 +23,36 @@ import org.springframework.stereotype.Component;
 import uk.co.telegraph.switchboard.domain.Application;
 
 @Component
-class ApplicationRepositoryJpaImpl implements ApplicationRepository {
+class ApplicationRepositoryImpl implements ApplicationRepository {
 
   private final ApplicationJpaRepository jpaRepository;
 
-  public ApplicationRepositoryJpaImpl(ApplicationJpaRepository jpaRepository) {
+  public ApplicationRepositoryImpl(ApplicationJpaRepository jpaRepository) {
     this.jpaRepository = jpaRepository;
   }
 
   @Override
-  public Optional<Application> getApplication(String id) {
+  public Optional<Application> getById(String id) {
     return jpaRepository.findById(id);
   }
 
   @Override
-  public Application saveApplication(Application application) {
+  public Application save(Application application) {
     return jpaRepository.save(application);
   }
 
   @Override
-  public void removeApplication(String id) {
+  public void removeById(String id) {
     jpaRepository.deleteById(id);
   }
 
   @Override
-  public boolean doesApplicationExists(String id) {
+  public boolean existsById(String id) {
     return jpaRepository.existsById(id);
   }
 
   @Override
-  public Page<Application> getPagedApplicationList(Pageable pageable) {
+  public Page<Application> getPagedList(Pageable pageable) {
     return jpaRepository.findAll(pageable);
   }
 }

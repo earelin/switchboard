@@ -16,6 +16,4 @@
 
 package uk.co.telegraph.switchboard.domain;
 
-public class UserGroup {
-
-}
+public class UserGroup {}

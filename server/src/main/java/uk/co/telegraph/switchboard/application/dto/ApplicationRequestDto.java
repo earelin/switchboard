@@ -29,8 +29,7 @@ public class ApplicationRequestDto implements Serializable {
   private String name;
   private String description;
 
-  public ApplicationRequestDto() {
-  }
+  public ApplicationRequestDto() {}
 
   public ApplicationRequestDto(String name, String description) {
     this.name = name;

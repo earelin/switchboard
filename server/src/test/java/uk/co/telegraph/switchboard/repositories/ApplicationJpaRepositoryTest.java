@@ -17,11 +17,11 @@
 package uk.co.telegraph.switchboard.repositories;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static uk.co.telegraph.switchboard.utils.ApplicationContentGenerator.APPLICATION_DESCRIPTION;
-import static uk.co.telegraph.switchboard.utils.ApplicationContentGenerator.APPLICATION_ID;
-import static uk.co.telegraph.switchboard.utils.ApplicationContentGenerator.APPLICATION_NAME;
-import static uk.co.telegraph.switchboard.utils.ApplicationContentGenerator.APPLICATION_SECRET;
-import static uk.co.telegraph.switchboard.utils.ApplicationContentGenerator.getApplication;
+import static uk.co.telegraph.switchboard.generators.ApplicationContentGenerator.APPLICATION_DESCRIPTION;
+import static uk.co.telegraph.switchboard.generators.ApplicationContentGenerator.APPLICATION_ID;
+import static uk.co.telegraph.switchboard.generators.ApplicationContentGenerator.APPLICATION_NAME;
+import static uk.co.telegraph.switchboard.generators.ApplicationContentGenerator.APPLICATION_SECRET;
+import static uk.co.telegraph.switchboard.generators.ApplicationContentGenerator.getApplication;
 
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -64,8 +64,7 @@ class ApplicationJpaRepositoryTest {
   void should_not_find_an_application_if_it_does_not_exists() {
     Optional<Application> foundApplication = applicationRepository.findById(APPLICATION_ID);
 
-    assertThat(foundApplication)
-        .isNotPresent();
+    assertThat(foundApplication).isNotPresent();
   }
 
   @Test
@@ -86,22 +85,19 @@ class ApplicationJpaRepositoryTest {
 
     applicationRepository.deleteById(APPLICATION_ID);
 
-    assertThat(entityManager.find(Application.class, APPLICATION_ID))
-      .isNull();
+    assertThat(entityManager.find(Application.class, APPLICATION_ID)).isNull();
   }
 
   @Test
   void should_return_true_if_an_application_exists() {
     this.entityManager.persist(getApplication());
 
-    assertThat(applicationRepository.existsById(APPLICATION_ID))
-        .isTrue();
+    assertThat(applicationRepository.existsById(APPLICATION_ID)).isTrue();
   }
 
   @Test
   void should_return_false_if_an_application_does_not_exists() {
-    assertThat(applicationRepository.existsById(APPLICATION_ID))
-        .isFalse();
+    assertThat(applicationRepository.existsById(APPLICATION_ID)).isFalse();
   }
 
   @Test

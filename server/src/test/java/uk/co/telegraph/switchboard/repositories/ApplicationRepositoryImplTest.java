@@ -20,12 +20,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static uk.co.telegraph.switchboard.utils.ApplicationContentGenerator.APPLICATION_DESCRIPTION;
-import static uk.co.telegraph.switchboard.utils.ApplicationContentGenerator.APPLICATION_ID;
-import static uk.co.telegraph.switchboard.utils.ApplicationContentGenerator.APPLICATION_NAME;
-import static uk.co.telegraph.switchboard.utils.ApplicationContentGenerator.APPLICATION_SECRET;
-import static uk.co.telegraph.switchboard.utils.ApplicationContentGenerator.getApplication;
-import static uk.co.telegraph.switchboard.utils.ApplicationContentGenerator.getApplicationList;
+import static uk.co.telegraph.switchboard.generators.ApplicationContentGenerator.APPLICATION_DESCRIPTION;
+import static uk.co.telegraph.switchboard.generators.ApplicationContentGenerator.APPLICATION_ID;
+import static uk.co.telegraph.switchboard.generators.ApplicationContentGenerator.APPLICATION_NAME;
+import static uk.co.telegraph.switchboard.generators.ApplicationContentGenerator.APPLICATION_SECRET;
+import static uk.co.telegraph.switchboard.generators.ApplicationContentGenerator.getApplication;
+import static uk.co.telegraph.switchboard.generators.ApplicationContentGenerator.getApplicationList;
 
 import java.io.FileNotFoundException;
 import java.util.List;
@@ -42,20 +42,20 @@ import org.springframework.data.domain.Pageable;
 import uk.co.telegraph.switchboard.domain.Application;
 
 @ExtendWith(MockitoExtension.class)
-class ApplicationRepositoryJpaImplTest {
+class ApplicationRepositoryImplTest {
 
   @Mock
   private ApplicationJpaRepository applicationJpaRepository;
 
   @InjectMocks
-  private ApplicationRepositoryJpaImpl applicationRepository;
+  private ApplicationRepositoryImpl applicationRepository;
 
   @Test
   void should_return_a_found_application() {
     when(applicationJpaRepository.findById(APPLICATION_ID))
         .thenReturn(Optional.of(getApplication()));
 
-    Optional<Application> application = applicationRepository.getApplication(APPLICATION_ID);
+    Optional<Application> application = applicationRepository.getById(APPLICATION_ID);
 
     assertThat(application)
         .isPresent()
@@ -68,22 +68,19 @@ class ApplicationRepositoryJpaImplTest {
 
   @Test
   void should_return_empty_if_an_application_is_not_found() {
-    when(applicationJpaRepository.findById(APPLICATION_ID))
-        .thenReturn(Optional.empty());
+    when(applicationJpaRepository.findById(APPLICATION_ID)).thenReturn(Optional.empty());
 
-    Optional<Application> application = applicationRepository.getApplication(APPLICATION_ID);
+    Optional<Application> application = applicationRepository.getById(APPLICATION_ID);
 
-    assertThat(application)
-        .isNotPresent();
+    assertThat(application).isNotPresent();
   }
 
   @Test
   void should_save_an_application() {
     Application application = getApplication();
-    when(applicationJpaRepository.save(application))
-        .thenAnswer(returnsFirstArg());
+    when(applicationJpaRepository.save(application)).thenAnswer(returnsFirstArg());
 
-    Application savedApplication = applicationRepository.saveApplication(application);
+    Application savedApplication = applicationRepository.save(application);
 
     assertThat(savedApplication)
         .hasFieldOrPropertyWithValue("id", APPLICATION_ID)
@@ -95,27 +92,23 @@ class ApplicationRepositoryJpaImplTest {
 
   @Test
   void should_remove_an_application() {
-    applicationRepository.removeApplication(APPLICATION_ID);
+    applicationRepository.removeById(APPLICATION_ID);
 
     verify(applicationJpaRepository).deleteById(APPLICATION_ID);
   }
 
   @Test
   void should_return_true_if_application_exists() {
-    when(applicationJpaRepository.existsById(APPLICATION_ID))
-        .thenReturn(true);
+    when(applicationJpaRepository.existsById(APPLICATION_ID)).thenReturn(true);
 
-    assertThat(applicationRepository.doesApplicationExists(APPLICATION_ID))
-        .isTrue();
+    assertThat(applicationRepository.existsById(APPLICATION_ID)).isTrue();
   }
 
   @Test
   void should_return_false_if_application_does_not_exists() {
-    when(applicationJpaRepository.existsById(APPLICATION_ID))
-        .thenReturn(false);
+    when(applicationJpaRepository.existsById(APPLICATION_ID)).thenReturn(false);
 
-    assertThat(applicationRepository.doesApplicationExists(APPLICATION_ID))
-        .isFalse();
+    assertThat(applicationRepository.existsById(APPLICATION_ID)).isFalse();
   }
 
   @Test
@@ -125,7 +118,7 @@ class ApplicationRepositoryJpaImplTest {
     when(applicationJpaRepository.findAll(pageable))
         .thenReturn(new PageImpl<>(applications, pageable, 30));
 
-    Page<Application> applicationPage = applicationRepository.getPagedApplicationList(pageable);
+    Page<Application> applicationPage = applicationRepository.getPagedList(pageable);
 
     assertThat(applicationPage)
         .hasSize(10)
