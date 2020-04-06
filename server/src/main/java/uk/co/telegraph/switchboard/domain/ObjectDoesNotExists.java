@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard;
+package uk.co.telegraph.switchboard.domain;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import org.junit.jupiter.api.Tag;
+public class ObjectDoesNotExists extends RuntimeException {
 
-/** Generic integration test. */
-@Target({ElementType.TYPE, ElementType.METHOD})
-@Retention(RetentionPolicy.RUNTIME)
-@Tag("integration")
-public @interface Integration {}
+  private static final long serialVersionUID = 4447513045154443650L;
+
+  public ObjectDoesNotExists(String message) {
+    super(message);
+  }
+}

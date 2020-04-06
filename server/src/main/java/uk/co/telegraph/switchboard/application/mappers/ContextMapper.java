@@ -14,16 +14,22 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard;
+package uk.co.telegraph.switchboard.application.mappers;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import org.junit.jupiter.api.Tag;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import org.mapstruct.Mapper;
+import uk.co.telegraph.switchboard.domain.Context;
 
-/** Generic integration test. */
-@Target({ElementType.TYPE, ElementType.METHOD})
-@Retention(RetentionPolicy.RUNTIME)
-@Tag("integration")
-public @interface Integration {}
+@Mapper
+public interface ContextMapper {
+  default List<String> domainMapToDto(Map<String, Context> contexts) {
+    if (Objects.isNull(contexts)) {
+      return Collections.emptyList();
+    }
+    return contexts.keySet().stream().sorted().collect(Collectors.toList());
+  }
+}

@@ -61,11 +61,12 @@ class ApplicationTest {
 
   @Test
   void should_not_allow_to_construct_with_a_id_longer_that_36_chars() {
-    assertThatThrownBy(() -> new Application(
-        "000-125c12a7-bf9a-4795-b673-564f9d9e369c",
-        APPLICATION_NAME,
-        APPLICATION_SECRET)
-    )
+    assertThatThrownBy(
+            () ->
+                new Application(
+                    "000-125c12a7-bf9a-4795-b673-564f9d9e369c",
+                    APPLICATION_NAME,
+                    APPLICATION_SECRET))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
@@ -83,11 +84,11 @@ class ApplicationTest {
 
   @Test
   void should_not_allow_to_construct_with_a_name_longer_than_64_chars() {
-    assertThatThrownBy(() -> new Application(
-        APPLICATION_ID,
-        "An amazing application that is improving our productivity a lot every day",
-        APPLICATION_SECRET)
-    )
+    assertThatThrownBy(() ->
+        new Application(
+            APPLICATION_ID,
+            "An amazing application that is improving our productivity a lot every day",
+            APPLICATION_SECRET))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
@@ -105,11 +106,8 @@ class ApplicationTest {
 
   @Test
   void should_not_allow_to_construct_with_a_secret_longer_than_16_chars() {
-    assertThatThrownBy(() -> new Application(
-        APPLICATION_ID,
-        APPLICATION_NAME,
-        "qR7yQdMEEZn7XsCUasD4g5")
-    )
+    assertThatThrownBy(
+            () -> new Application(APPLICATION_ID, APPLICATION_NAME, "qR7yQdMEEZn7XsCUasD4g5"))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
@@ -117,20 +115,17 @@ class ApplicationTest {
   void should_set_and_return_id() {
     application.setId(APPLICATION_ID_ALT);
 
-    assertThat(application.getId())
-        .isEqualTo(APPLICATION_ID_ALT);
+    assertThat(application.getId()).isEqualTo(APPLICATION_ID_ALT);
   }
 
   @Test
   void should_not_allow_to_set_a_null_id() {
-    assertThatThrownBy(() -> application.setId(null))
-        .isInstanceOf(IllegalArgumentException.class);
+    assertThatThrownBy(() -> application.setId(null)).isInstanceOf(IllegalArgumentException.class);
   }
 
   @Test
   void should_not_allow_to_set_a_blank_id() {
-    assertThatThrownBy(() -> application.setId("   "))
-        .isInstanceOf(IllegalArgumentException.class);
+    assertThatThrownBy(() -> application.setId("   ")).isInstanceOf(IllegalArgumentException.class);
   }
 
   @Test
@@ -143,8 +138,7 @@ class ApplicationTest {
   void should_set_and_return_name() {
     application.setName(APPLICATION_NAME_ALT);
 
-    assertThat(application.getName())
-        .isEqualTo(APPLICATION_NAME_ALT);
+    assertThat(application.getName()).isEqualTo(APPLICATION_NAME_ALT);
   }
 
   @Test
@@ -161,7 +155,10 @@ class ApplicationTest {
 
   @Test
   void should_not_allow_to_set_a_name_longer_than_64_chars() {
-    assertThatThrownBy(() -> application.setName("An amazing application that is improving our productivity a lot every day"))
+    assertThatThrownBy(
+            () ->
+                application.setName(
+                    "An amazing application that is improving our productivity a lot every day"))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
@@ -169,16 +166,14 @@ class ApplicationTest {
   void should_set_and_return_description() {
     application.setDescription(APPLICATION_DESCRIPTION);
 
-    assertThat(application.getDescription())
-        .isEqualTo(APPLICATION_DESCRIPTION);
+    assertThat(application.getDescription()).isEqualTo(APPLICATION_DESCRIPTION);
   }
 
   @Test
   void should_set_and_return_secret() {
     application.setSecret(APPLICATION_SECRET_ALT);
 
-    assertThat(application.getSecret())
-        .isEqualTo(APPLICATION_SECRET_ALT);
+    assertThat(application.getSecret()).isEqualTo(APPLICATION_SECRET_ALT);
   }
 
   @Test
@@ -201,8 +196,7 @@ class ApplicationTest {
 
   @Test
   void should_be_equal_to_itself() {
-    assertThat(application.equals(application))
-        .isTrue();
+    assertThat(application.equals(application)).isTrue();
   }
 
   @Test
@@ -210,22 +204,19 @@ class ApplicationTest {
     Application compareObject = new Application();
     compareObject.setId(APPLICATION_ID);
 
-    assertThat(application.equals(compareObject))
-        .isTrue();
+    assertThat(application.equals(compareObject)).isTrue();
   }
 
   @Test
   void should_not_be_equal_to_null() {
-    assertThat(application.equals(null))
-        .isFalse();
+    assertThat(application.equals(null)).isFalse();
   }
 
   @Test
   void should_not_be_equal_to_a_different_class() {
     String compareObject = "2wertgyhuji";
 
-    assertThat(application.equals(compareObject))
-        .isFalse();
+    assertThat(application.equals(compareObject)).isFalse();
   }
 
   @Test
@@ -233,8 +224,7 @@ class ApplicationTest {
     Application compareObject = new Application();
     compareObject.setId(APPLICATION_ID_ALT);
 
-    assertThat(application.equals(compareObject))
-        .isFalse();
+    assertThat(application.equals(compareObject)).isFalse();
   }
 
   @Test
@@ -242,8 +232,7 @@ class ApplicationTest {
     Application compareObject = new Application();
     compareObject.setId(APPLICATION_ID);
 
-    assertThat(application.hashCode())
-        .isEqualTo(compareObject.hashCode());
+    assertThat(application.hashCode()).isEqualTo(compareObject.hashCode());
   }
 
   @Test
@@ -251,13 +240,11 @@ class ApplicationTest {
     Application compareObject = new Application();
     compareObject.setId(APPLICATION_ID_ALT);
 
-    assertThat(application.hashCode())
-        .isNotEqualTo(compareObject.hashCode());
+    assertThat(application.hashCode()).isNotEqualTo(compareObject.hashCode());
   }
 
   @Test
   void should_return_string_representation() {
-    assertThat(application.toString())
-        .startsWith("Application");
+    assertThat(application.toString()).startsWith("Application");
   }
 }

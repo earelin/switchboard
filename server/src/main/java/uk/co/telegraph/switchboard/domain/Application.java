@@ -16,6 +16,7 @@
 
 package uk.co.telegraph.switchboard.domain;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -26,7 +27,9 @@ import org.apache.commons.lang3.StringUtils;
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
-public class Application {
+public class Application implements Serializable {
+
+  private static final long serialVersionUID = -8434329592259214281L;
 
   @Id
   @EqualsAndHashCode.Include
@@ -42,8 +45,7 @@ public class Application {
   @Column(columnDefinition = "char(12)", length = 12)
   private String secret;
 
-  Application() {
-  }
+  Application() {}
 
   public Application(String id, String name, String secret) {
     setId(id);
@@ -101,7 +103,7 @@ public class Application {
     }
 
     if (secret.length() > 16) {
-      throw new IllegalArgumentException("Application name cannot be longer than 64 characters");
+      throw new IllegalArgumentException("Application secret cannot be longer than 16 characters");
     }
 
     this.secret = secret;

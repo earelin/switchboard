@@ -26,14 +26,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.context.WebApplicationContext;
 
-@ApplicationIntegrationWeb
+@ApplicationIntegration
 class SwitchboardApplicationTests {
 
   @Autowired
   private WebApplicationContext webApplicationContext;
 
   @BeforeEach
-  public void initialiseRestAssuredMockMvcWebApplicationContext() {
+  public void setUp() {
     RestAssuredMockMvc.webAppContextSetup(webApplicationContext);
   }
 
@@ -46,5 +46,4 @@ class SwitchboardApplicationTests {
         .statusCode(HttpStatus.OK.value())
         .body("status", equalTo("UP"));
   }
-
 }

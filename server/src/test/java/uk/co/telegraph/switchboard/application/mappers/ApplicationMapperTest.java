@@ -62,16 +62,13 @@ class ApplicationMapperTest {
   void should_return_null_dto_if_domain_is_null() {
     ApplicationDto applicationDto = applicationMapper.domainToDto(null);
 
-    assertThat(applicationDto)
-        .isNull();
+    assertThat(applicationDto).isNull();
   }
 
   @Test
   void should_update_domain_with_request_dto() {
-    ApplicationRequestDto applicationRequestDto = new ApplicationRequestDto(
-        APPLICATION_UPDATED_NAME,
-        APPLICATION_UPDATED_DESCRIPTION
-    );
+    ApplicationRequestDto applicationRequestDto =
+        new ApplicationRequestDto(APPLICATION_UPDATED_NAME, APPLICATION_UPDATED_DESCRIPTION);
 
     applicationMapper.updateDomainFromDto(applicationRequestDto, application);
 

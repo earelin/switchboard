@@ -26,6 +26,7 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 public class ClientInfo {
+
   private final String application;
   private final ZonedDateTime time;
   private final Map<String, String> properties;

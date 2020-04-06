@@ -24,8 +24,7 @@ public class FeatureFlag {
   private String id;
   private Set<RulesSet> rulesSets;
 
-  public FeatureFlag() {
-  }
+  public FeatureFlag() {}
 
   public FeatureFlag(String id) {
     this.id = id;

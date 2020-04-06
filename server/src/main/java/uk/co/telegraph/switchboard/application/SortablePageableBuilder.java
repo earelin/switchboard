@@ -89,7 +89,7 @@ public class SortablePageableBuilder {
       } else {
         throw new IllegalArgumentException(
             "Sorting direction value has to be 'asc' or 'desc', current value: "
-            + sortingComponents[1]);
+                + sortingComponents[1]);
       }
     }
 

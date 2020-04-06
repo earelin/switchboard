@@ -34,6 +34,11 @@ pipeline {
   }
 
   stages {
+    stage('Dependencies and cleanup') {
+      steps {
+        sh './gradlew clean'
+      }
+    }
     stage('Server') {
       when {
         not { buildingTag() }
@@ -46,11 +51,12 @@ pipeline {
           post {
             always {
               junit 'server/build/test-results/**/*.xml'
-              recordIssues aggregatingResults: true, sourceCodeEncoding: 'UTF-8', tools: [
-                checkStyle(pattern: 'server/build/reports/checkstyle/*.xml'),
-                cpd(pattern: 'server/build/reports/cpd/*.xml'),
-                spotBugs(pattern: 'server/build/reports/spotbugs/*.xml', useRankAsPriority: true)
-              ]
+              recordIssues aggregatingResults: true, sourceCodeEncoding: 'UTF-8',
+                referenceJobName: 'Dashboard/switchboard/1.x.x', tools: [
+                  checkStyle(pattern: 'server/build/reports/checkstyle/*.xml'),
+                  cpd(pattern: 'server/build/reports/cpd/*.xml'),
+                  spotBugs(pattern: 'server/build/reports/spotbugs/*.xml', useRankAsPriority: true)
+                ]
             }
             success {
               jacoco classPattern: 'server/build/classes', execPattern: 'server/build/jacoco/*.exec', sourcePattern: 'server/src/main/java'
@@ -70,15 +76,16 @@ pipeline {
               repositoryName: env.REPOSITORY_NAME,
               pullRequestId: env.CHANGE_ID,
               repositoryOwner: env.REPOSITORY_OWNER,
+              credentialsId: 'ipaas-jenkins-github-access-token',
 
               createCommentWithAllSingleFileComments: false,
               createSingleFileComments: true,
               commentOnlyChangedContent: true,
               keepOldComments: false,
               violationConfigs: [
-                [parser: 'CHECKSTYLE', reporter: 'Checkstyle', pattern: 'server/build/reports/checkstyle/.*\\.xml'],
-                [parser: 'CPD', reporter: 'CPD', pattern: 'server/build/reports/cpd/.*\\.xml'],
-                [parser: 'FINDBUGS', reporter: 'Spotbugs', pattern: 'server/build/reports/spotbugs/.*\\.xml']
+                [parser: 'CHECKSTYLE', reporter: 'Checkstyle', pattern: '.*/build/reports/checkstyle/.*\\.xml\$'],
+                [parser: 'CPD', reporter: 'CPD', pattern: '.*/build/reports/cpd/.*\\.xml\$'],
+                [parser: 'FINDBUGS', reporter: 'Spotbugs', pattern: '.*/build/reports/spotbugs/.*\\.xml\$']
             ]])
           }
         }
@@ -118,21 +125,13 @@ pipeline {
           ./gradlew docker
           docker-compose up -d
           timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w "%{http_code}" http://localhost:9000/actuator/health)" != "200" ]]; do sleep 5; done'
-          ./gradlew functionalTest          
+          ./gradlew functionalTest
         '''
       }
       post {
         always {
           sh 'docker-compose down -v'
           cucumber fileIncludePattern: '**/*.json', jsonReportDirectory: 'test/server-functional/build/surefire-reports'
-        }
-      }
-    }
-
-    stage('Clean up') {
-      steps {
-        script {
-          deleteDir()
         }
       }
     }

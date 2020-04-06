@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.utils;
+package uk.co.telegraph.switchboard.generators;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -24,7 +24,7 @@ import java.util.List;
 import uk.co.telegraph.switchboard.application.dto.ApplicationDto;
 import uk.co.telegraph.switchboard.domain.Application;
 
-public class ApplicationContentGenerator {
+public final class ApplicationContentGenerator {
 
   public static final String APPLICATION_ID = "0420d644-1cd3-4c77-aadf-0c70677ce041";
   public static final String APPLICATION_NAME = "Pulse";
@@ -50,5 +50,8 @@ public class ApplicationContentGenerator {
     Application application = new Application(APPLICATION_ID, APPLICATION_NAME, APPLICATION_SECRET);
     application.setDescription(APPLICATION_DESCRIPTION);
     return application;
+  }
+
+  private ApplicationContentGenerator() {
   }
 }

@@ -21,9 +21,7 @@ import uk.co.telegraph.switchboard.domain.Application;
 import uk.co.telegraph.switchboard.services.IdGenerator;
 import uk.co.telegraph.switchboard.services.PasswordGenerator;
 
-/**
- * Creates new application objects applying invariants.
- */
+/** Creates new application objects applying invariants. */
 @Component
 public class ApplicationFactory {
 
@@ -32,9 +30,7 @@ public class ApplicationFactory {
   private final IdGenerator idGenerator;
   private final PasswordGenerator passwordGenerator;
 
-  public ApplicationFactory(
-      IdGenerator idGenerator,
-      PasswordGenerator passwordGenerator) {
+  public ApplicationFactory(IdGenerator idGenerator, PasswordGenerator passwordGenerator) {
     this.idGenerator = idGenerator;
     this.passwordGenerator = passwordGenerator;
   }

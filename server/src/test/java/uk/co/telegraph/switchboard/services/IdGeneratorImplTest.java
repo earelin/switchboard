@@ -35,19 +35,12 @@ class IdGeneratorImplTest {
 
   @Test
   void should_generate_random_ids() {
-    List<String> names = List.of(
-        "One application",
-        "Another application",
-        "Feature",
-        "One application"
-    );
+    List<String> names =
+        List.of("One application", "Another application", "Feature", "One application");
 
-    Set<String> ids = names.stream()
-        .map(name -> idGenerator.generateId(name))
-        .collect(Collectors.toSet());
+    Set<String> ids =
+        names.stream().map(name -> idGenerator.generateId(name)).collect(Collectors.toSet());
 
-    assertThat(ids)
-        .hasSize(names.size())
-        .doesNotContainNull();
+    assertThat(ids).hasSize(names.size()).doesNotContainNull();
   }
 }

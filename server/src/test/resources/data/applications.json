@@ -4,47 +4,56 @@
     "name": "Website",
     "description": "Public website",
     "secret": "e4kMgtLTJ8VFJpkX"
-  }, {
+  },
+  {
     "id": "e612252f-51f7-4ad3-84b7-dca29a33571e",
     "name": "Mobile",
     "description": "Mobile application",
     "secret": "rZa5rV6g3sJpyE8j"
-  }, {
+  },
+  {
     "id": "75baa1a0-db98-456c-926c-c4d3d89e7b3e",
     "name": "Accounting",
     "description": null,
     "secret": "rZa5rV6g3sJpyE8j"
-  }, {
+  },
+  {
     "id": "f6267b7a-7f4a-4392-83e5-85a002483d4d",
     "name": "Content Management",
     "description": "Content Management System",
     "secret": "nFE5f3QzrmJ6RGh9"
-  }, {
+  },
+  {
     "id": "aaf5a0bf-50cb-484a-b5b2-f4a8cee65413",
     "name": "Authoring",
     "description": "Content authoring application",
     "secret": "pLJZK7BtKrDy2spy"
-  }, {
+  },
+  {
     "id": "d7e4f5f0-120d-471d-bc1e-5d6925afe249",
     "name": "Mobile Authoring",
     "description": "Content authoring mobile application",
     "secret": "GNQhqAKST2ddxDyf"
-  }, {
+  },
+  {
     "id": "ae0a8222-12bc-4cf3-8c92-572465d51f37",
     "name": "Logging",
     "description": null,
     "secret": "M9FTX3V6zMbWbswu"
-  }, {
+  },
+  {
     "id": "41c8dd3f-b626-4d53-94c1-56f0c4dff7f0",
     "name": "Workflow Status",
     "description": null,
     "secret": "eGX9aR5XC8vEh5ZS"
-  }, {
+  },
+  {
     "id": "f420f265-30fb-49c2-a1a9-04301cfbbdbd",
     "name": "Project Management",
     "description": "Project management tool",
     "secret": "KHSXhfXpWfM5pANc"
-  }, {
+  },
+  {
     "id": "85133632-bf08-4da8-ae88-d50d72b991da",
     "name": "Human Resources",
     "description": "Human Resources system",

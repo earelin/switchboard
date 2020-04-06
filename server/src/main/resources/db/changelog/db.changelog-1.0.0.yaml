@@ -1,18 +1,18 @@
- #
- #  Copyright 2020 the original author or authors.
- #
- #  Licensed under the Apache License, Version 2.0 (the "License");
- #  you may not use this file except in compliance with the License.
- #  You may obtain a copy of the License at:
- #
- #  https://www.apache.org/licenses/LICENSE-2.0
- #
- #  Unless required by applicable law or agreed to in writing, software
- #  distributed under the License is distributed on an "AS IS" BASIS,
- #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- #  See the License for the specific language governing permissions and
- #  limitations under the License.
- #
+#
+#  Copyright 2020 the original author or authors.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at:
+#
+#  https://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
 
 databaseChangeLog:
   - changeSet:
@@ -45,6 +45,26 @@ databaseChangeLog:
                   type: longvarchar
 
   - changeSet:
+      id: '1.0.0-contexts-aggregator-table'
+      author: switchboard
+      comment: Contexts aggregator entity table
+      changes:
+        - createTable:
+            tableName: contexts_aggregator
+            columns:
+              - column:
+                  name: application_id
+                  type: char(36)
+                  constraints:
+                    deleteCascade: true
+                    foreignKeyName: fk_contexts_aggregator_application_id
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_contexts_aggregator
+                    referencedTableName: application
+                    referencedColumnNames: id
+
+  - changeSet:
       id: '1.0.0-context-table'
       author: switchboard
       comment: Context entity table
@@ -61,17 +81,17 @@ databaseChangeLog:
                     primaryKey: true
                     primaryKeyName: pk_context
               - column:
-                  name: application_id
+                  name: application
                   type: char(36)
                   constraints:
                     deleteCascade: true
-                    foreignKeyName: fk_context_application_id
+                    foreignKeyName: fk_context_contexts_aggregator_application_id
                     nullable: false
-                    referencedTableName: application
-                    referencedColumnNames: id
+                    referencedTableName: contexts_aggregator
+                    referencedColumnNames: application_id
               - column:
-                  name: key
-                  type: varchar(64)
+                  name: name
+                  type: varchar(32)
                   constraints:
                     nullable: false
 

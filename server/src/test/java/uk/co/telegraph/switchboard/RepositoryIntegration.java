@@ -24,15 +24,10 @@ import org.junit.jupiter.api.Tag;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.TestPropertySource;
 
-/**
- * JPA repositories integration tests.
- */
+/** JPA repositories integration tests. */
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @DataJpaTest
-@TestPropertySource(properties = {
-  "spring.jpa.hibernate.ddl-auto=validate"
-})
+@TestPropertySource(properties = {"spring.jpa.hibernate.ddl-auto=validate"})
 @Tag("integration")
-public @interface RepositoryIntegration {
-}
+public @interface RepositoryIntegration {}

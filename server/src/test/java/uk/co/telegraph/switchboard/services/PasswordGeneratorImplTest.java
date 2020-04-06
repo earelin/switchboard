@@ -35,19 +35,16 @@ class PasswordGeneratorImplTest {
 
   @Test
   void should_generate_a_password_with_the_desired_size() {
-    assertThat(passwordGenerator.generatePassword(32))
-        .isNotBlank()
-        .hasSize(32);
+    assertThat(passwordGenerator.generatePassword(32)).isNotBlank().hasSize(32);
   }
 
   @Test
   void should_generate_different_passwords_per_call() {
-    Set<String> passwords = IntStream.of(16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16)
-        .mapToObj(size -> passwordGenerator.generatePassword(size))
-        .collect(Collectors.toSet());
+    Set<String> passwords =
+        IntStream.of(16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16)
+            .mapToObj(size -> passwordGenerator.generatePassword(size))
+            .collect(Collectors.toSet());
 
-    assertThat(passwords)
-        .hasSize(12)
-        .doesNotContainNull();
+    assertThat(passwords).hasSize(12).doesNotContainNull();
   }
 }

@@ -48,13 +48,10 @@ class ApplicationFactoryTest {
 
   @Test
   void should_create_an_application_with_id_name_and_password() {
-    when(idGenerator.generateId(APPLICATION_NAME))
-        .thenReturn(APPLICATION_ID);
-    when(passwordGenerator.generatePassword(16))
-        .thenReturn(APPLICATION_SECRET);
+    when(idGenerator.generateId(APPLICATION_NAME)).thenReturn(APPLICATION_ID);
+    when(passwordGenerator.generatePassword(16)).thenReturn(APPLICATION_SECRET);
 
-    Application application = applicationFactory
-        .createApplication(APPLICATION_NAME);
+    Application application = applicationFactory.createApplication(APPLICATION_NAME);
 
     assertThat(application)
         .hasFieldOrPropertyWithValue("id", APPLICATION_ID)
@@ -65,13 +62,11 @@ class ApplicationFactoryTest {
 
   @Test
   void should_create_an_application_with_id_name_description_and_password() {
-    when(idGenerator.generateId(APPLICATION_NAME))
-        .thenReturn(APPLICATION_ID);
-    when(passwordGenerator.generatePassword(16))
-        .thenReturn(APPLICATION_SECRET);
+    when(idGenerator.generateId(APPLICATION_NAME)).thenReturn(APPLICATION_ID);
+    when(passwordGenerator.generatePassword(16)).thenReturn(APPLICATION_SECRET);
 
-    Application application = applicationFactory
-        .createApplication(APPLICATION_NAME, APPLICATION_DESCRIPTION);
+    Application application =
+        applicationFactory.createApplication(APPLICATION_NAME, APPLICATION_DESCRIPTION);
 
     assertThat(application)
         .hasFieldOrPropertyWithValue("id", APPLICATION_ID)
