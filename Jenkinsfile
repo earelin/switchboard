@@ -95,6 +95,7 @@ pipeline {
             branch "${env.MAIN_BRANCH}"
           }
           tools {
+            nodejs 'NodeJS-12.16'
             snyk 'snyk-latest'
           }
           environment {
