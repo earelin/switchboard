@@ -76,7 +76,7 @@ pipeline {
               repositoryName: env.REPOSITORY_NAME,
               pullRequestId: env.CHANGE_ID,
               repositoryOwner: env.REPOSITORY_OWNER,
-              credentialsId: 'ipaas-jenkins-github-access-token'
+              credentialsId: 'ipaas-jenkins-github-access-token',
 
               createCommentWithAllSingleFileComments: false,
               createSingleFileComments: true,
