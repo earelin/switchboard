@@ -34,6 +34,11 @@ pipeline {
   }
 
   stages {
+    stage('Dependencies and cleanup') {
+      steps {
+        sh './gradlew clean'
+      }
+    }
     stage('Server') {
       when {
         not { buildingTag() }
