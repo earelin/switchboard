@@ -77,9 +77,9 @@ pipeline {
               commentOnlyChangedContent: true,
               keepOldComments: false,
               violationConfigs: [
-                [parser: 'CHECKSTYLE', reporter: 'Checkstyle', pattern: 'server/build/reports/checkstyle/.*\\.xml'],
-                [parser: 'CPD', reporter: 'CPD', pattern: 'server/build/reports/cpd/.*\\.xml'],
-                [parser: 'FINDBUGS', reporter: 'Spotbugs', pattern: 'server/build/reports/spotbugs/.*\\.xml']
+                [parser: 'CHECKSTYLE', reporter: 'Checkstyle', pattern: '.*/build/reports/checkstyle/.*\\.xml\$'],
+                [parser: 'CPD', reporter: 'CPD', pattern: '.*/build/reports/cpd/.*\\.xml\$'],
+                [parser: 'FINDBUGS', reporter: 'Spotbugs', pattern: '.*/build/reports/spotbugs/.*\\.xml\$']
             ]])
           }
         }
