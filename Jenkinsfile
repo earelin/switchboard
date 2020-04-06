@@ -46,11 +46,12 @@ pipeline {
           post {
             always {
               junit 'server/build/test-results/**/*.xml'
-              recordIssues aggregatingResults: true, sourceCodeEncoding: 'UTF-8', tools: [
-                checkStyle(pattern: 'server/build/reports/checkstyle/*.xml'),
-                cpd(pattern: 'server/build/reports/cpd/*.xml'),
-                spotBugs(pattern: 'server/build/reports/spotbugs/*.xml', useRankAsPriority: true)
-              ]
+              recordIssues aggregatingResults: true, sourceCodeEncoding: 'UTF-8',
+                referenceJobName: 'Dashboard/switchboard/1.x.x', tools: [
+                  checkStyle(pattern: 'server/build/reports/checkstyle/*.xml'),
+                  cpd(pattern: 'server/build/reports/cpd/*.xml'),
+                  spotBugs(pattern: 'server/build/reports/spotbugs/*.xml', useRankAsPriority: true)
+                ]
             }
             success {
               jacoco classPattern: 'server/build/classes', execPattern: 'server/build/jacoco/*.exec', sourcePattern: 'server/src/main/java'
@@ -118,7 +119,7 @@ pipeline {
           ./gradlew docker
           docker-compose up -d
           timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w "%{http_code}" http://localhost:9000/actuator/health)" != "200" ]]; do sleep 5; done'
-          ./gradlew functionalTest          
+          ./gradlew functionalTest
         '''
       }
       post {
