@@ -17,5 +17,17 @@
 package uk.co.telegraph.switchboard.application;
 
 public class UserGroupController {
-  public UserGroupController() {}
+  public UserGroupController() {
+
+
+  }
+
+  public void
+  stupidFunction(String string) {
+    if (string=="check")
+    {
+      System.out.println
+          ("Some test");
+    }
+  }
 }
