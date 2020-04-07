@@ -37,7 +37,6 @@ pipeline {
     stage('Dependencies and cleanup') {
       steps {
         sh './gradlew clean'
-        sh 'printenv'        
       }
     }
     stage('Server') {
@@ -77,7 +76,7 @@ pipeline {
               repositoryName: env.REPOSITORY_NAME,
               pullRequestId: env.CHANGE_ID,
               repositoryOwner: env.REPOSITORY_OWNER,
-              credentialsId: 'ipaas-jenkins-github-access-token',
+              oAuth2Token: "${env.GITHUB_TOKEN}",
 
               createCommentWithAllSingleFileComments: false,
               createSingleFileComments: true,

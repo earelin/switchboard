@@ -16,4 +16,12 @@
 
 package uk.co.telegraph.switchboard.domain;
 
-public class UserGroup {}
+import java.util.List;
+import javax.persistence.Entity;
+
+@Entity
+public class UserGroup {
+  private Long id;
+  private String name;
+  private List<String> users;
+}
