@@ -80,12 +80,12 @@ pipeline {
 
               createCommentWithAllSingleFileComments: false,
               createSingleFileComments: true,
-              commentOnlyChangedContent: true,
+              commentOnlyChangedFiles: true,
               keepOldComments: false,
               violationConfigs: [
-                [parser: 'CHECKSTYLE', reporter: 'Checkstyle', pattern: '.*/build/reports/checkstyle/.*\\.xml\$'],
-                [parser: 'CPD', reporter: 'CPD', pattern: '.*/build/reports/cpd/.*\\.xml\$'],
-                [parser: 'FINDBUGS', reporter: 'Spotbugs', pattern: '.*/build/reports/spotbugs/.*\\.xml\$']
+                [parser: 'CHECKSTYLE', reporter: 'Checkstyle', pattern: '.*/build/reports/checkstyle/.*\\.xml$'],
+                [parser: 'CPD', reporter: 'CPD', pattern: '.*/build/reports/cpd/.*\\.xml$'],
+                [parser: 'FINDBUGS', reporter: 'Spotbugs', pattern: '.*/build/reports/spotbugs/.*\\.xml$']
               ]
             ])
           }
