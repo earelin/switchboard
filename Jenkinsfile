@@ -78,7 +78,7 @@ pipeline {
               repositoryOwner: env.REPOSITORY_OWNER,
               credentialsId: 'GITHUB_API_TOKEN',
 
-              createCommentWithAllSingleFileComments: true,
+              createCommentWithAllSingleFileComments: false,
               createSingleFileComments: true,
               commentOnlyChangedContent: true,
               keepOldComments: false,
