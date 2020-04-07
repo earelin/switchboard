@@ -66,13 +66,16 @@ pipeline {
 
         stage('Comment pull request') {
           when { changeRequest() }
+          // tools {
+          //   nodejs 'NodeJS-12.16'
+          // }
           environment {
             REPOSITORY_NAME = "${env.GIT_URL.tokenize('/')[3].split('\\.')[0]}"
             REPOSITORY_OWNER = "${env.GIT_URL.tokenize('/')[2]}"
           }
           steps {
             ViolationsToGitHub([
-              gitHubUrl: 'https://api.github.com',
+              gitHubUrl: 'https://api.github.com/',
               pullRequestId: env.CHANGE_ID,
               repositoryName: env.REPOSITORY_NAME,
               repositoryOwner: env.REPOSITORY_OWNER,
@@ -87,6 +90,18 @@ pipeline {
                 [parser: 'FINDBUGS', reporter: 'Spotbugs', pattern: '.*/build/reports/spotbugs/.*\\.xml$']
               ]
             ])
+            // withCredentials([usernamePassword(credentialsId: 'ipaas-jenkins-github-access-token', passwordVariable: 'JENKINS_GIT_PASS', usernameVariable: 'JENKINS_GIT_USER')]) {
+            //   sh '''
+            //     npx violation-comments-to-github-command-line \
+            //       --username ${JENKINS_GIT_USER}
+            //       --password ${JENKINS_GIT_PASSWORD}
+            //       -ro tomasbjerre \
+            //       -rn violations-test \
+            //       -prid 3 \
+            //       -v "CHECKSTYLE" "." ".*checkstyle/main\.xml$" "Checkstyle" \
+            //       -v "JSHINT" "." ".*jshint/report\.xml$" "JSHint"
+            //   '''
+            // }
           }
         }
 
