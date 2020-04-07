@@ -74,33 +74,18 @@ pipeline {
             REPOSITORY_OWNER = "${env.GIT_URL.tokenize('/')[2]}"
           }
           steps {
-            // ViolationsToGitHub([
-            //   gitHubUrl: 'https://api.github.com/',
-            //   pullRequestId: env.CHANGE_ID,
-            //   repositoryName: env.REPOSITORY_NAME,
-            //   repositoryOwner: env.REPOSITORY_OWNER,
-            //   credentialsId: 'GITHUB_API_TOKEN',
-
-            //   createSingleFileComments: true,
-            //   commentOnlyChangedContent: true,
-            //   keepOldComments: false,
-            //   violationConfigs: [
-            //     [parser: 'CHECKSTYLE', reporter: 'Checkstyle', pattern: '.*/build/reports/checkstyle/.*\\.xml$'],
-            //     [parser: 'CPD', reporter: 'CPD', pattern: '.*/build/reports/cpd/.*\\.xml$'],
-            //     [parser: 'FINDBUGS', reporter: 'Spotbugs', pattern: '.*/build/reports/spotbugs/.*\\.xml$']
-            //   ]
-            // ])
-            withCredentials([usernamePassword(credentialsId: 'ipaas-jenkins-github-access-token', passwordVariable: 'JENKINS_GIT_PASS', usernameVariable: 'JENKINS_GIT_USER')]) {
+            withCredentials([usernamePassword(credentialsId: 'ipaas-jenkins-github-access-token',
+                passwordVariable: 'JENKINS_GIT_PASS', usernameVariable: 'JENKINS_GIT_USER')]) {
               sh '''
                 npx violation-comments-to-github-command-line \
-                  --username ${JENKINS_GIT_USER}
-                  --password ${JENKINS_GIT_PASSWORD}
+                  --username ${JENKINS_GIT_USER} \
+                  --password ${JENKINS_GIT_PASSWORD} \
                   -repository-name ${REPOSITORY_NAME} \
                   -repository-owner ${REPOSITORY_OWNER} \
                   -pull-request-id ${CHANGE_ID} \
-                  --violations "CHECKSTYLE" "./server/build/reports" "checkstyle/.*\.xml$" "Checkstyle" \
-                  --violations "CPD" "./server/build/reports" "cpd/.*\.xml$" "CPD" \
-                  --violations "FINDBUGS" "./server/build/reports" "spotbugs/.*\.xml$" "Spotbugs"
+                  --violations "CHECKSTYLE" "./server/build/reports" "checkstyle/.*\\.xml$" "Checkstyle" \
+                  --violations "CPD" "./server/build/reports" "cpd/.*\\.xml$" "CPD" \
+                  --violations "FINDBUGS" "./server/build/reports" "spotbugs/.*\\.xml$" "Spotbugs"
               '''
             }
           }
