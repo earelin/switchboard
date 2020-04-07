@@ -78,9 +78,9 @@ pipeline {
               repositoryOwner: env.REPOSITORY_OWNER,
               credentialsId: 'GITHUB_API_TOKEN',
 
-              createCommentWithAllSingleFileComments: false,
               createSingleFileComments: true,
               commentOnlyChangedContent: true,
+              commentOnlyChangedFiles: false,
               keepOldComments: false,
               violationConfigs: [
                 [parser: 'CHECKSTYLE', reporter: 'Checkstyle', pattern: '.*/build/reports/checkstyle/.*\\.xml$'],
