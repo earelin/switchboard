@@ -80,7 +80,6 @@ pipeline {
 
               createSingleFileComments: true,
               commentOnlyChangedContent: true,
-              commentOnlyChangedFiles: false,
               keepOldComments: false,
               violationConfigs: [
                 [parser: 'CHECKSTYLE', reporter: 'Checkstyle', pattern: '.*/build/reports/checkstyle/.*\\.xml$'],
