@@ -78,8 +78,8 @@ pipeline {
                 passwordVariable: 'JENKINS_GIT_PASS', usernameVariable: 'JENKINS_GIT_USER')]) {
               sh '''
                 npx violation-comments-to-github-command-line \
-                  --username ${JENKINS_GIT_USER} \
-                  --password ${JENKINS_GIT_PASSWORD} \
+                  -username ${JENKINS_GIT_USER} \
+                  -password ${JENKINS_GIT_PASSWORD} \
                   -repository-name ${REPOSITORY_NAME} \
                   -repository-owner ${REPOSITORY_OWNER} \
                   -pull-request-id ${CHANGE_ID} \
