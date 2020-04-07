@@ -76,7 +76,6 @@ pipeline {
               pullRequestId: env.CHANGE_ID,
               repositoryName: env.REPOSITORY_NAME,
               repositoryOwner: env.REPOSITORY_OWNER,
-              credentialsId: 'GITHUB_API_TOKEN',
 
               createSingleFileComments: true,
               commentOnlyChangedFiles: true,
