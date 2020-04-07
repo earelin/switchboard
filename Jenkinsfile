@@ -72,12 +72,13 @@ pipeline {
           }
           steps {
             ViolationsToGitHub([
-              repositoryName: env.REPOSITORY_NAME,
+              gitHubUrl: 'https://api.github.com',
               pullRequestId: env.CHANGE_ID,
+              repositoryName: env.REPOSITORY_NAME,
               repositoryOwner: env.REPOSITORY_OWNER,
               credentialsId: 'GITHUB_API_TOKEN',
 
-              createCommentWithAllSingleFileComments: false,
+              createCommentWithAllSingleFileComments: true,
               createSingleFileComments: true,
               commentOnlyChangedContent: true,
               keepOldComments: false,
