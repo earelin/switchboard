@@ -66,42 +66,43 @@ pipeline {
 
         stage('Comment pull request') {
           when { changeRequest() }
-          // tools {
-          //   nodejs 'NodeJS-12.16'
-          // }
+          tools {
+            nodejs 'NodeJS-12.16'
+          }
           environment {
             REPOSITORY_NAME = "${env.GIT_URL.tokenize('/')[3].split('\\.')[0]}"
             REPOSITORY_OWNER = "${env.GIT_URL.tokenize('/')[2]}"
           }
           steps {
-            ViolationsToGitHub([
-              gitHubUrl: 'https://api.github.com/',
-              pullRequestId: env.CHANGE_ID,
-              repositoryName: env.REPOSITORY_NAME,
-              repositoryOwner: env.REPOSITORY_OWNER,
-              credentialsId: 'GITHUB_API_TOKEN',
+            // ViolationsToGitHub([
+            //   gitHubUrl: 'https://api.github.com/',
+            //   pullRequestId: env.CHANGE_ID,
+            //   repositoryName: env.REPOSITORY_NAME,
+            //   repositoryOwner: env.REPOSITORY_OWNER,
+            //   credentialsId: 'GITHUB_API_TOKEN',
 
-              createSingleFileComments: true,
-              commentOnlyChangedContent: true,
-              keepOldComments: false,
-              violationConfigs: [
-                [parser: 'CHECKSTYLE', reporter: 'Checkstyle', pattern: '.*/build/reports/checkstyle/.*\\.xml$'],
-                [parser: 'CPD', reporter: 'CPD', pattern: '.*/build/reports/cpd/.*\\.xml$'],
-                [parser: 'FINDBUGS', reporter: 'Spotbugs', pattern: '.*/build/reports/spotbugs/.*\\.xml$']
-              ]
-            ])
-            // withCredentials([usernamePassword(credentialsId: 'ipaas-jenkins-github-access-token', passwordVariable: 'JENKINS_GIT_PASS', usernameVariable: 'JENKINS_GIT_USER')]) {
-            //   sh '''
-            //     npx violation-comments-to-github-command-line \
-            //       --username ${JENKINS_GIT_USER}
-            //       --password ${JENKINS_GIT_PASSWORD}
-            //       -ro tomasbjerre \
-            //       -rn violations-test \
-            //       -prid 3 \
-            //       -v "CHECKSTYLE" "." ".*checkstyle/main\.xml$" "Checkstyle" \
-            //       -v "JSHINT" "." ".*jshint/report\.xml$" "JSHint"
-            //   '''
-            // }
+            //   createSingleFileComments: true,
+            //   commentOnlyChangedContent: true,
+            //   keepOldComments: false,
+            //   violationConfigs: [
+            //     [parser: 'CHECKSTYLE', reporter: 'Checkstyle', pattern: '.*/build/reports/checkstyle/.*\\.xml$'],
+            //     [parser: 'CPD', reporter: 'CPD', pattern: '.*/build/reports/cpd/.*\\.xml$'],
+            //     [parser: 'FINDBUGS', reporter: 'Spotbugs', pattern: '.*/build/reports/spotbugs/.*\\.xml$']
+            //   ]
+            // ])
+            withCredentials([usernamePassword(credentialsId: 'ipaas-jenkins-github-access-token', passwordVariable: 'JENKINS_GIT_PASS', usernameVariable: 'JENKINS_GIT_USER')]) {
+              sh '''
+                npx violation-comments-to-github-command-line \
+                  --username ${JENKINS_GIT_USER}
+                  --password ${JENKINS_GIT_PASSWORD}
+                  -repository-name ${REPOSITORY_NAME} \
+                  -repository-owner ${REPOSITORY_OWNER} \
+                  -pull-request-id ${CHANGE_ID} \
+                  --violations "CHECKSTYLE" "./server/build/reports" "checkstyle/.*\.xml$" "Checkstyle" \
+                  --violations "CPD" "./server/build/reports" "cpd/.*\.xml$" "CPD" \
+                  --violations "FINDBUGS" "./server/build/reports" "spotbugs/.*\.xml$" "Spotbugs"
+              '''
+            }
           }
         }
 
