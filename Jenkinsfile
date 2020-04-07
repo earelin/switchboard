@@ -37,6 +37,7 @@ pipeline {
     stage('Dependencies and cleanup') {
       steps {
         sh './gradlew clean'
+        sh 'printenv'        
       }
     }
     stage('Server') {
@@ -86,7 +87,8 @@ pipeline {
                 [parser: 'CHECKSTYLE', reporter: 'Checkstyle', pattern: '.*/build/reports/checkstyle/.*\\.xml\$'],
                 [parser: 'CPD', reporter: 'CPD', pattern: '.*/build/reports/cpd/.*\\.xml\$'],
                 [parser: 'FINDBUGS', reporter: 'Spotbugs', pattern: '.*/build/reports/spotbugs/.*\\.xml\$']
-            ]])
+              ]
+            ])
           }
         }
 
