@@ -83,9 +83,9 @@ pipeline {
                   -repository-name ${REPOSITORY_NAME} \
                   -repository-owner ${REPOSITORY_OWNER} \
                   -pull-request-id ${CHANGE_ID} \
-                  --violations "CHECKSTYLE" "./server/build/reports" "checkstyle/.*\\.xml$" "Checkstyle" \
-                  --violations "CPD" "./server/build/reports" "cpd/.*\\.xml$" "CPD" \
-                  --violations "FINDBUGS" "./server/build/reports" "spotbugs/.*\\.xml$" "Spotbugs"
+                  --violations "CHECKSTYLE" "." ".*/reports/checkstyle/.*\\.xml$" "Checkstyle" \
+                  --violations "CPD" "." ".*/reports/cpd/.*\\.xml$" "CPD" \
+                  --violations "FINDBUGS" "." ".*/reports/spotbugs/.*\\.xml$" "Spotbugs"
               '''
             }
           }
