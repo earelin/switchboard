@@ -79,7 +79,7 @@ pipeline {
               credentialsId: 'GITHUB_API_TOKEN',
 
               createSingleFileComments: true,
-              commentOnlyChangedContent: true,
+              commentOnlyChangedFiles: true,
               keepOldComments: false,
               violationConfigs: [
                 [parser: 'CHECKSTYLE', reporter: 'Checkstyle', pattern: '.*/build/reports/checkstyle/.*\\.xml$'],
