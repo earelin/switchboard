@@ -30,4 +30,13 @@ public class UserGroupController {
           ("Some test");
     }
   }
+
+  public void
+  sameStupidFunction(String string) {
+    if (string=="check")
+    {
+      System.out.println
+          ("Some test");
+    }
+  }
 }
