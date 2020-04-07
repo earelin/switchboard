@@ -75,7 +75,7 @@ pipeline {
           }
           steps {
             withCredentials([usernamePassword(credentialsId: 'ipaas-jenkins-github-access-token',
-                passwordVariable: 'JENKINS_GIT_PASS', usernameVariable: 'JENKINS_GIT_USER')]) {
+                passwordVariable: 'JENKINS_GIT_PASSWORD', usernameVariable: 'JENKINS_GIT_USER')]) {
               sh '''
                 npx violation-comments-to-github-command-line \
                   -username ${JENKINS_GIT_USER} \
