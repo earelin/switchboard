@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.application;
+package uk.co.telegraph.switchboard.domain;
 
-public class UserGroupController {
-  public UserGroupController() {
+import static org.junit.jupiter.api.Assertions.*;
 
+class UserGroupsAggregatorTest {
 
-  }
 }

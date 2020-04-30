@@ -110,22 +110,25 @@ class ContextTest {
 
   @Test
   void should_not_be_equal_to_null() {
-    assertThat(context.equals(null)).isFalse();
+    assertThat(context.equals(null))
+        .isFalse();
   }
 
   @Test
   void should_not_be_equal_to_a_different_class() {
     String compareObject = "2wertgyhuji";
 
-    assertThat(context.equals(compareObject)).isFalse();
+    assertThat(context.equals(compareObject))
+        .isFalse();
   }
 
   @Test
-  void should_be_equal_to_an_object_with_different_id() {
+  void should_not_be_equal_to_an_object_with_different_id() {
     Context compareObject = new Context(contextsAggregator, CONTEXT_NAME);
     compareObject.setId(CONTEXT_ID_ALT);
 
-    assertThat(context.equals(compareObject)).isFalse();
+    assertThat(context.equals(compareObject))
+        .isFalse();
   }
 
   @Test

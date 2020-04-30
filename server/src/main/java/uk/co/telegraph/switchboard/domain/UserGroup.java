@@ -16,8 +16,10 @@
 
 package uk.co.telegraph.switchboard.domain;
 
-import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -29,9 +31,7 @@ import org.apache.commons.lang3.StringUtils;
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
-public class Context implements Serializable {
-
-  private static final long serialVersionUID = 6484811162702249867L;
+public class UserGroup {
 
   public static final int NAME_MAX_LENGTH = 32;
 
@@ -42,17 +42,34 @@ public class Context implements Serializable {
   @ManyToOne
   @JoinColumn(name = "application", referencedColumnName = "application_id")
   @ToString.Exclude
-  private ContextsAggregator contextsAggregator;
+  private UserGroupAggregator userGroupAggregator;
 
   @Column(length = NAME_MAX_LENGTH)
   private String name;
 
-  Context() {}
+  @ElementCollection
+  @Column(name = "name")
+  private Set<String> users = new HashSet<>();
 
-  public Context(ContextsAggregator contextsAggregator, String name) {
-    this.contextsAggregator = contextsAggregator;
+  UserGroup() {}
+
+  public UserGroup(UserGroupAggregator userGroupAggregator, String name) {
+    this.userGroupAggregator = userGroupAggregator;
     nameValidation(name);
     this.name = name;
+  }
+
+  public void addUser(String name) {
+    nameValidation(name);
+    this.users.add(name);
+  }
+
+  public void removeUser(String name) {
+
+  }
+
+  public boolean containsUser(String name) {
+    return false;
   }
 
   public Long getId() {
@@ -63,16 +80,8 @@ public class Context implements Serializable {
     this.id = id;
   }
 
-  public ContextsAggregator getContextsAggregator() {
-    return contextsAggregator;
-  }
-
-  void setContextsAggregator(ContextsAggregator contextsAggregator) {
-    this.contextsAggregator = contextsAggregator;
-  }
-
   public String getName() {
-    return name;
+    return this.name;
   }
 
   public void setName(String name) {
@@ -80,14 +89,22 @@ public class Context implements Serializable {
     this.name = name;
   }
 
+  void setUsers(Set<String> users) {
+    this.users = users;
+  }
+
+  public Set<String> getUsers() {
+    return this.users;
+  }
+
   private void nameValidation(String name) {
     if (StringUtils.isBlank(name)) {
-      throw new IllegalArgumentException("Context name cannot be null or empty");
+      throw new IllegalArgumentException("User group name cannot be null or empty");
     }
 
     if (name.length() > NAME_MAX_LENGTH) {
       throw new IllegalArgumentException(
-          String.format("Context name cannot be longer than %d characters", NAME_MAX_LENGTH));
+          String.format("User group name cannot be longer than %d characters", NAME_MAX_LENGTH));
     }
   }
 }

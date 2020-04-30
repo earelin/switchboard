@@ -95,6 +95,80 @@ databaseChangeLog:
                   constraints:
                     nullable: false
 
+  - changeSet:
+      id: '1.0.0-user-group-aggregator-table'
+      author: switchboard
+      comment: User group aggregator entity table
+      changes:
+        - createTable:
+            tableName: user_group_aggregator
+            columns:
+              - column:
+                  name: application_id
+                  type: char(36)
+                  constraints:
+                    deleteCascade: true
+                    foreignKeyName: fk_user_group_aggregator_application_id
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_user_group_aggregator
+                    referencedTableName: application
+                    referencedColumnNames: id
+
+  - changeSet:
+      id: '1.0.0-user-group-table'
+      author: switchboard
+      comment: User group entity table
+      changes:
+        - createTable:
+            tableName: user_group
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_user_group
+              - column:
+                  name: application
+                  type: char(36)
+                  constraints:
+                    deleteCascade: true
+                    foreignKeyName: fk_user_group_user_groups_aggregator_application_id
+                    nullable: false
+                    referencedTableName: user_group_aggregator
+                    referencedColumnNames: application_id
+              - column:
+                  name: name
+                  type: varchar(32)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: '1.0.0-user-group_users-table'
+      author: switchboard
+      comment: User group users collection table
+      changes:
+        - createTable:
+            tableName: user_group_users
+            columns:
+              - column:
+                  name: user_group_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    foreignKeyName: fk_user_group_users_user_groups_id
+                    nullable: false
+                    referencedTableName: user_group
+                    referencedColumnNames: id
+              - column:
+                  name: name
+                  type: varchar(32)
+                  constraints:
+                    nullable: false
+
 #  - changeSet:
 #      id: '1.0.0-create-feature-flag-table'
 #      author: switch-panel
