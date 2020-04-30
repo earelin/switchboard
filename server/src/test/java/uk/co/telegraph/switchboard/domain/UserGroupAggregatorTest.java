@@ -19,8 +19,9 @@ package uk.co.telegraph.switchboard.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -67,6 +68,17 @@ class UserGroupAggregatorTest {
   }
 
   @Test
+  void should_set_and_return_user_groups() {
+    Map<String, UserGroup> userGroups = new HashMap<>();
+    userGroups.put("beta", new UserGroup(userGroupAggregator, "beta"));
+
+    userGroupAggregator.setUserGroups(userGroups);
+
+    assertThat(userGroupAggregator.getUserGroups())
+        .isEqualTo(userGroups);
+  }
+
+  @Test
   void should_add_user_group() {
     userGroupAggregator.addUserGroup(USER_GROUP_NAME);
 
@@ -104,5 +116,11 @@ class UserGroupAggregatorTest {
   void should_return_false_if_user_group_does_not_exists() {
     assertThat(userGroupAggregator.containsUserGroup(USER_GROUP_NAME))
         .isFalse();
+  }
+
+  @Test
+  void should_return_string_representation() {
+    assertThat(userGroupAggregator.toString())
+        .startsWith("UserGroupAggregator");
   }
 }

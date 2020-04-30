@@ -16,6 +16,90 @@
 
 package uk.co.telegraph.switchboard.application;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+import uk.co.telegraph.switchboard.domain.UserGroup;
+import uk.co.telegraph.switchboard.repositories.ApplicationRepository;
+import uk.co.telegraph.switchboard.repositories.UserGroupAggregatorRepository;
+
+@RestController
+@RequestMapping(
+    value = "/rest/v1/application/{applicationId}/user-group",
+    produces = {MediaType.APPLICATION_JSON_VALUE})
 public class UserGroupController {
-  public UserGroupController() {}
+
+  private final ApplicationRepository applicationRepository;
+  private final UserGroupAggregatorRepository userGroupAggregatorRepository;
+
+  public UserGroupController(
+      ApplicationRepository applicationRepository,
+      UserGroupAggregatorRepository userGroupAggregatorRepository) {
+    this.applicationRepository = applicationRepository;
+    this.userGroupAggregatorRepository = userGroupAggregatorRepository;
+  }
+
+  @GetMapping
+  public List<UserGroup> getUserGroups(@PathVariable String applicationId) {
+    throw new UnsupportedOperationException();
+  }
+
+  @PostMapping
+  @ResponseStatus(HttpStatus.CREATED)
+  public UserGroup createUserGroup(@PathVariable String applicationId) {
+    throw new UnsupportedOperationException();
+  }
+
+  @GetMapping("/{userGroupId}")
+  public Optional<UserGroup> getUserGroup(
+      @PathVariable String applicationId,
+      @PathVariable String userGroupId) {
+    throw new UnsupportedOperationException();
+  }
+
+  @DeleteMapping("/{userGroupId}")
+  public void deleteUserGroup(
+      @PathVariable String applicationId,
+      @PathVariable String userGroupId) {
+    throw new UnsupportedOperationException();
+  }
+
+  @PutMapping("/{userGroupId}")
+  public UserGroup updateUserGroup(
+      @PathVariable String applicationId,
+      @PathVariable String userGroupId) {
+    throw new UnsupportedOperationException();
+  }
+
+  @PostMapping("/{userGroupId}/user")
+  public UserGroup addUserToGroup(
+      @PathVariable String applicationId,
+      @PathVariable String userGroupId) {
+    throw new UnsupportedOperationException();
+  }
+
+  @GetMapping("/{userGroupId}/user")
+  public Set<UserGroup> getUsersFromGroup(
+      @PathVariable String applicationId,
+      @PathVariable String userGroupId) {
+    throw new UnsupportedOperationException();
+  }
+
+  @DeleteMapping("/{userGroupId}/user/{userId}")
+  public UserGroup removeUserFromGroup(
+      @PathVariable String applicationId,
+      @PathVariable String userGroupId,
+      @PathVariable String userId) {
+    throw new UnsupportedOperationException();
+  }
 }
