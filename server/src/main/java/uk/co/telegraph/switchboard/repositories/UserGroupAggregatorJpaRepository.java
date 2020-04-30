@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.application;
+package uk.co.telegraph.switchboard.repositories;
 
-public class UserGroupController {
-  public UserGroupController() {}
-}
+import org.springframework.data.repository.Repository;
+import uk.co.telegraph.switchboard.domain.UserGroupAggregator;
+
+interface UserGroupAggregatorJpaRepository extends Repository<UserGroupAggregator, String> {}

@@ -65,11 +65,11 @@ public class UserGroup {
   }
 
   public void removeUser(String name) {
-
+    this.users.remove(name);
   }
 
   public boolean containsUser(String name) {
-    return false;
+    return this.users.contains(name);
   }
 
   public Long getId() {
@@ -90,7 +90,7 @@ public class UserGroup {
   }
 
   void setUsers(Set<String> users) {
-    this.users = users;
+    this.users = new HashSet<>(users);
   }
 
   public Set<String> getUsers() {

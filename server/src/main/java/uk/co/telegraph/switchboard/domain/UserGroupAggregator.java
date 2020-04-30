@@ -42,8 +42,8 @@ public class UserGroupAggregator {
   private Application application;
 
   @OneToMany(mappedBy = "userGroupAggregator")
-  @MapKey(name = "id")
-  private Map<Long, UserGroup> userGroups = new HashMap<>();
+  @MapKey(name = "name")
+  private Map<String, UserGroup> userGroups = new HashMap<>();
 
   UserGroupAggregator() {}
 
@@ -52,15 +52,29 @@ public class UserGroupAggregator {
   }
 
   public void addUserGroup(String name) {
-
+    if (!containsUserGroup(name)) {
+      UserGroup userGroup = new UserGroup(this, name);
+      this.userGroups.put(name, userGroup);
+    } else {
+      String message = String.format("Object with name %s already exists in aggregate", name);
+      throw new ObjectAlreadyExistsInAggregate(message);
+    }
   }
 
-  public boolean containsUserGroup(Long id) {
-    return false;
+  public boolean containsUserGroup(String name) {
+    return this.userGroups.containsKey(name);
   }
 
-  public void removeUserGroup(Long id) {
+  public void removeUserGroup(String name) {
+    this.userGroups.remove(name);
+  }
 
+  public String getId() {
+    return this.id;
+  }
+
+  void setId(String id) {
+    this.id = id;
   }
 
   public Application getApplication() {
@@ -71,12 +85,12 @@ public class UserGroupAggregator {
     this.application = application;
   }
 
-  public Map<Long, UserGroup> getUserGroups() {
+  public Map<String, UserGroup> getUserGroups() {
     return Map.copyOf(userGroups);
   }
 
   void setUserGroups(
-      Map<Long, UserGroup> userGroups) {
-    this.userGroups = userGroups;
+      Map<String, UserGroup> userGroups) {
+    this.userGroups = new HashMap<>(userGroups);
   }
 }

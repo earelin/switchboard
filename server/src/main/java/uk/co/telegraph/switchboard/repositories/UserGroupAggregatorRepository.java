@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.domain;
+package uk.co.telegraph.switchboard.repositories;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class UserGroupsAggregatorTest {
+public interface UserGroupAggregatorRepository {
 
 }

@@ -123,6 +123,26 @@ class UserGroupTest {
   }
 
   @Test
+  void should_remove_an_user_if_it_does_exists() {
+    userGroup.removeUser("frodo");
+
+    assertThat(userGroup.getUsers())
+        .containsExactly("sam", "gandalf");
+  }
+
+  @Test
+  void should_return_true_if_an_user_exists() {
+    assertThat(userGroup.containsUser("frodo"))
+        .isTrue();
+  }
+
+  @Test
+  void should_return_false_if_an_user_does_not_exists() {
+    assertThat(userGroup.containsUser("sauron"))
+        .isFalse();
+  }
+
+  @Test
   void should_be_equal_to_itself() {
     assertThat(userGroup.equals(userGroup))
         .isTrue();
