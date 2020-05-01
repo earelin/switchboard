@@ -4,6 +4,7 @@
   "description": "Switchboard user interface",
   "scripts": {
     "build": "parcel build src/index.html",
+    "clean": "",
     "lint": "eslint src",
     "start": "proxy.js",
     "test": "jest",
