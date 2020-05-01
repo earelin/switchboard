@@ -1,9 +1,15 @@
+### GRADLE ###
 HELP.md
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**
 !**/src/test/**
+
+### JAVASCRIPT ###
+node_modules/
+dist/
+.cache/
 
 ### STS ###
 .apt_generated
