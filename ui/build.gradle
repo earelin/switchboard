@@ -5,3 +5,7 @@ plugins {
 node {
   version = '12.16.2'
 }
+
+task('clean', type: NpmTask) {
+
+}
