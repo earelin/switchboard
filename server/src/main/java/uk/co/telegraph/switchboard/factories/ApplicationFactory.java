@@ -16,6 +16,8 @@
 
 package uk.co.telegraph.switchboard.factories;
 
+import static uk.co.telegraph.switchboard.domain.Application.SECRET_MAX_LENGTH;
+
 import org.springframework.stereotype.Component;
 import uk.co.telegraph.switchboard.domain.Application;
 import uk.co.telegraph.switchboard.services.IdGenerator;
@@ -24,8 +26,6 @@ import uk.co.telegraph.switchboard.services.PasswordGenerator;
 /** Creates new application objects applying invariants. */
 @Component
 public class ApplicationFactory {
-
-  private static final int SECRET_SIZE = 16;
 
   private final IdGenerator idGenerator;
   private final PasswordGenerator passwordGenerator;
@@ -41,7 +41,7 @@ public class ApplicationFactory {
 
   public Application createApplication(String name, String description) {
     String id = idGenerator.generateId(name);
-    String secret = passwordGenerator.generatePassword(SECRET_SIZE);
+    String secret = passwordGenerator.generatePassword(SECRET_MAX_LENGTH);
 
     Application application = new Application(id, name, secret);
     application.setDescription(description);

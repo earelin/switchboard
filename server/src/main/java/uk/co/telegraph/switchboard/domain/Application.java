@@ -16,33 +16,27 @@
 
 package uk.co.telegraph.switchboard.domain;
 
-import java.io.Serializable;
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 
-@Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
-public class Application implements Serializable {
+public class Application {
 
-  private static final long serialVersionUID = -8434329592259214281L;
+  public static final int ID_MAX_LENGTH = 36;
+  public static final int NAME_MAX_LENGTH = 64;
+  public static final int SECRET_MAX_LENGTH = 12;
 
-  @Id
   @EqualsAndHashCode.Include
-  @Column(columnDefinition = "char(36)", length = 36)
   private String id;
 
-  @Column(length = 64)
+  @Column(length = NAME_MAX_LENGTH)
   private String name;
 
   @Column(columnDefinition = "longtext")
   private String description;
-
-  @Column(columnDefinition = "char(12)", length = 12)
   private String secret;
 
   Application() {}

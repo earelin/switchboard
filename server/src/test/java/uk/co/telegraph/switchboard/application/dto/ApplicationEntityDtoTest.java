@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class ApplicationDtoTest {
+class ApplicationEntityDtoTest {
 
   private static final String APPLICATION_ID = "ac3747c3-9b49-414c-9d3a-7a38383a49d7";
   private static final String APPLICATION_NAME = "Website";

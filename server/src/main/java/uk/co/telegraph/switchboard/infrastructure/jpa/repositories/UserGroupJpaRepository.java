@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.repositories;
+package uk.co.telegraph.switchboard.infrastructure.jpa.repositories;
 
-import org.springframework.stereotype.Component;
+import org.springframework.data.repository.Repository;
+import uk.co.telegraph.switchboard.domain.UserGroup;
 
-@Component
-public class UserGroupAggregatorRepository {
-
-}
+public interface UserGroupJpaRepository extends Repository<UserGroup, String> {}

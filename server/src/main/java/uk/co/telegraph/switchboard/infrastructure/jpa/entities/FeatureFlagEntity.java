@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.repositories;
+package uk.co.telegraph.switchboard.infrastructure.jpa.entities;
 
-import org.springframework.data.repository.Repository;
-import uk.co.telegraph.switchboard.domain.UserGroupAggregator;
+public class FeatureFlagEntity {
 
-interface UserGroupAggregatorJpaRepository extends Repository<UserGroupAggregator, String> {}
+}

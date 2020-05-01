@@ -29,7 +29,7 @@ import uk.co.telegraph.switchboard.services.IdGenerator;
 import uk.co.telegraph.switchboard.services.PasswordGenerator;
 
 @ExtendWith(MockitoExtension.class)
-class ApplicationFactoryTest {
+class ApplicationEntityFactoryTest {
 
   private static final String APPLICATION_NAME = "Website";
   private static final String APPLICATION_DESCRIPTION = "Company website";

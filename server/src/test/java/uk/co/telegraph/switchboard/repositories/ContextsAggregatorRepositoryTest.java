@@ -31,17 +31,18 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.co.telegraph.switchboard.domain.Application;
 import uk.co.telegraph.switchboard.domain.ContextsAggregator;
+import uk.co.telegraph.switchboard.infrastructure.jpa.repositories.ContextsJpaRepository;
 
 @ExtendWith(MockitoExtension.class)
-class ContextsAggregatorRepositoryImplTest {
+class ContextsAggregatorRepositoryTest {
 
   private Application application;
 
   @Mock
-  private ContextsAggregatorJpaRepository contextsAggregatorJpaRepository;
+  private ContextsJpaRepository contextsJpaRepository;
 
   @InjectMocks
-  private ContextsAggregatorRepositoryImpl contextsAggregatorRepository;
+  private ContextsAggregatorRepository contextsAggregatorRepository;
 
   @BeforeEach
   void setUp() {
@@ -51,7 +52,7 @@ class ContextsAggregatorRepositoryImplTest {
   @Test
   void should_return_a_context_aggregator_by_application_if_exists() {
     ContextsAggregator contextsAggregator = getContextsAggregator(application);
-    when(contextsAggregatorJpaRepository.findByApplication(application))
+    when(contextsJpaRepository.findByApplication(application))
         .thenReturn(Optional.of(contextsAggregator));
 
     Optional<ContextsAggregator> contextsAggregatorOptional
@@ -65,7 +66,7 @@ class ContextsAggregatorRepositoryImplTest {
 
   @Test
   void should_return_a_optional_empty_by_application_if_it_does_not_exists() {
-    when(contextsAggregatorJpaRepository.findByApplication(application))
+    when(contextsJpaRepository.findByApplication(application))
         .thenReturn(Optional.empty());
 
     Optional<ContextsAggregator> contextsAggregatorOptional
@@ -79,7 +80,7 @@ class ContextsAggregatorRepositoryImplTest {
   @Test
   void should_return_a_not_empty_optional_if_context_aggregator_find_by_id_exists() {
     ContextsAggregator contextsAggregator = getContextsAggregator(application);
-    when(contextsAggregatorJpaRepository.findById(application.getId()))
+    when(contextsJpaRepository.findById(application.getId()))
         .thenReturn(Optional.of(contextsAggregator));
 
     Optional<ContextsAggregator> contextsAggregatorOptional
@@ -93,7 +94,7 @@ class ContextsAggregatorRepositoryImplTest {
 
   @Test
   void should_return_a_empty_optional_if_context_aggregator_find_by_id_does_not_exists() {
-    when(contextsAggregatorJpaRepository.findById(application.getId()))
+    when(contextsJpaRepository.findById(application.getId()))
         .thenReturn(Optional.empty());
 
     Optional<ContextsAggregator> contextsAggregatorOptional
@@ -105,7 +106,7 @@ class ContextsAggregatorRepositoryImplTest {
 
   @Test
   void should_return_true_if_context_aggregator_exists_by_application() {
-    when(contextsAggregatorJpaRepository.existsByApplication(application))
+    when(contextsJpaRepository.existsByApplication(application))
         .thenReturn(true);
 
     assertThat(contextsAggregatorRepository.existsByApplication(application))
@@ -114,7 +115,7 @@ class ContextsAggregatorRepositoryImplTest {
 
   @Test
   void should_return_true_if_context_aggregator_does_not_exists_by_application() {
-    when(contextsAggregatorJpaRepository.existsByApplication(application))
+    when(contextsJpaRepository.existsByApplication(application))
         .thenReturn(false);
 
     assertThat(contextsAggregatorRepository.existsByApplication(application))
@@ -123,7 +124,7 @@ class ContextsAggregatorRepositoryImplTest {
 
   @Test
   void should_return_true_if_context_aggregator_exists_by_application_id() {
-    when(contextsAggregatorJpaRepository.existsById(APPLICATION_ID))
+    when(contextsJpaRepository.existsById(APPLICATION_ID))
         .thenReturn(true);
 
     assertThat(contextsAggregatorRepository.existsByApplicationId(APPLICATION_ID))
@@ -132,7 +133,7 @@ class ContextsAggregatorRepositoryImplTest {
 
   @Test
   void should_return_true_if_context_aggregator_does_not_exists_by_application_id() {
-    when(contextsAggregatorJpaRepository.existsById(APPLICATION_ID))
+    when(contextsJpaRepository.existsById(APPLICATION_ID))
         .thenReturn(false);
 
     assertThat(contextsAggregatorRepository.existsByApplicationId(APPLICATION_ID))
@@ -142,7 +143,7 @@ class ContextsAggregatorRepositoryImplTest {
   @Test
   void should_save_a_context_aggregator() {
     ContextsAggregator contextsAggregator = getContextsAggregator(application);
-    when(contextsAggregatorJpaRepository.save(contextsAggregator))
+    when(contextsJpaRepository.save(contextsAggregator))
         .thenReturn(contextsAggregator);
 
     assertThat(contextsAggregatorRepository.save(contextsAggregator))

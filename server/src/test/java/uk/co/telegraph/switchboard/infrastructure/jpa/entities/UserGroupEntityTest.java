@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.repositories;
+package uk.co.telegraph.switchboard.infrastructure.jpa.entities;
 
-import org.springframework.stereotype.Component;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@Component
-public class UserGroupAggregatorRepository {
+@ExtendWith(MockitoExtension.class)
+class UserGroupEntityTest {
 
 }

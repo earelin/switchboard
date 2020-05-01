@@ -14,11 +14,15 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.repositories;
+package uk.co.telegraph.switchboard.infrastructure.jpa.entities;
 
-import org.springframework.stereotype.Component;
+import javax.persistence.Entity;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-@Component
-public class UserGroupAggregatorRepositoryImpl implements UserGroupAggregatorRepository {
+@Entity
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+public class UserGroupEntity {
 
 }

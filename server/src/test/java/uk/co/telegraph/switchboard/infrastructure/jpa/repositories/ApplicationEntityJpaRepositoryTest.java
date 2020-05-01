@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.repositories;
+package uk.co.telegraph.switchboard.infrastructure.jpa.repositories;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.telegraph.switchboard.generators.ApplicationContentGenerator.APPLICATION_DESCRIPTION;
@@ -37,7 +37,7 @@ import uk.co.telegraph.switchboard.RepositoryIntegration;
 import uk.co.telegraph.switchboard.domain.Application;
 
 @RepositoryIntegration
-class ApplicationJpaRepositoryTest {
+class ApplicationEntityJpaRepositoryTest {
 
   @Autowired
   private TestEntityManager entityManager;

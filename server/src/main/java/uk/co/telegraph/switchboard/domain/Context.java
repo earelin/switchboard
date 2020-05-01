@@ -31,7 +31,7 @@ import org.apache.commons.lang3.StringUtils;
 @ToString
 public class Context implements Serializable {
 
-  private static final long serialVersionUID = 6484811162702249867L;
+  private static final long serialVersionUID = 3642470915840152867L;
 
   public static final int NAME_MAX_LENGTH = 32;
 
@@ -49,6 +49,11 @@ public class Context implements Serializable {
 
   Context() {}
 
+  /**
+   * Context public constructor.
+   * @param contextsAggregator Context aggregator.
+   * @param name Name.
+   */
   public Context(ContextsAggregator contextsAggregator, String name) {
     this.contextsAggregator = contextsAggregator;
     nameValidation(name);

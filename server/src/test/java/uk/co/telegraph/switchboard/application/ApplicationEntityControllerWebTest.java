@@ -53,7 +53,7 @@ import uk.co.telegraph.switchboard.repositories.ApplicationRepository;
 /** Web layer controller test. */
 @Integration
 @WebMvcTest(ApplicationController.class)
-class ApplicationControllerWebTest {
+class ApplicationEntityControllerWebTest {
 
   private static final Gson gson = new Gson();
 

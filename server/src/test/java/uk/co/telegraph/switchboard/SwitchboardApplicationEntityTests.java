@@ -27,7 +27,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.context.WebApplicationContext;
 
 @ApplicationIntegration
-class SwitchboardApplicationTests {
+class SwitchboardApplicationEntityTests {
 
   @Autowired
   private WebApplicationContext webApplicationContext;

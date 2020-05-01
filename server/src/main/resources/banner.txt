@@ -8,6 +8,6 @@ ${AnsiColor.CYAN}     |  ${AnsiColor.BRIGHT_RED}|\ \_\  |\ \_\  ${AnsiColor.GREE
 ${AnsiColor.CYAN}     |  ${AnsiColor.BRIGHT_RED}|˙\[_]  |˙\[_]  ${AnsiColor.GREEN}|˙--˙|  ${AnsiColor.BRIGHT_RED}|˙\[_]  ${AnsiColor.GREEN}|˙--˙|  ${AnsiColor.CYAN}|
 ${AnsiColor.CYAN}     '------------------------------------------'
 
-${AnsiColor.BRIGHT_YELLOW}         ::  Switchboard  ::  ${AnsiColor.BRIGHT_WHITE}${application.version}
+${AnsiColor.BRIGHT_YELLOW}         ::  Switchboard  ::  ${AnsiColor.BRIGHT_WHITE}${applicationEntity.version}
 
 ${AnsiColor.GREEN}         Feature Flag Configuration Server

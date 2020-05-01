@@ -53,6 +53,11 @@ public class UserGroup {
 
   UserGroup() {}
 
+  /**
+   * UserGroup public constructor.
+   * @param userGroupAggregator User group aggregator.
+   * @param name Name.
+   */
   public UserGroup(UserGroupAggregator userGroupAggregator, String name) {
     this.userGroupAggregator = userGroupAggregator;
     nameValidation(name);
@@ -99,12 +104,14 @@ public class UserGroup {
 
   private void nameValidation(String name) {
     if (StringUtils.isBlank(name)) {
-      throw new IllegalArgumentException("User group name cannot be null or empty");
+      throw new IllegalArgumentException(
+          String.format("User group name cannot be null or empty, current value: %s", name));
     }
 
     if (name.length() > NAME_MAX_LENGTH) {
       throw new IllegalArgumentException(
-          String.format("User group name cannot be longer than %d characters", NAME_MAX_LENGTH));
+          String.format("User group name cannot be longer than %d characters, current value: %s",
+              NAME_MAX_LENGTH, name));
     }
   }
 }

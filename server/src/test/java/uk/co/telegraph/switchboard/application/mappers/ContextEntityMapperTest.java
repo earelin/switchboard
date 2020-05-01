@@ -27,7 +27,7 @@ import org.mapstruct.factory.Mappers;
 import uk.co.telegraph.switchboard.domain.Context;
 import uk.co.telegraph.switchboard.domain.ContextsAggregator;
 
-class ContextMapperTest {
+class ContextEntityMapperTest {
 
   private ContextsAggregator contextsAggregator;
 

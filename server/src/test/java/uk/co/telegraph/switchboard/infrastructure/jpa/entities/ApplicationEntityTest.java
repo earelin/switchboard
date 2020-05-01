@@ -14,11 +14,8 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.repositories;
+package uk.co.telegraph.switchboard.infrastructure.jpa.entities;
 
-import org.springframework.stereotype.Component;
-
-@Component
-public class UserGroupAggregatorRepository {
+class ApplicationEntityTest {
 
 }

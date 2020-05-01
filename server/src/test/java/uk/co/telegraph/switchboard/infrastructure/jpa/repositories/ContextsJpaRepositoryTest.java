@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.repositories;
+package uk.co.telegraph.switchboard.infrastructure.jpa.repositories;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.telegraph.switchboard.generators.ApplicationContentGenerator.APPLICATION_ID;
@@ -32,13 +32,13 @@ import uk.co.telegraph.switchboard.domain.Application;
 import uk.co.telegraph.switchboard.domain.ContextsAggregator;
 
 @RepositoryIntegration
-class ContextsAggregatorJpaRepositoryTest {
+class ContextsJpaRepositoryTest {
 
   @Autowired
   private TestEntityManager entityManager;
 
   @Autowired
-  private ContextsAggregatorJpaRepository contextsAggregatorRepository;
+  private ContextsJpaRepository contextsAggregatorRepository;
 
   @Test
   void should_find_a_contexts_aggregator_by_application() {

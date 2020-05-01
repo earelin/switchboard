@@ -40,15 +40,16 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import uk.co.telegraph.switchboard.domain.Application;
+import uk.co.telegraph.switchboard.infrastructure.jpa.repositories.ApplicationJpaRepository;
 
 @ExtendWith(MockitoExtension.class)
-class ApplicationRepositoryImplTest {
+class ApplicationRepositoryTest {
 
   @Mock
   private ApplicationJpaRepository applicationJpaRepository;
 
   @InjectMocks
-  private ApplicationRepositoryImpl applicationRepository;
+  private ApplicationRepository applicationRepository;
 
   @Test
   void should_return_a_found_application() {
