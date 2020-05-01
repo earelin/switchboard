@@ -14,8 +14,24 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.infrastructure.jpa.entities;
+package uk.co.telegraph.switchboard.domain.validation;
 
-public class FeatureFlagEntity {
+import java.util.function.Function;
 
+public abstract class FieldValidator<K> {
+
+  protected final String fieldName;
+  protected Function<K, K> validators;
+
+  public void apply(K value) {
+    validators.apply(value);
+  }
+
+  protected FieldValidator(String fieldName) {
+    this.fieldName = fieldName;
+  }
+
+  public String getFieldName() {
+    return fieldName;
+  }
 }

@@ -17,7 +17,6 @@
 package uk.co.telegraph.switchboard.application.dto;
 
 import java.io.Serializable;
-import javax.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -29,7 +28,6 @@ public class ApplicationCreateDto implements Serializable {
 
   private static final long serialVersionUID = 5901042808680184056L;
 
-  @NotBlank
   private String name;
   private String description;
 

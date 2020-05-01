@@ -24,13 +24,13 @@ import org.junit.jupiter.api.Test;
 
 class ApplicationTest {
 
-  private static final String APPLICATION_ID = "5cfd7920-1f9f-4fb3-a975-0393fccaa068";
-  private static final String APPLICATION_ID_ALT = "b6acb171-65f6-4000-837c-0cf1184a918e";
-  private static final String APPLICATION_NAME = "Authoring";
-  private static final String APPLICATION_NAME_ALT = "CMS";
-  private static final String APPLICATION_DESCRIPTION = "A great authoring application";
-  private static final String APPLICATION_SECRET = "XQqhNWDvEmnK777R";
-  private static final String APPLICATION_SECRET_ALT = "qR7yQdMEEZn7XsCU";
+  public static final String APPLICATION_ID = "5cfd7920-1f9f-4fb3-a975-0393fccaa068";
+  public static final String APPLICATION_ID_ALT = "b6acb171-65f6-4000-837c-0cf1184a918e";
+  public static final String APPLICATION_NAME = "Authoring";
+  public static final String APPLICATION_NAME_ALT = "CMS";
+  public static final String APPLICATION_DESCRIPTION = "A great authoring application";
+  public static final String APPLICATION_SECRET = "XQqhNWDvEmnK777R";
+  public static final String APPLICATION_SECRET_ALT = "qR7yQdMEEZn7XsCU";
 
   private Application application;
 
@@ -199,7 +199,7 @@ class ApplicationTest {
 
   @Test
   void should_be_equal_to_an_object_with_same_id() {
-    Application compareObject = new Application();
+    Application compareObject = new Application(APPLICATION_ID, APPLICATION_NAME_ALT, APPLICATION_SECRET_ALT);
     compareObject.setId(APPLICATION_ID);
 
     assertThat(application.equals(compareObject)).isTrue();
@@ -219,7 +219,7 @@ class ApplicationTest {
 
   @Test
   void should_not_be_equal_to_an_object_with_different_id() {
-    Application compareObject = new Application();
+    Application compareObject = new Application(APPLICATION_ID_ALT, APPLICATION_NAME, APPLICATION_SECRET);
     compareObject.setId(APPLICATION_ID_ALT);
 
     assertThat(application.equals(compareObject)).isFalse();
@@ -227,15 +227,15 @@ class ApplicationTest {
 
   @Test
   void should_have_the_same_hash_code_than_a_object_with_same_id() {
-    Application compareObject = new Application();
+    Application compareObject = new Application(APPLICATION_ID, APPLICATION_NAME_ALT, APPLICATION_SECRET_ALT);
     compareObject.setId(APPLICATION_ID);
 
     assertThat(application.hashCode()).isEqualTo(compareObject.hashCode());
   }
 
   @Test
-  void should_not_have_the_same_hash_code_than_an_object_with_different_properties() {
-    Application compareObject = new Application();
+  void should_not_have_the_same_hash_code_than_an_object_with_different_ID() {
+    Application compareObject = new Application(APPLICATION_ID_ALT, APPLICATION_NAME, APPLICATION_SECRET);
     compareObject.setId(APPLICATION_ID_ALT);
 
     assertThat(application.hashCode()).isNotEqualTo(compareObject.hashCode());

@@ -65,9 +65,11 @@ public class ApplicationController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public ApplicationDto createApplication(@RequestBody @Valid ApplicationCreateDto request) {
+  public ApplicationDto createApplication(
+      @RequestBody @Valid ApplicationCreateDto applicationData) {
     Application application =
-        applicationFactory.createApplication(request.getName(), request.getDescription());
+        applicationFactory.createApplication(
+            applicationData.getName(), applicationData.getDescription());
 
     Application savedApplication = applicationRepository.save(application);
 

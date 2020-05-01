@@ -7,8 +7,6 @@ management:
       enabled: true
     diskspace:
       enabled: true
-    db:
-      enabled: true
 
 logging:
   level:
@@ -18,19 +16,6 @@ logging:
           switchboard: DEBUG
 
 spring:
-  jpa:
-    open-in-view: false
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-    hibernate:
-      ddl-auto: validate
-  h2:
-    console:
-      enabled: true
-  liquibase:
-    enabled: true
   output:
     ansi:
       enabled: ALWAYS

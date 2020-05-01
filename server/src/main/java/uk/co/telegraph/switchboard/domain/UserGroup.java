@@ -30,7 +30,6 @@ public class UserGroup {
 
   @EqualsAndHashCode.Include
   private String id;
-  private String name;
   private Set<String> users = new HashSet<>();
 
   UserGroup() {}
@@ -41,13 +40,12 @@ public class UserGroup {
    * @param name Name.
    */
   public UserGroup(String id, String name) {
+
     this.id = id;
-    nameValidation(name);
-    this.name = name;
   }
 
   public void addUser(String name) {
-    nameValidation(name);
+    idValidation(name);
     this.users.add(name);
   }
 
@@ -59,13 +57,12 @@ public class UserGroup {
     return this.users.contains(name);
   }
 
-  public String getName() {
-    return this.name;
+  public String getId() {
+    return id;
   }
 
-  public void setName(String name) {
-    nameValidation(name);
-    this.name = name;
+  void setId(String id) {
+    this.id = id;
   }
 
   void setUsers(Set<String> users) {
@@ -76,15 +73,15 @@ public class UserGroup {
     return this.users;
   }
 
-  private void nameValidation(String name) {
+  private void idValidation(String name) {
     if (StringUtils.isBlank(name)) {
       throw new IllegalArgumentException(
-          String.format("User group name cannot be null or empty, current value: %s", name));
+          String.format("User group id cannot be null or empty, current value: %s", name));
     }
 
     if (name.length() > NAME_MAX_LENGTH) {
       throw new IllegalArgumentException(
-          String.format("User group name cannot be longer than %d characters, current value: %s",
+          String.format("User group id cannot be longer than %d characters, current value: %s",
               NAME_MAX_LENGTH, name));
     }
   }

@@ -21,34 +21,27 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import uk.co.telegraph.switchboard.domain.Application;
-import uk.co.telegraph.switchboard.infrastructure.jpa.repositories.ApplicationJpaRepository;
 
 @Component
 public class ApplicationRepository {
 
-  private final ApplicationJpaRepository jpaRepository;
-
-  public ApplicationRepository(ApplicationJpaRepository jpaRepository) {
-    this.jpaRepository = jpaRepository;
-  }
-
   public Optional<Application> getById(String id) {
-    return jpaRepository.findById(id);
+    throw new UnsupportedOperationException();
   }
 
   public Application save(Application application) {
-    return jpaRepository.save(application);
+    throw new UnsupportedOperationException();
   }
 
   public void removeById(String id) {
-    jpaRepository.deleteById(id);
+    throw new UnsupportedOperationException();
   }
 
   public boolean existsById(String id) {
-    return jpaRepository.existsById(id);
+    throw new UnsupportedOperationException();
   }
 
   public Page<Application> getPagedList(Pageable pageable) {
-    return jpaRepository.findAll(pageable);
+    throw new UnsupportedOperationException();
   }
 }

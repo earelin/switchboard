@@ -18,13 +18,6 @@ package uk.co.telegraph.switchboard.domain;
 
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.MapsId;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 /** User groups aggregator. */
 public class UserGroupAggregator {
@@ -39,7 +32,7 @@ public class UserGroupAggregator {
   }
 
   public void addUserGroup(String name) {
-    this.userGroups.add(new UserGroup(name));
+    this.userGroups.add(new UserGroup("id", name));
   }
 
   public boolean containsUserGroup(UserGroup userGroup) {

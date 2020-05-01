@@ -21,50 +21,43 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class ApplicationEntityDtoTest {
+class ApplicationCreateDtoTest {
 
-  private static final String APPLICATION_ID = "ac3747c3-9b49-414c-9d3a-7a38383a49d7";
   private static final String APPLICATION_NAME = "Website";
   private static final String APPLICATION_DESCRIPTION = "Public website";
-  private static final String APPLICATION_SECRET = "5keMeAAF69sBQqau";
 
-  private ApplicationDto applicationDto;
+  private ApplicationCreateDto applicationCreateDto;
 
   @BeforeEach
   void setUp() {
-    applicationDto = new ApplicationDto();
+    applicationCreateDto = new ApplicationCreateDto();
   }
 
   @Test
-  void should_set_and_return_id() {
-    applicationDto.setId(APPLICATION_ID);
+  void should_set_name_and_description_on_constructor() {
+    applicationCreateDto = new ApplicationCreateDto(APPLICATION_NAME, APPLICATION_DESCRIPTION);
 
-    assertThat(applicationDto.getId()).isEqualTo(APPLICATION_ID);
+    assertThat(applicationCreateDto)
+        .hasFieldOrPropertyWithValue("name", APPLICATION_NAME)
+        .hasFieldOrPropertyWithValue("description", APPLICATION_DESCRIPTION);
   }
 
   @Test
   void should_set_and_return_name() {
-    applicationDto.setName(APPLICATION_NAME);
+    applicationCreateDto.setName(APPLICATION_NAME);
 
-    assertThat(applicationDto.getName()).isEqualTo(APPLICATION_NAME);
+    assertThat(applicationCreateDto.getName()).isEqualTo(APPLICATION_NAME);
   }
 
   @Test
   void should_set_and_return_description() {
-    applicationDto.setDescription(APPLICATION_DESCRIPTION);
+    applicationCreateDto.setDescription(APPLICATION_DESCRIPTION);
 
-    assertThat(applicationDto.getDescription()).isEqualTo(APPLICATION_DESCRIPTION);
-  }
-
-  @Test
-  void should_set_and_return_secret() {
-    applicationDto.setSecret(APPLICATION_SECRET);
-
-    assertThat(applicationDto.getSecret()).isEqualTo(APPLICATION_SECRET);
+    assertThat(applicationCreateDto.getDescription()).isEqualTo(APPLICATION_DESCRIPTION);
   }
 
   @Test
   void should_return_string_representation() {
-    assertThat(applicationDto.toString()).startsWith("ApplicationDto");
+    assertThat(applicationCreateDto.toString()).startsWith("ApplicationCreateDto");
   }
 }

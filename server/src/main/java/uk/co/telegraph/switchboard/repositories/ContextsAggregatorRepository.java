@@ -20,35 +20,27 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 import uk.co.telegraph.switchboard.domain.Application;
 import uk.co.telegraph.switchboard.domain.ContextsAggregator;
-import uk.co.telegraph.switchboard.infrastructure.jpa.repositories.ContextsJpaRepository;
 
 @Component
 public class ContextsAggregatorRepository {
 
-  private final ContextsJpaRepository jpaRepository;
-
-  public ContextsAggregatorRepository(
-      ContextsJpaRepository jpaRepository) {
-    this.jpaRepository = jpaRepository;
-  }
-
   public Optional<ContextsAggregator> getByApplication(Application application) {
-    return jpaRepository.findByApplication(application);
+    throw new UnsupportedOperationException();
   }
 
   public Optional<ContextsAggregator> getByApplicationId(String applicationId) {
-    return jpaRepository.findById(applicationId);
+    throw new UnsupportedOperationException();
   }
 
   public ContextsAggregator save(ContextsAggregator contextsAggregator) {
-    return jpaRepository.save(contextsAggregator);
+    throw new UnsupportedOperationException();
   }
 
   public boolean existsByApplication(Application application) {
-    return jpaRepository.existsByApplication(application);
+    throw new UnsupportedOperationException();
   }
 
   public boolean existsByApplicationId(String applicationId) {
-    return jpaRepository.existsById(applicationId);
+    throw new UnsupportedOperationException();
   }
 }

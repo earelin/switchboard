@@ -16,12 +16,10 @@
 
 package uk.co.telegraph.switchboard.application;
 
-import java.util.List;
 import org.mapstruct.factory.Mappers;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -55,11 +53,11 @@ public class ContextController {
     this.contextMapper = Mappers.getMapper(ContextMapper.class);
   }
 
-  @GetMapping
-  public List<String> getContextsList(@PathVariable String applicationId) {
-    ContextsAggregator contextsAggregator = getContextAggregatorForApplicationId(applicationId);
-    return contextMapper.domainMapToDto(contextsAggregator.getContexts());
-  }
+//  @GetMapping
+//  public List<String> getContextsList(@PathVariable String applicationId) {
+//    ContextsAggregator contextsAggregator = getContextAggregatorForApplicationId(applicationId);
+//    return contextMapper.domainMapToDto(contextsAggregator.getContexts());
+//  }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)

@@ -32,9 +32,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class UserGroupTest {
 
-  public static final Long USER_GROUP_ID = 15L;
-  public static final Long USER_GROUP_ALT_ID = 17L;
-  public static final String USER_GROUP_NAME = "beta";
+  public static final String USER_GROUP_ID = "beta";
+  public static final String USER_GROUP_ALT_ID = "qa";
+  public static final String USER_GROUP_NAME = "Beta";
   public static final String USER_GROUP_ALT_NAME = "QA";
   public static final String USER_NAME = "aragorn";
   public static final Set<String> USER_GROUP_USERS
@@ -51,13 +51,12 @@ class UserGroupTest {
   void setUp() {
     userGroup = new UserGroup();
     userGroup.setId(USER_GROUP_ID);
-    userGroup.setName(USER_GROUP_NAME);
     userGroup.setUsers(USER_GROUP_USERS);
   }
 
   @Test
-  void should_set_aggregator_and_name_in_constructor() {
-    userGroup = new UserGroup(userGroupAggregator, USER_GROUP_NAME);
+  void should_id_and_name_in_constructor() {
+    userGroup = new UserGroup(USER_GROUP_ID, USER_GROUP_NAME);
   }
 
   @Test
@@ -66,33 +65,6 @@ class UserGroupTest {
 
     assertThat(userGroup)
         .hasFieldOrPropertyWithValue("id", USER_GROUP_ALT_ID);
-  }
-
-  @Test
-  void should_set_and_return_valid_name() {
-    userGroup.setName(USER_GROUP_ALT_NAME);
-
-    assertThat(userGroup)
-        .hasFieldOrPropertyWithValue("name", USER_GROUP_ALT_NAME);
-  }
-
-  @Test
-  void should_throw_validation_exception_on_null_name() {
-    assertThatThrownBy(() -> userGroup.setName(null))
-        .isInstanceOf(IllegalArgumentException.class);
-  }
-
-  @ParameterizedTest
-  @ValueSource(
-      strings = {
-        "",
-        "   ",
-        "CxQdrPbLJFZDsdE55z482zC5k1Xlcv4Ju",
-        "NyLJWskvH6TLR9bzLzscI6Ol6vr2Av2bOVKA3FXFdjQX2wEZsTzqn5pYvkg96nKS"
-      })
-  void should_throw_validation_exception_on_not_valid_name(String name) {
-    assertThatThrownBy(() -> userGroup.setName(name))
-        .isInstanceOf(IllegalArgumentException.class);
   }
 
   @Test

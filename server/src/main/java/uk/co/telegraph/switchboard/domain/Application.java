@@ -26,7 +26,7 @@ public class Application {
 
   public static final int ID_MAX_LENGTH = 36;
   public static final int NAME_MAX_LENGTH = 64;
-  public static final int SECRET_MAX_LENGTH = 12;
+  public static final int SECRET_MAX_LENGTH = 16;
 
   @EqualsAndHashCode.Include
   private String id;
@@ -34,9 +34,10 @@ public class Application {
   private String description;
   private String secret;
 
-  Application() {}
-
   public Application(String id, String name, String secret) {
+    idValidation(id);
+    nameValidation(name);
+    secretValidation(secret);
     this.id = id;
     this.name = name;
     this.secret = secret;
@@ -47,14 +48,7 @@ public class Application {
   }
 
   void setId(String id) {
-    if (StringUtils.isBlank(id)) {
-      throw new IllegalArgumentException("Application id cannot be empty or null");
-    }
-
-    if (id.length() > 36) {
-      throw new IllegalArgumentException("Application id cannot be longer than 36 characters");
-    }
-
+    idValidation(id);
     this.id = id;
   }
 
@@ -63,14 +57,7 @@ public class Application {
   }
 
   public void setName(String name) {
-    if (StringUtils.isBlank(name)) {
-      throw new IllegalArgumentException("Application name cannot be empty or null");
-    }
-
-    if (name.length() > 64) {
-      throw new IllegalArgumentException("Application name cannot be longer than 64 characters");
-    }
-
+    nameValidation(name);
     this.name = name;
   }
 
@@ -87,14 +74,41 @@ public class Application {
   }
 
   public void setSecret(String secret) {
+    secretValidation(secret);
+    this.secret = secret;
+  }
+
+  private void idValidation(String id) {
+    if (StringUtils.isBlank(id)) {
+      throw new IllegalArgumentException("Application id cannot be empty or null");
+    }
+
+    if (id.length() > ID_MAX_LENGTH) {
+      throw new IllegalArgumentException(
+          String.format("Application id cannot be longer than %d characters", ID_MAX_LENGTH));
+    }
+  }
+
+  private void nameValidation(String name) {
+    if (StringUtils.isBlank(name)) {
+      throw new IllegalArgumentException("Application name cannot be empty or null");
+    }
+
+    if (name.length() > NAME_MAX_LENGTH) {
+      throw new IllegalArgumentException(
+          String.format("Application name cannot be longer than %d characters", NAME_MAX_LENGTH));
+    }
+  }
+
+  private void secretValidation(String secret) {
     if (StringUtils.isBlank(secret)) {
       throw new IllegalArgumentException("Application secret cannot be empty or null");
     }
 
-    if (secret.length() > 16) {
-      throw new IllegalArgumentException("Application secret cannot be longer than 16 characters");
+    if (secret.length() > SECRET_MAX_LENGTH) {
+      throw new IllegalArgumentException(
+          String.format("Application secret cannot be longer than %d characters",
+              SECRET_MAX_LENGTH));
     }
-
-    this.secret = secret;
   }
 }

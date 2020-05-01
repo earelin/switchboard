@@ -25,7 +25,7 @@ import uk.co.telegraph.switchboard.application.dto.ApplicationCreateDto;
 import uk.co.telegraph.switchboard.application.dto.ApplicationDto;
 import uk.co.telegraph.switchboard.domain.Application;
 
-class ApplicationEntityMapperTest {
+class ApplicationMapperTest {
 
   private static final String APPLICATION_ID = "8c42f1d8-f588-451c-8465-be0ea7ed8025";
   private static final String APPLICATION_NAME = "Website";

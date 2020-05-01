@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.infrastructure.jpa.entities;
+package uk.co.telegraph.switchboard.domain.validation;
 
-class ContextEntityTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class FieldValidatorTest {
 
 }

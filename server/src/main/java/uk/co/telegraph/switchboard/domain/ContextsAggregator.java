@@ -16,18 +16,15 @@
 
 package uk.co.telegraph.switchboard.domain;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
 import java.util.Objects;
-import java.util.Optional;
+import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 
 /** Context aggregator. */
 public class ContextsAggregator {
   private Application application;
-  private Map<String, Context> contexts = new HashMap<>();
-
-  ContextsAggregator() {}
+  private Set<String> contexts = new HashSet<>();
 
   public ContextsAggregator(Application application) {
     this.application = application;
@@ -42,26 +39,16 @@ public class ContextsAggregator {
       throw new IllegalArgumentException("Not allowed empty string value on context name");
     }
 
-    if (contexts.containsKey(name)) {
+    if (contexts.contains(name)) {
       throw new ObjectAlreadyExistsInAggregate(
           String.format("A context with the name %s already exists", name));
     }
 
-    Context context = new Context(name);
-
-    contexts.put(name, context);
+    contexts.add(name);
   }
 
   public boolean containsContext(String name) {
-    return contexts.containsKey(name);
-  }
-
-  public Optional<Context> getContext(String name) {
-    if (Objects.isNull(name)) {
-      throw new NullPointerException("Not allowed null value on context name");
-    }
-
-    return Optional.ofNullable(contexts.get(name));
+    return contexts.contains(name);
   }
 
   public void removeContext(String name) {
@@ -69,7 +56,7 @@ public class ContextsAggregator {
       throw new NullPointerException("Could not remove a null context");
     }
 
-    if (!contexts.containsKey(name)) {
+    if (!contexts.contains(name)) {
       throw new ObjectDoesNotExists(String.format("A context with name %s does not exists", name));
     }
 
@@ -84,11 +71,11 @@ public class ContextsAggregator {
     this.application = application;
   }
 
-  public Map<String, Context> getContexts() {
-    return Map.copyOf(this.contexts);
+  public Set<String> getContexts() {
+    return Set.copyOf(this.contexts);
   }
 
-  void setContexts(Map<String, Context> contexts) {
+  void setContexts(Set<String> contexts) {
     this.contexts = contexts;
   }
 }
