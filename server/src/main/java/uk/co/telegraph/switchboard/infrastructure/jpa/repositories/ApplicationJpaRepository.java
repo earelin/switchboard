@@ -20,16 +20,16 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.Repository;
-import uk.co.telegraph.switchboard.domain.Application;
+import uk.co.telegraph.switchboard.infrastructure.jpa.entities.ApplicationEntity;
 
-public interface ApplicationJpaRepository extends Repository<Application, String> {
-  Application save(Application application);
+public interface ApplicationJpaRepository extends Repository<ApplicationEntity, String> {
+  ApplicationEntity save(ApplicationEntity application);
 
   void deleteById(String id);
 
-  Optional<Application> findById(String id);
+  Optional<ApplicationEntity> findById(String id);
 
   boolean existsById(String id);
 
-  Page<Application> findAll(Pageable pageable);
+  Page<ApplicationEntity> findAll(Pageable pageable);
 }

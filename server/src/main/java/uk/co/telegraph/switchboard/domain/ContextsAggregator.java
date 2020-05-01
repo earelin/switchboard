@@ -16,39 +16,15 @@
 
 package uk.co.telegraph.switchboard.domain;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.MapKey;
-import javax.persistence.MapsId;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 
 /** Context aggregator. */
-@Entity
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString
-public class ContextsAggregator implements Serializable {
-
-  private static final long serialVersionUID = 4576840214871672539L;
-
-  @Id
-  private String id;
-
-  @MapsId
-  @OneToOne
-  @EqualsAndHashCode.Include
+public class ContextsAggregator {
   private Application application;
-
-  @OneToMany(mappedBy = "contextsAggregator")
-  @MapKey(name = "name")
   private Map<String, Context> contexts = new HashMap<>();
 
   ContextsAggregator() {}
@@ -71,7 +47,7 @@ public class ContextsAggregator implements Serializable {
           String.format("A context with the name %s already exists", name));
     }
 
-    Context context = new Context(this, name);
+    Context context = new Context(name);
 
     contexts.put(name, context);
   }

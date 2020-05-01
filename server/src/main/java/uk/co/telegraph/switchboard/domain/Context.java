@@ -16,64 +16,36 @@
 
 package uk.co.telegraph.switchboard.domain;
 
-import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 
-@Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
-public class Context implements Serializable {
-
-  private static final long serialVersionUID = 3642470915840152867L;
-
+public class Context {
   public static final int NAME_MAX_LENGTH = 32;
 
-  @Id
   @EqualsAndHashCode.Include
-  private Long id;
-
-  @ManyToOne
-  @JoinColumn(name = "application", referencedColumnName = "application_id")
-  @ToString.Exclude
-  private ContextsAggregator contextsAggregator;
-
-  @Column(length = NAME_MAX_LENGTH)
+  private String id;
   private String name;
-
-  Context() {}
 
   /**
    * Context public constructor.
-   * @param contextsAggregator Context aggregator.
+   * @param id ID.
    * @param name Name.
    */
-  public Context(ContextsAggregator contextsAggregator, String name) {
-    this.contextsAggregator = contextsAggregator;
+  public Context(String id, String name) {
+    this.id = id;
     nameValidation(name);
     this.name = name;
   }
 
-  Long getId() {
+  String getId() {
     return id;
   }
 
-  void setId(Long id) {
+  void setId(String id) {
     this.id = id;
-  }
-
-  public ContextsAggregator getContextsAggregator() {
-    return contextsAggregator;
-  }
-
-  void setContextsAggregator(ContextsAggregator contextsAggregator) {
-    this.contextsAggregator = contextsAggregator;
   }
 
   public String getName() {

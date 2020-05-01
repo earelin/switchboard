@@ -18,48 +18,30 @@ package uk.co.telegraph.switchboard.domain;
 
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 
-@Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
 public class UserGroup {
 
   public static final int NAME_MAX_LENGTH = 32;
 
-  @Id
   @EqualsAndHashCode.Include
-  private Long id;
-
-  @ManyToOne
-  @JoinColumn(name = "application", referencedColumnName = "application_id")
-  @ToString.Exclude
-  private UserGroupAggregator userGroupAggregator;
-
-  @Column(length = NAME_MAX_LENGTH)
+  private String id;
   private String name;
-
-  @ElementCollection
-  @Column(name = "name")
   private Set<String> users = new HashSet<>();
 
   UserGroup() {}
 
   /**
    * UserGroup public constructor.
-   * @param userGroupAggregator User group aggregator.
+   * @param id ID.
    * @param name Name.
    */
-  public UserGroup(UserGroupAggregator userGroupAggregator, String name) {
-    this.userGroupAggregator = userGroupAggregator;
+  public UserGroup(String id, String name) {
+    this.id = id;
     nameValidation(name);
     this.name = name;
   }
@@ -75,14 +57,6 @@ public class UserGroup {
 
   public boolean containsUser(String name) {
     return this.users.contains(name);
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  void setId(Long id) {
-    this.id = id;
   }
 
   public String getName() {

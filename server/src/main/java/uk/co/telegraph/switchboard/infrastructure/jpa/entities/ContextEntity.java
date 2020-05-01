@@ -16,13 +16,30 @@
 
 package uk.co.telegraph.switchboard.infrastructure.jpa.entities;
 
+import static uk.co.telegraph.switchboard.domain.Application.NAME_MAX_LENGTH;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Entity
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Table("context")
 public class ContextEntity {
+  @Id
+  @EqualsAndHashCode.Include
+  private Long id;
 
+  @ManyToOne
+  @ToString.Exclude
+  private ApplicationEntity application;
+
+  @Column(length = NAME_MAX_LENGTH)
+  private String name;
 }

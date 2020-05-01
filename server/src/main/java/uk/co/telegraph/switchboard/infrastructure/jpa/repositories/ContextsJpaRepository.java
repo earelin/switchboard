@@ -16,15 +16,17 @@
 
 package uk.co.telegraph.switchboard.infrastructure.jpa.repositories;
 
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.repository.Repository;
 import uk.co.telegraph.switchboard.domain.Application;
 import uk.co.telegraph.switchboard.domain.ContextsAggregator;
+import uk.co.telegraph.switchboard.infrastructure.jpa.entities.ContextEntity;
 
 /** ContextAggregator Spring Data JPA declaration. */
 public interface ContextsJpaRepository
-    extends Repository<ContextsAggregator, String> {
-  Optional<ContextsAggregator> findByApplication(Application application);
+    extends Repository<ContextEntity, String> {
+  List<ContextEntity> findByApplication(Application application);
 
   Optional<ContextsAggregator> findById(String applicationId);
 

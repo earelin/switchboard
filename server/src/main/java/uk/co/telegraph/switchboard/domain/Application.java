@@ -16,7 +16,6 @@
 
 package uk.co.telegraph.switchboard.domain;
 
-import javax.persistence.Column;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
@@ -31,20 +30,16 @@ public class Application {
 
   @EqualsAndHashCode.Include
   private String id;
-
-  @Column(length = NAME_MAX_LENGTH)
   private String name;
-
-  @Column(columnDefinition = "longtext")
   private String description;
   private String secret;
 
   Application() {}
 
   public Application(String id, String name, String secret) {
-    setId(id);
-    setName(name);
-    setSecret(secret);
+    this.id = id;
+    this.name = name;
+    this.secret = secret;
   }
 
   public String getId() {

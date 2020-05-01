@@ -27,20 +27,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /** User groups aggregator. */
-@Entity
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString
 public class UserGroupAggregator {
 
-  @Id
-  private String id;
-
-  @MapsId
-  @OneToOne
-  @EqualsAndHashCode.Include
   private Application application;
-
-  @OneToMany(mappedBy = "userGroupAggregator")
   private Set<UserGroup> userGroups = new HashSet<>();
 
   UserGroupAggregator() {}
@@ -50,7 +39,7 @@ public class UserGroupAggregator {
   }
 
   public void addUserGroup(String name) {
-    this.userGroups.add(new UserGroup(this, name));
+    this.userGroups.add(new UserGroup(name));
   }
 
   public boolean containsUserGroup(UserGroup userGroup) {
@@ -59,14 +48,6 @@ public class UserGroupAggregator {
 
   public void removeUserGroup(UserGroup userGroup) {
     this.userGroups.remove(userGroup);
-  }
-
-  String getId() {
-    return this.id;
-  }
-
-  void setId(String id) {
-    this.id = id;
   }
 
   public Application getApplication() {
