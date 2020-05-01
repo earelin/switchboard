@@ -18,10 +18,14 @@ package uk.co.telegraph.switchboard.application.dto;
 
 import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
+@Getter
+@Setter
 @ToString
-public class ApplicationRequestDto implements Serializable {
+public class ApplicationCreateDto implements Serializable {
 
   private static final long serialVersionUID = 5901042808680184056L;
 
@@ -29,26 +33,10 @@ public class ApplicationRequestDto implements Serializable {
   private String name;
   private String description;
 
-  public ApplicationRequestDto() {}
+  public ApplicationCreateDto() {}
 
-  public ApplicationRequestDto(String name, String description) {
+  public ApplicationCreateDto(String name, String description) {
     this.name = name;
-    this.description = description;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
     this.description = description;
   }
 }

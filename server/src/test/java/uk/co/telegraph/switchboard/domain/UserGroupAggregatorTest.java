@@ -17,10 +17,10 @@
 package uk.co.telegraph.switchboard.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -69,8 +69,8 @@ class UserGroupAggregatorTest {
 
   @Test
   void should_set_and_return_user_groups() {
-    Map<String, UserGroup> userGroups = new HashMap<>();
-    userGroups.put("beta", new UserGroup(userGroupAggregator, "beta"));
+    Set<UserGroup> userGroups = new HashSet<>();
+    userGroups.add(new UserGroup(userGroupAggregator, "beta"));
 
     userGroupAggregator.setUserGroups(userGroups);
 
@@ -83,38 +83,44 @@ class UserGroupAggregatorTest {
     userGroupAggregator.addUserGroup(USER_GROUP_NAME);
 
     assertThat(userGroupAggregator.getUserGroups())
-        .containsKey(USER_GROUP_NAME);
-  }
-
-  @Test
-  void should_throw_exception_trying_to_add_group_with_same_name() {
-    userGroupAggregator.addUserGroup(USER_GROUP_NAME);
-
-    assertThatThrownBy(() -> userGroupAggregator.addUserGroup(USER_GROUP_NAME))
-        .isInstanceOf(ObjectAlreadyExistsInAggregate.class);
+        .extracting("name")
+        .contains(USER_GROUP_NAME);
   }
 
   @Test
   void should_remove_user_group() {
     userGroupAggregator.addUserGroup(USER_GROUP_NAME);
+    UserGroup userGroup = userGroupAggregator.getUserGroups().stream()
+        .filter(group -> group.getName().equals(USER_GROUP_NAME))
+        .findFirst()
+        .get();
 
-    userGroupAggregator.removeUserGroup(USER_GROUP_NAME);
+    userGroupAggregator.removeUserGroup(userGroup);
 
-    assertThat(userGroupAggregator.containsUserGroup(USER_GROUP_NAME))
-        .isFalse();
+    Optional<UserGroup> userGroupDeleted = userGroupAggregator.getUserGroups().stream()
+        .filter(group -> group.getName().equals(USER_GROUP_NAME))
+        .findFirst();
+    assertThat(userGroupDeleted)
+        .isNotPresent();
   }
 
   @Test
   void should_return_true_if_user_group_exists() {
     userGroupAggregator.addUserGroup(USER_GROUP_NAME);
+    UserGroup userGroup = userGroupAggregator.getUserGroups().stream()
+        .filter(group -> group.getName().equals(USER_GROUP_NAME))
+        .findFirst()
+        .get();
 
-    assertThat(userGroupAggregator.containsUserGroup(USER_GROUP_NAME))
+    assertThat(userGroupAggregator.containsUserGroup(userGroup))
         .isTrue();
   }
 
   @Test
   void should_return_false_if_user_group_does_not_exists() {
-    assertThat(userGroupAggregator.containsUserGroup(USER_GROUP_NAME))
+    UserGroup userGroup = new UserGroup();
+
+    assertThat(userGroupAggregator.containsUserGroup(userGroup))
         .isFalse();
   }
 

@@ -55,7 +55,7 @@ public class Context implements Serializable {
     this.name = name;
   }
 
-  public Long getId() {
+  Long getId() {
     return id;
   }
 

@@ -62,8 +62,7 @@ class ApplicationTest {
   @Test
   void should_not_allow_to_construct_with_a_id_longer_that_36_chars() {
     assertThatThrownBy(
-            () ->
-                new Application(
+        () -> new Application(
                     "000-125c12a7-bf9a-4795-b673-564f9d9e369c",
                     APPLICATION_NAME,
                     APPLICATION_SECRET))
@@ -107,7 +106,7 @@ class ApplicationTest {
   @Test
   void should_not_allow_to_construct_with_a_secret_longer_than_16_chars() {
     assertThatThrownBy(
-            () -> new Application(APPLICATION_ID, APPLICATION_NAME, "qR7yQdMEEZn7XsCUasD4g5"))
+        () -> new Application(APPLICATION_ID, APPLICATION_NAME, "qR7yQdMEEZn7XsCUasD4g5"))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
@@ -156,9 +155,8 @@ class ApplicationTest {
   @Test
   void should_not_allow_to_set_a_name_longer_than_64_chars() {
     assertThatThrownBy(
-            () ->
-                application.setName(
-                    "An amazing application that is improving our productivity a lot every day"))
+        () -> application.setName(
+            "An amazing application that is improving our productivity a lot every day"))
         .isInstanceOf(IllegalArgumentException.class);
   }
 

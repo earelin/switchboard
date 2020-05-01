@@ -45,7 +45,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import uk.co.telegraph.switchboard.Integration;
-import uk.co.telegraph.switchboard.application.dto.ApplicationRequestDto;
+import uk.co.telegraph.switchboard.application.dto.ApplicationCreateDto;
 import uk.co.telegraph.switchboard.domain.Application;
 import uk.co.telegraph.switchboard.factories.ApplicationFactory;
 import uk.co.telegraph.switchboard.repositories.ApplicationRepository;
@@ -86,8 +86,8 @@ class ApplicationControllerWebTest {
         .thenReturn(application);
     when(applicationRepository.save(any())).then(returnsFirstArg());
 
-    ApplicationRequestDto request =
-        new ApplicationRequestDto(APPLICATION_NAME, APPLICATION_DESCRIPTION);
+    ApplicationCreateDto request =
+        new ApplicationCreateDto(APPLICATION_NAME, APPLICATION_DESCRIPTION);
 
     given()
         .contentType(ContentType.JSON)
@@ -104,7 +104,7 @@ class ApplicationControllerWebTest {
 
   @Test
   void should_not_create_an_application_with_empty_name() {
-    ApplicationRequestDto request = new ApplicationRequestDto("  ", APPLICATION_DESCRIPTION);
+    ApplicationCreateDto request = new ApplicationCreateDto("  ", APPLICATION_DESCRIPTION);
 
     given()
         .contentType(ContentType.JSON)
@@ -186,8 +186,8 @@ class ApplicationControllerWebTest {
     when(applicationRepository.getById(APPLICATION_ID)).thenReturn(Optional.of(application));
     when(applicationRepository.save(any())).then(returnsFirstArg());
 
-    ApplicationRequestDto request =
-        new ApplicationRequestDto(APPLICATION_UPDATED_NAME, APPLICATION_UPDATED_DESCRIPTION);
+    ApplicationCreateDto request =
+        new ApplicationCreateDto(APPLICATION_UPDATED_NAME, APPLICATION_UPDATED_DESCRIPTION);
 
     mockMvc
         .perform(
@@ -207,8 +207,8 @@ class ApplicationControllerWebTest {
   void should_not_update_an_application_that_does_not_exists() throws Exception {
     when(applicationRepository.getById(APPLICATION_ID)).thenReturn(Optional.empty());
 
-    ApplicationRequestDto request =
-        new ApplicationRequestDto(APPLICATION_UPDATED_NAME, APPLICATION_UPDATED_DESCRIPTION);
+    ApplicationCreateDto request =
+        new ApplicationCreateDto(APPLICATION_UPDATED_NAME, APPLICATION_UPDATED_DESCRIPTION);
 
     mockMvc
         .perform(
@@ -222,7 +222,7 @@ class ApplicationControllerWebTest {
 
   @Test
   void should_not_update_an_application_with_empty_name() throws Exception {
-    ApplicationRequestDto request = new ApplicationRequestDto("  ", APPLICATION_DESCRIPTION);
+    ApplicationCreateDto request = new ApplicationCreateDto("  ", APPLICATION_DESCRIPTION);
 
     mockMvc
         .perform(

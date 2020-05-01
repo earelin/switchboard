@@ -21,8 +21,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
+import uk.co.telegraph.switchboard.application.dto.ApplicationCreateDto;
 import uk.co.telegraph.switchboard.application.dto.ApplicationDto;
-import uk.co.telegraph.switchboard.application.dto.ApplicationRequestDto;
 import uk.co.telegraph.switchboard.domain.Application;
 
 class ApplicationMapperTest {
@@ -67,10 +67,10 @@ class ApplicationMapperTest {
 
   @Test
   void should_update_domain_with_request_dto() {
-    ApplicationRequestDto applicationRequestDto =
-        new ApplicationRequestDto(APPLICATION_UPDATED_NAME, APPLICATION_UPDATED_DESCRIPTION);
+    ApplicationCreateDto applicationCreateDto =
+        new ApplicationCreateDto(APPLICATION_UPDATED_NAME, APPLICATION_UPDATED_DESCRIPTION);
 
-    applicationMapper.updateDomainFromDto(applicationRequestDto, application);
+    applicationMapper.updateDomainFromDto(applicationCreateDto, application);
 
     assertThat(application)
         .hasFieldOrPropertyWithValue("id", APPLICATION_ID)

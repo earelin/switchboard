@@ -16,10 +16,20 @@
 
 package uk.co.telegraph.switchboard.application.dto;
 
+import java.io.Serializable;
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.data.domain.Page;
 
-public class PageDto<T> {
+@Getter
+@Setter
+@ToString
+public class PageDto<T> implements Serializable {
+
+  private static final long serialVersionUID = 7316735749604752908L;
+
   private final List<T> content;
   private final long totalElements;
   private final int totalPages;
@@ -36,33 +46,5 @@ public class PageDto<T> {
     this.pageSize = page.getSize();
     this.isLast = page.isLast();
     this.isFirst = page.isFirst();
-  }
-
-  public List<T> getContent() {
-    return content;
-  }
-
-  public long getTotalElements() {
-    return totalElements;
-  }
-
-  public int getPageSize() {
-    return pageSize;
-  }
-
-  public int getTotalPages() {
-    return totalPages;
-  }
-
-  public int getPageNumber() {
-    return pageNumber;
-  }
-
-  public boolean isLast() {
-    return isLast;
-  }
-
-  public boolean isFirst() {
-    return isFirst;
   }
 }

@@ -16,11 +16,10 @@
 
 package uk.co.telegraph.switchboard.domain;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.MapKey;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -42,8 +41,7 @@ public class UserGroupAggregator {
   private Application application;
 
   @OneToMany(mappedBy = "userGroupAggregator")
-  @MapKey(name = "name")
-  private Map<String, UserGroup> userGroups = new HashMap<>();
+  private Set<UserGroup> userGroups = new HashSet<>();
 
   UserGroupAggregator() {}
 
@@ -52,24 +50,18 @@ public class UserGroupAggregator {
   }
 
   public void addUserGroup(String name) {
-    if (!containsUserGroup(name)) {
-      UserGroup userGroup = new UserGroup(this, name);
-      this.userGroups.put(name, userGroup);
-    } else {
-      String message = String.format("Object with name %s already exists in aggregate", name);
-      throw new ObjectAlreadyExistsInAggregate(message);
-    }
+    this.userGroups.add(new UserGroup(this, name));
   }
 
-  public boolean containsUserGroup(String name) {
-    return this.userGroups.containsKey(name);
+  public boolean containsUserGroup(UserGroup userGroup) {
+    return this.userGroups.contains(userGroup);
   }
 
-  public void removeUserGroup(String name) {
-    this.userGroups.remove(name);
+  public void removeUserGroup(UserGroup userGroup) {
+    this.userGroups.remove(userGroup);
   }
 
-  public String getId() {
+  String getId() {
     return this.id;
   }
 
@@ -85,12 +77,12 @@ public class UserGroupAggregator {
     this.application = application;
   }
 
-  public Map<String, UserGroup> getUserGroups() {
-    return Map.copyOf(userGroups);
+  public Set<UserGroup> getUserGroups() {
+    return Set.copyOf(userGroups);
   }
 
   void setUserGroups(
-      Map<String, UserGroup> userGroups) {
-    this.userGroups = new HashMap<>(userGroups);
+      Set<UserGroup> userGroups) {
+    this.userGroups = new HashSet<>(userGroups);
   }
 }

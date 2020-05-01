@@ -16,7 +16,6 @@
 
 package uk.co.telegraph.switchboard.application;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import org.springframework.http.HttpStatus;
@@ -33,6 +32,9 @@ import uk.co.telegraph.switchboard.domain.UserGroup;
 import uk.co.telegraph.switchboard.repositories.ApplicationRepository;
 import uk.co.telegraph.switchboard.repositories.UserGroupAggregatorRepository;
 
+/**
+ * User group controller.
+ */
 @RestController
 @RequestMapping(
     value = "/rest/v1/application/{applicationId}/user-group",
@@ -49,8 +51,13 @@ public class UserGroupController {
     this.userGroupAggregatorRepository = userGroupAggregatorRepository;
   }
 
+  /**
+   * Get application user groups.
+   * @param applicationId Application ID.
+   * @return Set of application user groups.
+   */
   @GetMapping
-  public List<UserGroup> getUserGroups(@PathVariable String applicationId) {
+  public Set<UserGroup> getUserGroups(@PathVariable String applicationId) {
     throw new UnsupportedOperationException();
   }
 
@@ -63,35 +70,35 @@ public class UserGroupController {
   @GetMapping("/{userGroupId}")
   public Optional<UserGroup> getUserGroup(
       @PathVariable String applicationId,
-      @PathVariable String userGroupId) {
+      @PathVariable Long userGroupId) {
     throw new UnsupportedOperationException();
   }
 
   @DeleteMapping("/{userGroupId}")
   public void deleteUserGroup(
       @PathVariable String applicationId,
-      @PathVariable String userGroupId) {
+      @PathVariable Long userGroupId) {
     throw new UnsupportedOperationException();
   }
 
   @PutMapping("/{userGroupId}")
   public UserGroup updateUserGroup(
       @PathVariable String applicationId,
-      @PathVariable String userGroupId) {
+      @PathVariable Long userGroupId) {
     throw new UnsupportedOperationException();
   }
 
   @PostMapping("/{userGroupId}/user")
   public UserGroup addUserToGroup(
       @PathVariable String applicationId,
-      @PathVariable String userGroupId) {
+      @PathVariable Long userGroupId) {
     throw new UnsupportedOperationException();
   }
 
   @GetMapping("/{userGroupId}/user")
-  public Set<UserGroup> getUsersFromGroup(
+  public Set<String> getUsersFromGroup(
       @PathVariable String applicationId,
-      @PathVariable String userGroupId) {
+      @PathVariable Long userGroupId) {
     throw new UnsupportedOperationException();
   }
 
@@ -99,7 +106,7 @@ public class UserGroupController {
   public UserGroup removeUserFromGroup(
       @PathVariable String applicationId,
       @PathVariable String userGroupId,
-      @PathVariable String userId) {
+      @PathVariable Long userId) {
     throw new UnsupportedOperationException();
   }
 }

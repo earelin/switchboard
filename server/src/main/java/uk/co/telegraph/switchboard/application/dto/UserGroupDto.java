@@ -16,19 +16,6 @@
 
 package uk.co.telegraph.switchboard.application.dto;
 
-import java.io.Serializable;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+public class UserGroupDto {
 
-@Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class ApplicationDto implements Serializable {
-
-  private static final long serialVersionUID = 1686198595939219224L;
-
-  @EqualsAndHashCode.Include
-  private String id;
-  private String name;
-  private String description;
-  private String secret;
 }

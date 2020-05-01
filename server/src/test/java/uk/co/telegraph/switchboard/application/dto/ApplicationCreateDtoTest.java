@@ -26,7 +26,7 @@ import javax.validation.ValidatorFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class ApplicationRequestDtoTest {
+class ApplicationCreateDtoTest {
 
   private static final String APPLICATION_NAME = "Website";
   private static final String APPLICATION_DESCRIPTION = "Public website";
@@ -35,71 +35,71 @@ class ApplicationRequestDtoTest {
       Validation.buildDefaultValidatorFactory();
 
   private Validator validator;
-  private ApplicationRequestDto applicationRequestDto;
+  private ApplicationCreateDto applicationCreateDto;
 
   @BeforeEach
   void setUp() {
     validator = validatorFactory.getValidator();
-    applicationRequestDto = new ApplicationRequestDto();
+    applicationCreateDto = new ApplicationCreateDto();
   }
 
   @Test
   void should_set_name_and_description_on_constructor() {
-    applicationRequestDto = new ApplicationRequestDto(APPLICATION_NAME, APPLICATION_DESCRIPTION);
+    applicationCreateDto = new ApplicationCreateDto(APPLICATION_NAME, APPLICATION_DESCRIPTION);
 
-    assertThat(applicationRequestDto)
+    assertThat(applicationCreateDto)
         .hasFieldOrPropertyWithValue("name", APPLICATION_NAME)
         .hasFieldOrPropertyWithValue("description", APPLICATION_DESCRIPTION);
   }
 
   @Test
   void should_set_and_return_name() {
-    applicationRequestDto.setName(APPLICATION_NAME);
+    applicationCreateDto.setName(APPLICATION_NAME);
 
-    assertThat(applicationRequestDto.getName()).isEqualTo(APPLICATION_NAME);
+    assertThat(applicationCreateDto.getName()).isEqualTo(APPLICATION_NAME);
   }
 
   @Test
   void should_set_and_return_description() {
-    applicationRequestDto.setDescription(APPLICATION_DESCRIPTION);
+    applicationCreateDto.setDescription(APPLICATION_DESCRIPTION);
 
-    assertThat(applicationRequestDto.getDescription()).isEqualTo(APPLICATION_DESCRIPTION);
+    assertThat(applicationCreateDto.getDescription()).isEqualTo(APPLICATION_DESCRIPTION);
   }
 
   @Test
   void should_validate() {
-    applicationRequestDto.setName(APPLICATION_NAME);
+    applicationCreateDto.setName(APPLICATION_NAME);
 
-    Set<ConstraintViolation<ApplicationRequestDto>> violations =
-        validator.validate(applicationRequestDto);
+    Set<ConstraintViolation<ApplicationCreateDto>> violations =
+        validator.validate(applicationCreateDto);
 
     assertThat(violations).isEmpty();
   }
 
   @Test
   void should_not_validate_if_name_is_null() {
-    Set<ConstraintViolation<ApplicationRequestDto>> violations =
-        validator.validate(applicationRequestDto);
+    Set<ConstraintViolation<ApplicationCreateDto>> violations =
+        validator.validate(applicationCreateDto);
 
     assertThat(violations).hasSize(1);
-    ConstraintViolation<ApplicationRequestDto> violation = violations.iterator().next();
+    ConstraintViolation<ApplicationCreateDto> violation = violations.iterator().next();
     assertThat(violation.getPropertyPath().toString()).isEqualTo("name");
   }
 
   @Test
   void should_not_validate_if_name_is_empty() {
-    applicationRequestDto.setName("   ");
+    applicationCreateDto.setName("   ");
 
-    Set<ConstraintViolation<ApplicationRequestDto>> violations =
-        validator.validate(applicationRequestDto);
+    Set<ConstraintViolation<ApplicationCreateDto>> violations =
+        validator.validate(applicationCreateDto);
 
     assertThat(violations).hasSize(1);
-    ConstraintViolation<ApplicationRequestDto> violation = violations.iterator().next();
+    ConstraintViolation<ApplicationCreateDto> violation = violations.iterator().next();
     assertThat(violation.getPropertyPath().toString()).isEqualTo("name");
   }
 
   @Test
   void should_return_string_representation() {
-    assertThat(applicationRequestDto.toString()).startsWith("ApplicationRequest");
+    assertThat(applicationCreateDto.toString()).startsWith("ApplicationCreateDto");
   }
 }

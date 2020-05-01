@@ -33,8 +33,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+import uk.co.telegraph.switchboard.application.dto.ApplicationCreateDto;
 import uk.co.telegraph.switchboard.application.dto.ApplicationDto;
-import uk.co.telegraph.switchboard.application.dto.ApplicationRequestDto;
 import uk.co.telegraph.switchboard.application.dto.PageDto;
 import uk.co.telegraph.switchboard.application.mappers.ApplicationMapper;
 import uk.co.telegraph.switchboard.domain.Application;
@@ -65,7 +65,7 @@ public class ApplicationController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public ApplicationDto createApplication(@RequestBody @Valid ApplicationRequestDto request) {
+  public ApplicationDto createApplication(@RequestBody @Valid ApplicationCreateDto request) {
     Application application =
         applicationFactory.createApplication(request.getName(), request.getDescription());
 
@@ -85,7 +85,7 @@ public class ApplicationController {
     try {
       pageable = pageableBuilder.buildPageable(page, size, sortedProperties);
     } catch (IllegalArgumentException exception) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, exception.getMessage());
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, exception.getMessage(), exception);
     }
 
     Page<Application> applicationPage = applicationRepository.getPagedList(pageable);
@@ -98,9 +98,9 @@ public class ApplicationController {
         applicationRepository
             .getById(id)
             .orElseThrow(
-                () ->
-                    new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, String.format(APPLICATION_NOT_FOUND_MESSAGE, id)));
+                () -> new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    String.format(APPLICATION_NOT_FOUND_MESSAGE, id)));
     return applicationMapper.domainToDto(application);
   }
 
@@ -115,7 +115,7 @@ public class ApplicationController {
 
   @PutMapping("/{id}")
   public ApplicationDto updateApplication(
-      @PathVariable String id, @RequestBody @Valid ApplicationRequestDto request) {
+      @PathVariable String id, @RequestBody @Valid ApplicationCreateDto request) {
     Application application =
         applicationRepository
             .getById(id)
