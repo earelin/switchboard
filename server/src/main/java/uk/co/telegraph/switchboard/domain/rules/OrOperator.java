@@ -14,16 +14,26 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.domain;
+package uk.co.telegraph.switchboard.domain.rules;
 
-import lombok.ToString;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import uk.co.telegraph.switchboard.domain.ClientInfo;
 
-@ToString
-public class ObjectDoesNotExists extends RuntimeException {
+public class OrOperator implements Rule {
 
-  private static final long serialVersionUID = 4447513045154443650L;
+  private final Set<Rule> rules;
 
-  public ObjectDoesNotExists(String message) {
-    super(message);
+  public OrOperator(Rule...rules) {
+    this.rules = new HashSet<>(Arrays.asList(rules));
+  }
+
+  @Override
+  public boolean isEnabledForClient(ClientInfo clientInfo) {
+    return rules.stream()
+        .map(rule -> rule.isEnabledForClient(clientInfo))
+        .reduce(Boolean::logicalOr)
+        .orElse(false);
   }
 }

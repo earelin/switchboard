@@ -16,12 +16,24 @@
 
 package uk.co.telegraph.switchboard.domain.rules;
 
+import static uk.co.telegraph.switchboard.domain.ClientInfo.USER_PROPERTY_KEY;
+
+import java.util.Optional;
 import uk.co.telegraph.switchboard.domain.ClientInfo;
+import uk.co.telegraph.switchboard.domain.UserGroup;
 
 public class UserGroupRule implements Rule {
 
+  private final UserGroup userGroup;
+
+  public UserGroupRule(UserGroup userGroup) {
+    this.userGroup = userGroup;
+  }
+
   @Override
   public boolean isEnabledForClient(ClientInfo clientInfo) {
-    throw new UnsupportedOperationException();
+    Optional<String> user = clientInfo.getPropertyValue(USER_PROPERTY_KEY);
+
+    return user.isPresent() && userGroup.containsUser(user.get());
   }
 }

@@ -16,6 +16,9 @@
 
 package uk.co.telegraph.switchboard.domain;
 
+import lombok.ToString;
+
+@ToString
 public class ObjectAlreadyExistsInAggregate extends RuntimeException {
 
   private static final long serialVersionUID = 875155636525951081L;

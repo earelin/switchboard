@@ -16,24 +16,27 @@
 
 package uk.co.telegraph.switchboard.domain.rules;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 import uk.co.telegraph.switchboard.domain.ClientInfo;
 
-public class RulesSet {
+public class AndOperator implements Rule {
 
-  public void addRule(Rule rule) {
-    throw new UnsupportedOperationException();
+  private final Set<Rule> rules;
+
+  public AndOperator(Set<Rule> rules) {
+    this.rules = new HashSet<>(rules);
   }
 
-  public void removeRule(Rule rule) {
-    throw new UnsupportedOperationException();
-  }
-
-  public Set<Rule> getRules() {
-    throw new UnsupportedOperationException();
+  public AndOperator(Rule...rules) {
+    this.rules = new HashSet<>(Arrays.asList(rules));
   }
 
   public boolean isEnabledForClient(ClientInfo clientInfo) {
-    throw new UnsupportedOperationException();
+    return rules.stream()
+        .map(rule -> rule.isEnabledForClient(clientInfo))
+        .reduce(Boolean::logicalAnd)
+        .orElse(false);
   }
 }

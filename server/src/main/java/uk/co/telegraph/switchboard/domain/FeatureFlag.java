@@ -16,37 +16,39 @@
 
 package uk.co.telegraph.switchboard.domain;
 
-import java.util.Set;
-import uk.co.telegraph.switchboard.domain.rules.RulesSet;
+import lombok.ToString;
+import uk.co.telegraph.switchboard.domain.rules.DefaultRule;
+import uk.co.telegraph.switchboard.domain.rules.Rule;
 
+@ToString
 public class FeatureFlag {
 
   private String id;
-  private Set<RulesSet> rulesSets;
-
-  public FeatureFlag() {}
+  private Rule rule;
 
   public FeatureFlag(String id) {
     this.id = id;
+    this.rule = new DefaultRule(false);
   }
 
-  public void addRulesSet(RulesSet rulesSet) {
-    throw new UnsupportedOperationException();
-  }
-
-  public void removeRulesSet(RulesSet rulesSet) {
-    throw new UnsupportedOperationException();
-  }
-
-  public Set<RulesSet> getRulesSets() {
-    throw new UnsupportedOperationException();
+  public FeatureFlag(String id, Rule rule) {
+    this.id = id;
+    this.rule = rule;
   }
 
   boolean isEnabledForClient(ClientInfo clientInfo) {
-    throw new UnsupportedOperationException();
+    return rule.isEnabledForClient(clientInfo);
   }
 
   public String getId() {
     return id;
+  }
+
+  public Rule getRule() {
+    return rule;
+  }
+
+  public void setRule(Rule rule) {
+    this.rule = rule;
   }
 }
