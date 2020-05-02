@@ -18,8 +18,6 @@ package uk.co.telegraph.switchboard.domain.rules;
 
 import uk.co.telegraph.switchboard.domain.ClientInfo;
 
-public abstract class Rule {
-  private Long id;
-
-  public abstract boolean isEnabledForClient(ClientInfo clientInfo);
+public interface Rule {
+  boolean isEnabledForClient(ClientInfo clientInfo);
 }

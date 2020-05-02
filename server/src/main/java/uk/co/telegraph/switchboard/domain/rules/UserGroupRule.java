@@ -18,7 +18,7 @@ package uk.co.telegraph.switchboard.domain.rules;
 
 import uk.co.telegraph.switchboard.domain.ClientInfo;
 
-public class UserGroupRule extends Rule {
+public class UserGroupRule implements Rule {
 
   @Override
   public boolean isEnabledForClient(ClientInfo clientInfo) {

@@ -18,7 +18,14 @@ package uk.co.telegraph.switchboard.domain.rules;
 
 import uk.co.telegraph.switchboard.domain.ClientInfo;
 
-public class ContextRule extends Rule {
+public class ContextRule implements Rule {
+
+  private final String context;
+
+  public ContextRule(String context) {
+    this.context = context;
+  }
+
   @Override
   public boolean isEnabledForClient(ClientInfo clientInfo) {
     throw new UnsupportedOperationException();

@@ -19,7 +19,7 @@ package uk.co.telegraph.switchboard.domain.rules;
 import java.time.ZonedDateTime;
 import uk.co.telegraph.switchboard.domain.ClientInfo;
 
-public class DateTimeRule extends Rule {
+public class DateTimeRule implements Rule {
 
   private ZonedDateTime dateTime;
 

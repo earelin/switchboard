@@ -17,7 +17,7 @@
 package uk.co.telegraph.switchboard.application;
 
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
-import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.emptyIterable;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
@@ -30,7 +30,6 @@ import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -74,7 +73,7 @@ class ContextControllerTest {
         .get("/rest/v1/application/{applicationId}/context", application.getId())
       .then()
         .status(HttpStatus.OK)
-        .body("$", contains("production", "staging"));
+        .body("$", containsInAnyOrder("production", "staging"));
   }
 
   @Test

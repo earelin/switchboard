@@ -18,7 +18,7 @@ package uk.co.telegraph.switchboard.domain.rules;
 
 import uk.co.telegraph.switchboard.domain.ClientInfo;
 
-public class DefaultRule extends Rule {
+public class DefaultRule implements Rule {
 
   private boolean enabled = false;
 

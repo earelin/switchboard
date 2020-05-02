@@ -27,6 +27,8 @@ import lombok.ToString;
 @ToString
 public class ClientInfo {
 
+  public static final String CONTEXT_PROPERTY_KEY = "context";
+
   private final String application;
   private final ZonedDateTime time;
   private final Map<String, String> properties;
