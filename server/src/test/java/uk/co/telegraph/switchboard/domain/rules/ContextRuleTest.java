@@ -17,13 +17,17 @@
 package uk.co.telegraph.switchboard.domain.rules;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.co.telegraph.switchboard.domain.ClientInfo;
 
+@ExtendWith({MockitoExtension.class})
 class ContextRuleTest {
 
   private static final String CONTEXT_NAME = "production";
@@ -44,13 +48,34 @@ class ContextRuleTest {
     contextRule = new ContextRule(CONTEXT_NAME_ALT);
 
     assertThat(contextRule)
-      .hasFieldOrPropertyWithValue("context", CONTEXT_NAME_ALT);
+        .hasFieldOrPropertyWithValue("desiredContext", CONTEXT_NAME_ALT);
   }
 
   @Test
-  @Disabled
   void should_be_enabled_if_client_info_context_matches() {
+    when(clientInfo.getPropertyValue(ClientInfo.CONTEXT_PROPERTY_KEY))
+        .thenReturn(Optional.of(CONTEXT_NAME));
 
+    assertThat(contextRule.isEnabledForClient(clientInfo))
+        .isTrue();
+  }
+
+  @Test
+  void should_not_be_enabled_if_client_info_context_does_not_exists() {
+    when(clientInfo.getPropertyValue(ClientInfo.CONTEXT_PROPERTY_KEY))
+        .thenReturn(Optional.empty());
+
+    assertThat(contextRule.isEnabledForClient(clientInfo))
+        .isFalse();
+  }
+
+  @Test
+  void should_not_be_enabled_if_client_info_context_does_not_match() {
+    when(clientInfo.getPropertyValue(ClientInfo.CONTEXT_PROPERTY_KEY))
+        .thenReturn(Optional.of(CONTEXT_NAME_ALT));
+
+    assertThat(contextRule.isEnabledForClient(clientInfo))
+        .isFalse();
   }
 
 }

@@ -21,18 +21,14 @@ import uk.co.telegraph.switchboard.domain.ClientInfo;
 
 public class DateTimeRule implements Rule {
 
-  private ZonedDateTime dateTime;
+  private final ZonedDateTime activationDateTime;
+
+  public DateTimeRule(ZonedDateTime activationDateTime) {
+    this.activationDateTime = activationDateTime;
+  }
 
   @Override
   public boolean isEnabledForClient(ClientInfo clientInfo) {
-    return dateTime.isBefore(clientInfo.getTime());
-  }
-
-  public void setDateTimeEnabledAfter(ZonedDateTime dateTime) {
-    this.dateTime = dateTime;
-  }
-
-  public ZonedDateTime getDateTimeEnabledAfter() {
-    return dateTime;
+    return clientInfo.getTime().isAfter(activationDateTime);
   }
 }

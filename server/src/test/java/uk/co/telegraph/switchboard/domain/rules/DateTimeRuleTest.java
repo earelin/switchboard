@@ -34,17 +34,12 @@ class DateTimeRuleTest {
 
   private DateTimeRule dateTimeRule;
 
-  @Mock private ClientInfo clientInfo;
+  @Mock
+  private ClientInfo clientInfo;
 
   @BeforeEach
   void setUp() {
-    dateTimeRule = new DateTimeRule();
-    dateTimeRule.setDateTimeEnabledAfter(DATE_TIME);
-  }
-
-  @Test
-  void should_set_and_get_date_time_that_is_enabled_after() {
-    assertThat(dateTimeRule.getDateTimeEnabledAfter()).isEqualTo(DATE_TIME);
+    dateTimeRule = new DateTimeRule(DATE_TIME);
   }
 
   @Test

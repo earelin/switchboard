@@ -16,18 +16,21 @@
 
 package uk.co.telegraph.switchboard.domain.rules;
 
+import java.util.Optional;
 import uk.co.telegraph.switchboard.domain.ClientInfo;
 
 public class ContextRule implements Rule {
 
-  private final String context;
+  private final String desiredContext;
 
-  public ContextRule(String context) {
-    this.context = context;
+  public ContextRule(String desiredContext) {
+    this.desiredContext = desiredContext;
   }
 
   @Override
   public boolean isEnabledForClient(ClientInfo clientInfo) {
-    throw new UnsupportedOperationException();
+    Optional<String> clientContext = clientInfo.getPropertyValue(ClientInfo.CONTEXT_PROPERTY_KEY);
+
+    return clientContext.isPresent() && clientContext.get().equals(desiredContext);
   }
 }

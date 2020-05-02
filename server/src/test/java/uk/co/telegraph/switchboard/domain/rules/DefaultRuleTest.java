@@ -34,30 +34,26 @@ class DefaultRuleTest {
 
   @BeforeEach
   void setUp() {
-    defaultRule = new DefaultRule();
+    defaultRule = new DefaultRule(false);
   }
 
   @Test
-  void should_not_be_enabled_in_construction() {
-    assertThat(defaultRule.isEnabled()).isFalse();
-  }
-
-  @Test
-  void should_set_and_get_enable_value() {
-    defaultRule.setEnabled(true);
-
-    assertThat(defaultRule.isEnabled()).isTrue();
+  void should_set_enabled_on_construction() {
+    assertThat(defaultRule)
+        .hasFieldOrPropertyWithValue("enabled", false);
   }
 
   @Test
   void should_report_disabled_if_default_value_is_not_enabled() {
-    assertThat(defaultRule.isEnabledForClient(clientInfo)).isFalse();
+    assertThat(defaultRule.isEnabledForClient(clientInfo))
+        .isFalse();
   }
 
   @Test
-  void should_report_enabled_if_default_value_is_enabled() {
-    defaultRule.setEnabled(true);
+  void should_report_disabled_if_default_value_is_enabled() {
+    defaultRule = new DefaultRule(true);
 
-    assertThat(defaultRule.isEnabledForClient(clientInfo)).isTrue();
+    assertThat(defaultRule.isEnabledForClient(clientInfo))
+        .isTrue();
   }
 }
