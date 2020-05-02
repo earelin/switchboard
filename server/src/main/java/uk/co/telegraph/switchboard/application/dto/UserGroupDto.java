@@ -16,6 +16,14 @@
 
 package uk.co.telegraph.switchboard.application.dto;
 
-public class UserGroupDto {
+import java.util.Set;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+public class UserGroupDto {
+  @EqualsAndHashCode.Include
+  private String name;
+  private Set<String> users;
 }

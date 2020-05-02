@@ -28,43 +28,113 @@ class ApplicationDtoTest {
   private static final String APPLICATION_DESCRIPTION = "Public website";
   private static final String APPLICATION_SECRET = "5keMeAAF69sBQqau";
 
+  private static final String APPLICATION_ID_ALT = "5236390e-4861-47f5-8cde-2e4b196e3e58";
+  private static final String APPLICATION_NAME_ALT = "Mobile";
+  private static final String APPLICATION_DESCRIPTION_ALT = "Mobile application";
+  private static final String APPLICATION_SECRET_ALT = "DILZbyO6a5ApRGQY";
+
   private ApplicationDto applicationDto;
 
   @BeforeEach
   void setUp() {
     applicationDto = new ApplicationDto();
+    applicationDto.setId(APPLICATION_ID);
+    applicationDto.setName(APPLICATION_NAME);
+    applicationDto.setDescription(APPLICATION_DESCRIPTION);
+    applicationDto.setSecret(APPLICATION_SECRET);
   }
 
   @Test
   void should_set_and_return_id() {
-    applicationDto.setId(APPLICATION_ID);
+    applicationDto.setId(APPLICATION_ID_ALT);
 
-    assertThat(applicationDto.getId()).isEqualTo(APPLICATION_ID);
+    assertThat(applicationDto.getId())
+        .isEqualTo(APPLICATION_ID_ALT);
   }
 
   @Test
   void should_set_and_return_name() {
-    applicationDto.setName(APPLICATION_NAME);
+    applicationDto.setName(APPLICATION_NAME_ALT);
 
-    assertThat(applicationDto.getName()).isEqualTo(APPLICATION_NAME);
+    assertThat(applicationDto.getName())
+        .isEqualTo(APPLICATION_NAME_ALT);
   }
 
   @Test
   void should_set_and_return_description() {
-    applicationDto.setDescription(APPLICATION_DESCRIPTION);
+    applicationDto.setDescription(APPLICATION_DESCRIPTION_ALT);
 
-    assertThat(applicationDto.getDescription()).isEqualTo(APPLICATION_DESCRIPTION);
+    assertThat(applicationDto.getDescription())
+        .isEqualTo(APPLICATION_DESCRIPTION_ALT);
   }
 
   @Test
   void should_set_and_return_secret() {
-    applicationDto.setSecret(APPLICATION_SECRET);
+    applicationDto.setSecret(APPLICATION_SECRET_ALT);
 
-    assertThat(applicationDto.getSecret()).isEqualTo(APPLICATION_SECRET);
+    assertThat(applicationDto.getSecret())
+        .isEqualTo(APPLICATION_SECRET_ALT);
+  }
+
+  @Test
+  void should_be_equal_to_itself() {
+    assertThat(applicationDto.equals(applicationDto))
+        .isTrue();
+  }
+
+  @Test
+  void should_be_equal_to_an_object_with_same_id() {
+    ApplicationDto compareObject = new ApplicationDto();
+    compareObject.setId(APPLICATION_ID);
+
+    assertThat(applicationDto.equals(compareObject))
+        .isTrue();
+  }
+
+  @Test
+  void should_not_be_equal_to_null() {
+    assertThat(applicationDto.equals(null))
+        .isFalse();
+  }
+
+  @Test
+  void should_not_be_equal_to_a_different_class() {
+    String compareObject = "2wertgyhuji";
+
+    assertThat(applicationDto.equals(compareObject))
+        .isFalse();
+  }
+
+  @Test
+  void should_not_be_equal_to_an_object_with_different_id() {
+    ApplicationDto compareObject = new ApplicationDto();
+    compareObject.setId(APPLICATION_ID_ALT);
+
+    assertThat(applicationDto.equals(compareObject))
+        .isFalse();
+  }
+
+  @Test
+  void should_have_the_same_hash_code_than_a_object_with_same_id() {
+    ApplicationDto compareObject = new ApplicationDto();
+    compareObject.setId(APPLICATION_ID);
+
+    assertThat(applicationDto.hashCode())
+        .isEqualTo(compareObject.hashCode());
+  }
+
+  @Test
+  void should_not_have_the_same_hash_code_than_an_object_with_different_ID() {
+    ApplicationDto compareObject = new ApplicationDto();
+    compareObject.setId(APPLICATION_ID_ALT);
+
+    assertThat(applicationDto.hashCode())
+        .isNotEqualTo(compareObject.hashCode());
   }
 
   @Test
   void should_return_string_representation() {
-    assertThat(applicationDto.toString()).startsWith("ApplicationDto");
+    assertThat(applicationDto.toString())
+        .startsWith("ApplicationDto");
   }
 }

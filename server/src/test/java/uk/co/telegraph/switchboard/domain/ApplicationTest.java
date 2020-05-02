@@ -115,7 +115,8 @@ class ApplicationTest {
   void should_set_and_return_id() {
     application.setId(APPLICATION_ID_ALT);
 
-    assertThat(application.getId()).isEqualTo(APPLICATION_ID_ALT);
+    assertThat(application.getId())
+        .isEqualTo(APPLICATION_ID_ALT);
   }
 
   @Test
@@ -167,14 +168,16 @@ class ApplicationTest {
   void should_set_and_return_description() {
     application.setDescription(APPLICATION_DESCRIPTION);
 
-    assertThat(application.getDescription()).isEqualTo(APPLICATION_DESCRIPTION);
+    assertThat(application.getDescription())
+        .isEqualTo(APPLICATION_DESCRIPTION);
   }
 
   @Test
   void should_set_and_return_secret() {
     application.setSecret(APPLICATION_SECRET_ALT);
 
-    assertThat(application.getSecret()).isEqualTo(APPLICATION_SECRET_ALT);
+    assertThat(application.getSecret())
+        .isEqualTo(APPLICATION_SECRET_ALT);
   }
 
   @Test
@@ -197,7 +200,8 @@ class ApplicationTest {
 
   @Test
   void should_be_equal_to_itself() {
-    assertThat(application.equals(application)).isTrue();
+    assertThat(application.equals(application))
+        .isTrue();
   }
 
   @Test
@@ -205,7 +209,8 @@ class ApplicationTest {
     Application compareObject = new Application(APPLICATION_ID, APPLICATION_NAME_ALT, APPLICATION_SECRET_ALT);
     compareObject.setId(APPLICATION_ID);
 
-    assertThat(application.equals(compareObject)).isTrue();
+    assertThat(application.equals(compareObject))
+        .isTrue();
   }
 
   @Test
@@ -217,7 +222,8 @@ class ApplicationTest {
   void should_not_be_equal_to_a_different_class() {
     String compareObject = "2wertgyhuji";
 
-    assertThat(application.equals(compareObject)).isFalse();
+    assertThat(application.equals(compareObject))
+        .isFalse();
   }
 
   @Test
@@ -225,7 +231,8 @@ class ApplicationTest {
     Application compareObject = new Application(APPLICATION_ID_ALT, APPLICATION_NAME, APPLICATION_SECRET);
     compareObject.setId(APPLICATION_ID_ALT);
 
-    assertThat(application.equals(compareObject)).isFalse();
+    assertThat(application.equals(compareObject))
+        .isFalse();
   }
 
   @Test
@@ -233,7 +240,8 @@ class ApplicationTest {
     Application compareObject = new Application(APPLICATION_ID, APPLICATION_NAME_ALT, APPLICATION_SECRET_ALT);
     compareObject.setId(APPLICATION_ID);
 
-    assertThat(application.hashCode()).isEqualTo(compareObject.hashCode());
+    assertThat(application.hashCode())
+        .isEqualTo(compareObject.hashCode());
   }
 
   @Test
@@ -241,11 +249,13 @@ class ApplicationTest {
     Application compareObject = new Application(APPLICATION_ID_ALT, APPLICATION_NAME, APPLICATION_SECRET);
     compareObject.setId(APPLICATION_ID_ALT);
 
-    assertThat(application.hashCode()).isNotEqualTo(compareObject.hashCode());
+    assertThat(application.hashCode())
+        .isNotEqualTo(compareObject.hashCode());
   }
 
   @Test
   void should_return_string_representation() {
-    assertThat(application.toString()).startsWith("Application");
+    assertThat(application.toString())
+        .startsWith("Application");
   }
 }
