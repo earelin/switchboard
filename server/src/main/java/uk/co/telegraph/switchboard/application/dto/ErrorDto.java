@@ -27,20 +27,13 @@ import uk.co.telegraph.switchboard.domain.validation.ValidationException;
 @ToString
 public class ErrorDto {
 
-  public static ErrorDto from(Exception exception) {
-    ErrorDto errorDto = new ErrorDto();
-    errorDto.code = HttpStatus.INTERNAL_SERVER_ERROR.value();
-    errorDto.message = exception.getMessage();
-    return errorDto;
-  }
-
-  public static ErrorDto from(ValidationException exception) {
+  public static ErrorDto fromValidationException(ValidationException exception) {
     ErrorDto errorDto = new ErrorDto();
     errorDto.code = HttpStatus.BAD_REQUEST.value();
     errorDto.message = exception.getMessage();
     return errorDto;
   }
 
-  private int code;
+  private int code = HttpStatus.INTERNAL_SERVER_ERROR.value();
   private String message;
 }

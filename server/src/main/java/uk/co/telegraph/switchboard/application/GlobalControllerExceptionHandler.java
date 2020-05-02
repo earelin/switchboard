@@ -29,7 +29,7 @@ public class GlobalControllerExceptionHandler {
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ExceptionHandler(ValidationException.class)
   public ErrorDto handleValidationException(ValidationException exception) {
-    return ErrorDto.from(exception);
+    return ErrorDto.fromValidationException(exception);
   }
 
 }

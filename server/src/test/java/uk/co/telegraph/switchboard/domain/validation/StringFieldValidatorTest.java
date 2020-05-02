@@ -109,6 +109,17 @@ class StringFieldValidatorTest {
   }
 
   @Test
+  void should_validate_field_null_as_not_longer_than_8_chars() {
+    StringFieldValidator stringFieldValidator = StringFieldValidator.builder()
+        .fieldName("name")
+        .shouldNotBeLongerThan(8)
+        .build();
+
+    assertThatCode(() -> stringFieldValidator.apply(null))
+        .doesNotThrowAnyException();
+  }
+
+  @Test
   void should_throw_error_from_custom_validator() {
     StringFieldValidator stringFieldValidator = StringFieldValidator.builder()
         .fieldName("name")

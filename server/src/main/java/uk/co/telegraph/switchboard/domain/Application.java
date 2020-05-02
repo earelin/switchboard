@@ -16,6 +16,8 @@
 
 package uk.co.telegraph.switchboard.domain;
 
+import java.util.HashMap;
+import java.util.Map;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import uk.co.telegraph.switchboard.domain.validation.StringFieldValidator;
@@ -54,6 +56,7 @@ public class Application {
   private String name;
   private String description;
   private String secret;
+  private Map<String, FeatureFlag> featureFlags = new HashMap<>();
 
   public Application(String id, String name, String secret) {
     idValidator.apply(id);
@@ -62,6 +65,18 @@ public class Application {
     this.id = id;
     this.name = name;
     this.secret = secret;
+  }
+
+  public FeatureFlag getFeatureFlag(String id) {
+    throw new UnsupportedOperationException();
+  }
+
+  public FeatureFlag createFeatureFlag(String id) {
+    throw new UnsupportedOperationException();
+  }
+
+  public void removeFeatureFlag(String id) {
+    throw new UnsupportedOperationException();
   }
 
   public String getId() {
