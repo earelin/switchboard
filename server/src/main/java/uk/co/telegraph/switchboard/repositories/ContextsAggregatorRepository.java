@@ -18,29 +18,15 @@ package uk.co.telegraph.switchboard.repositories;
 
 import java.util.Optional;
 import org.springframework.stereotype.Component;
-import uk.co.telegraph.switchboard.domain.Application;
 import uk.co.telegraph.switchboard.domain.ContextsAggregator;
 
 @Component
 public class ContextsAggregatorRepository {
-
-  public Optional<ContextsAggregator> getByApplication(Application application) {
-    throw new UnsupportedOperationException();
-  }
-
   public Optional<ContextsAggregator> getByApplicationId(String applicationId) {
     throw new UnsupportedOperationException();
   }
 
   public ContextsAggregator save(ContextsAggregator contextsAggregator) {
-    throw new UnsupportedOperationException();
-  }
-
-  public boolean existsByApplication(Application application) {
-    throw new UnsupportedOperationException();
-  }
-
-  public boolean existsByApplicationId(String applicationId) {
     throw new UnsupportedOperationException();
   }
 }

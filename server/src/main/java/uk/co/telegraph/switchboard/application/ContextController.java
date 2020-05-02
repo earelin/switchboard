@@ -16,9 +16,11 @@
 
 package uk.co.telegraph.switchboard.application;
 
+import java.util.Set;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-import uk.co.telegraph.switchboard.domain.Application;
 import uk.co.telegraph.switchboard.domain.ContextsAggregator;
 import uk.co.telegraph.switchboard.domain.ObjectDoesNotExists;
 import uk.co.telegraph.switchboard.repositories.ApplicationRepository;
@@ -49,11 +50,11 @@ public class ContextController {
     this.contextsAggregatorRepository = contextsAggregatorRepository;
   }
 
-//  @GetMapping
-//  public List<String> getContextsList(@PathVariable String applicationId) {
-//    ContextsAggregator contextsAggregator = getContextAggregatorForApplicationId(applicationId);
-//    return contextMapper.domainMapToDto(contextsAggregator.getContexts());
-//  }
+  @GetMapping
+  public Set<String> getContextsList(@PathVariable String applicationId) {
+    ContextsAggregator contextsAggregator = getContextAggregatorForApplicationId(applicationId);
+    return contextsAggregator.getContexts();
+  }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
@@ -89,7 +90,7 @@ public class ContextController {
   }
 
   private ContextsAggregator createContextAggregatorFromApplicationId(String applicationId) {
-    Application application = applicationRepository.getById(applicationId)
+    applicationRepository.getById(applicationId)
         .orElseThrow(() -> new ResponseStatusException(
             HttpStatus.NOT_FOUND, String.format("Application %s not found.", applicationId)
         ));

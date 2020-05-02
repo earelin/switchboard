@@ -17,6 +17,7 @@
 package uk.co.telegraph.switchboard.factories;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.Test;
@@ -25,11 +26,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.co.telegraph.switchboard.domain.Application;
+import uk.co.telegraph.switchboard.domain.validation.ValidationException;
 import uk.co.telegraph.switchboard.services.IdGenerator;
 import uk.co.telegraph.switchboard.services.PasswordGenerator;
 
 @ExtendWith(MockitoExtension.class)
-class ApplicationEntityFactoryTest {
+class ApplicationFactoryTest {
 
   private static final String APPLICATION_NAME = "Website";
   private static final String APPLICATION_DESCRIPTION = "Company website";
@@ -73,5 +75,11 @@ class ApplicationEntityFactoryTest {
         .hasFieldOrPropertyWithValue("name", APPLICATION_NAME)
         .hasFieldOrPropertyWithValue("description", APPLICATION_DESCRIPTION)
         .hasFieldOrPropertyWithValue("secret", APPLICATION_SECRET);
+  }
+
+  @Test
+  void should_trigger_exception_if_application_validation_fails() {
+    assertThatThrownBy(() -> applicationFactory.createApplication("  "))
+        .isInstanceOf(ValidationException.class);
   }
 }

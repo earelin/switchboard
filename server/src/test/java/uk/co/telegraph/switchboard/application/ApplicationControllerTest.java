@@ -34,7 +34,6 @@ import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -48,12 +47,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import uk.co.telegraph.switchboard.Integration;
 import uk.co.telegraph.switchboard.application.dto.ApplicationCreateDto;
 import uk.co.telegraph.switchboard.domain.Application;
+import uk.co.telegraph.switchboard.domain.validation.ValidationException;
 import uk.co.telegraph.switchboard.factories.ApplicationFactory;
 import uk.co.telegraph.switchboard.repositories.ApplicationRepository;
 
 /** Web layer controller test. */
 @Integration
-@WebMvcTest(ApplicationController.class)
+@WebMvcTest({ApplicationController.class, GlobalControllerExceptionHandler.class})
 class ApplicationControllerTest {
 
   private static final Gson gson = new Gson();
@@ -104,8 +104,10 @@ class ApplicationControllerTest {
   }
 
   @Test
-  @Disabled
   void should_not_create_an_application_with_empty_name() {
+    when(applicationFactory.createApplication(any(), any()))
+        .thenThrow(ValidationException.class);
+
     ApplicationCreateDto request = new ApplicationCreateDto("  ", APPLICATION_DESCRIPTION);
 
     given()
@@ -118,8 +120,10 @@ class ApplicationControllerTest {
   }
 
   @Test
-  @Disabled
   void should_return_bad_request_if_the_create_body_is_not_valid() {
+    when(applicationFactory.createApplication(any(), any()))
+        .thenThrow(ValidationException.class);
+
     given()
         .contentType(ContentType.JSON)
         .body("{\"no-sense-field\": \"value\"}")
@@ -224,8 +228,9 @@ class ApplicationControllerTest {
   }
 
   @Test
-  @Disabled
   void should_not_update_an_application_with_empty_name() throws Exception {
+    when(applicationRepository.getById(any()))
+        .thenReturn(Optional.of(new Application(APPLICATION_ID, APPLICATION_NAME, APPLICATION_SECRET)));
     ApplicationCreateDto request = new ApplicationCreateDto("  ", APPLICATION_DESCRIPTION);
 
     mockMvc

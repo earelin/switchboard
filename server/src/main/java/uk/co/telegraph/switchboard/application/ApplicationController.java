@@ -122,9 +122,8 @@ public class ApplicationController {
         applicationRepository
             .getById(id)
             .orElseThrow(
-                () ->
-                    new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, String.format(APPLICATION_NOT_FOUND_MESSAGE, id)));
+                () -> new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, String.format(APPLICATION_NOT_FOUND_MESSAGE, id)));
 
     applicationMapper.updateDomainFromDto(request, application);
     Application savedApplication = applicationRepository.save(application);
