@@ -32,15 +32,15 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class UserGroupTest {
 
-  public static final String USER_GROUP_ID = "beta";
-  public static final String USER_GROUP_ALT_ID = "qa";
-  public static final String USER_GROUP_NAME = "Beta";
-  public static final String USER_GROUP_ALT_NAME = "QA";
-  public static final String USER_NAME = "aragorn";
+  public static final String USER_GROUP_NAME = "beta";
   public static final Set<String> USER_GROUP_USERS
       = Sets.newHashSet("frodo", "sam", "gandalf");
+
+  public static final String USER_GROUP_ALT_NAME = "qa";
   public static final Set<String> USER_GROUP_ALT_USERS
       = Sets.newHashSet("sauron", "saruman");
+
+  public static final String USER_NAME = "aragorn";
 
   private UserGroup userGroup;
 
@@ -49,22 +49,15 @@ class UserGroupTest {
 
   @BeforeEach
   void setUp() {
-    userGroup = new UserGroup();
-    userGroup.setId(USER_GROUP_ID);
-    userGroup.setUsers(USER_GROUP_USERS);
+    userGroup = new UserGroup(USER_GROUP_NAME, USER_GROUP_USERS);
   }
 
   @Test
-  void should_id_and_name_in_constructor() {
-    userGroup = new UserGroup(USER_GROUP_ID, USER_GROUP_NAME);
-  }
-
-  @Test
-  void should_set_and_return_id() {
-    userGroup.setId(USER_GROUP_ALT_ID);
-
+  void should_set_name_and_users_in_constructor() {
     assertThat(userGroup)
-        .hasFieldOrPropertyWithValue("id", USER_GROUP_ALT_ID);
+        .hasFieldOrPropertyWithValue("name", USER_GROUP_NAME);
+    assertThat(userGroup.getUsers())
+        .isEqualTo(USER_GROUP_USERS);
   }
 
   @Test
@@ -99,7 +92,7 @@ class UserGroupTest {
     userGroup.removeUser("frodo");
 
     assertThat(userGroup.getUsers())
-        .containsExactly("sam", "gandalf");
+        .contains("sam", "gandalf");
   }
 
   @Test
@@ -122,8 +115,7 @@ class UserGroupTest {
 
   @Test
   void should_be_equal_to_an_object_with_same_id() {
-    UserGroup compareObject = new UserGroup();
-    compareObject.setId(USER_GROUP_ID);
+    UserGroup compareObject = new UserGroup(USER_GROUP_NAME, USER_GROUP_ALT_USERS);
 
     assertThat(userGroup.equals(compareObject))
         .isTrue();
@@ -145,8 +137,7 @@ class UserGroupTest {
 
   @Test
   void should_not_be_equal_to_an_object_with_different_id() {
-    UserGroup compareObject = new UserGroup();
-    compareObject.setId(USER_GROUP_ALT_ID);
+    UserGroup compareObject = new UserGroup(USER_GROUP_ALT_NAME, USER_GROUP_USERS);
 
     assertThat(userGroup.equals(compareObject))
         .isFalse();
@@ -160,8 +151,7 @@ class UserGroupTest {
 
   @Test
   void should_have_the_same_hash_code_than_a_object_with_same_id() {
-    UserGroup compareObject = new UserGroup();
-    compareObject.setId(USER_GROUP_ID);
+    UserGroup compareObject = new UserGroup(USER_GROUP_NAME, USER_GROUP_ALT_USERS);
 
     assertThat(userGroup.hashCode())
         .isEqualTo(compareObject.hashCode());
@@ -169,8 +159,7 @@ class UserGroupTest {
 
   @Test
   void should_have_a_different_hash_code_than_a_object_with_differnt_id() {
-    UserGroup compareObject = new UserGroup();
-    compareObject.setId(USER_GROUP_ALT_ID);
+    UserGroup compareObject = new UserGroup(USER_GROUP_ALT_NAME, USER_GROUP_USERS);
 
     assertThat(userGroup.hashCode())
         .isNotEqualTo(compareObject.hashCode());

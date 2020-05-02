@@ -29,23 +29,21 @@ public class UserGroup {
   public static final int NAME_MAX_LENGTH = 32;
 
   @EqualsAndHashCode.Include
-  private String id;
-  private Set<String> users = new HashSet<>();
+  private String name;
+  private final Set<String> users;
 
-  UserGroup() {}
+  public UserGroup(String name) {
+    this.name = name;
+    this.users = new HashSet<>();
+  }
 
-  /**
-   * UserGroup public constructor.
-   * @param id ID.
-   * @param name Name.
-   */
-  public UserGroup(String id, String name) {
-
-    this.id = id;
+  public UserGroup(String name, Set<String> users) {
+    this.name = name;
+    this.users = new HashSet<>(users);
   }
 
   public void addUser(String name) {
-    idValidation(name);
+    nameValidation(name);
     this.users.add(name);
   }
 
@@ -57,23 +55,15 @@ public class UserGroup {
     return this.users.contains(name);
   }
 
-  public String getId() {
-    return id;
-  }
-
-  void setId(String id) {
-    this.id = id;
-  }
-
-  void setUsers(Set<String> users) {
-    this.users = new HashSet<>(users);
+  public String getName() {
+    return name;
   }
 
   public Set<String> getUsers() {
-    return this.users;
+    return Set.copyOf(this.users);
   }
 
-  private void idValidation(String name) {
+  private void nameValidation(String name) {
     if (StringUtils.isBlank(name)) {
       throw new IllegalArgumentException(
           String.format("User group id cannot be null or empty, current value: %s", name));

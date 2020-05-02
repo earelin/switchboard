@@ -14,22 +14,13 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.application.mappers;
+package uk.co.telegraph.switchboard.domain.validation;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import org.mapstruct.Mapper;
-import uk.co.telegraph.switchboard.domain.Context;
+public class ValidationException extends RuntimeException {
 
-@Mapper
-public interface ContextMapper {
-  default List<String> domainMapToDto(Map<String, Context> contexts) {
-    if (Objects.isNull(contexts)) {
-      return Collections.emptyList();
-    }
-    return contexts.keySet().stream().sorted().collect(Collectors.toList());
+  private static final long serialVersionUID = -7863898036238061245L;
+
+  public ValidationException(String message) {
+    super(message);
   }
 }

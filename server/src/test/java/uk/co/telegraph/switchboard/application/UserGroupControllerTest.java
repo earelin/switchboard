@@ -32,7 +32,7 @@ import uk.co.telegraph.switchboard.repositories.UserGroupAggregatorRepository;
 
 @Integration
 @WebMvcTest(UserGroupController.class)
-class UserGroupEntityControllerTest {
+class UserGroupControllerTest {
 
   @Autowired
   private MockMvc mockMvc;

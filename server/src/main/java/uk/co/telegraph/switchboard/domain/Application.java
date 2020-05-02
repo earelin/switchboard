@@ -18,7 +18,7 @@ package uk.co.telegraph.switchboard.domain;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.apache.commons.lang3.StringUtils;
+import uk.co.telegraph.switchboard.domain.validation.StringFieldValidator;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
@@ -28,6 +28,27 @@ public class Application {
   public static final int NAME_MAX_LENGTH = 64;
   public static final int SECRET_MAX_LENGTH = 16;
 
+  private static final StringFieldValidator idValidator = StringFieldValidator.builder()
+      .fieldName("id")
+      .shouldNotBeNull()
+      .shouldNotBeBlank()
+      .shouldNotBeLongerThan(ID_MAX_LENGTH)
+      .build();
+
+  private static final StringFieldValidator nameValidator = StringFieldValidator.builder()
+      .fieldName("name")
+      .shouldNotBeNull()
+      .shouldNotBeBlank()
+      .shouldNotBeLongerThan(NAME_MAX_LENGTH)
+      .build();
+
+  private static final StringFieldValidator secretValidator = StringFieldValidator.builder()
+      .fieldName("secret")
+      .shouldNotBeNull()
+      .shouldNotBeBlank()
+      .shouldNotBeLongerThan(SECRET_MAX_LENGTH)
+      .build();
+
   @EqualsAndHashCode.Include
   private String id;
   private String name;
@@ -35,9 +56,9 @@ public class Application {
   private String secret;
 
   public Application(String id, String name, String secret) {
-    idValidation(id);
-    nameValidation(name);
-    secretValidation(secret);
+    idValidator.apply(id);
+    nameValidator.apply(name);
+    secretValidator.apply(secret);
     this.id = id;
     this.name = name;
     this.secret = secret;
@@ -48,7 +69,7 @@ public class Application {
   }
 
   void setId(String id) {
-    idValidation(id);
+    idValidator.apply(id);
     this.id = id;
   }
 
@@ -57,7 +78,7 @@ public class Application {
   }
 
   public void setName(String name) {
-    nameValidation(name);
+    nameValidator.apply(name);
     this.name = name;
   }
 
@@ -74,41 +95,7 @@ public class Application {
   }
 
   public void setSecret(String secret) {
-    secretValidation(secret);
+    secretValidator.apply(secret);
     this.secret = secret;
-  }
-
-  private void idValidation(String id) {
-    if (StringUtils.isBlank(id)) {
-      throw new IllegalArgumentException("Application id cannot be empty or null");
-    }
-
-    if (id.length() > ID_MAX_LENGTH) {
-      throw new IllegalArgumentException(
-          String.format("Application id cannot be longer than %d characters", ID_MAX_LENGTH));
-    }
-  }
-
-  private void nameValidation(String name) {
-    if (StringUtils.isBlank(name)) {
-      throw new IllegalArgumentException("Application name cannot be empty or null");
-    }
-
-    if (name.length() > NAME_MAX_LENGTH) {
-      throw new IllegalArgumentException(
-          String.format("Application name cannot be longer than %d characters", NAME_MAX_LENGTH));
-    }
-  }
-
-  private void secretValidation(String secret) {
-    if (StringUtils.isBlank(secret)) {
-      throw new IllegalArgumentException("Application secret cannot be empty or null");
-    }
-
-    if (secret.length() > SECRET_MAX_LENGTH) {
-      throw new IllegalArgumentException(
-          String.format("Application secret cannot be longer than %d characters",
-              SECRET_MAX_LENGTH));
-    }
   }
 }

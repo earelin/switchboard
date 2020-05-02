@@ -16,47 +16,38 @@
 
 package uk.co.telegraph.switchboard.domain;
 
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
+import lombok.ToString;
 
 /** User groups aggregator. */
+@ToString
 public class UserGroupAggregator {
 
-  private Application application;
-  private Set<UserGroup> userGroups = new HashSet<>();
+  private final Map<String, UserGroup> userGroups = new HashMap<>();
 
-  UserGroupAggregator() {}
+  public UserGroupAggregator() {}
 
-  public UserGroupAggregator(Application application) {
-    this.application = application;
+  public UserGroupAggregator(Set<UserGroup> userGroups) {
+    if (userGroups != null) {
+      userGroups.forEach(userGroup -> this.userGroups.put(userGroup.getName(), userGroup));
+    }
   }
 
   public void addUserGroup(String name) {
-    this.userGroups.add(new UserGroup("id", name));
+    this.userGroups.put(name, new UserGroup(name));
   }
 
-  public boolean containsUserGroup(UserGroup userGroup) {
-    return this.userGroups.contains(userGroup);
+  public boolean containsUserGroup(String name) {
+    return this.userGroups.containsKey(name);
   }
 
-  public void removeUserGroup(UserGroup userGroup) {
-    this.userGroups.remove(userGroup);
-  }
-
-  public Application getApplication() {
-    return application;
-  }
-
-  public void setApplication(Application application) {
-    this.application = application;
+  public void removeUserGroup(String name) {
+    this.userGroups.remove(name);
   }
 
   public Set<UserGroup> getUserGroups() {
-    return Set.copyOf(userGroups);
-  }
-
-  void setUserGroups(
-      Set<UserGroup> userGroups) {
-    this.userGroups = new HashSet<>(userGroups);
+    return Set.copyOf(userGroups.values());
   }
 }

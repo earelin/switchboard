@@ -31,7 +31,7 @@ public class StringFieldValidator extends FieldValidator<String> {
     super(name);
   }
 
-  static class StringFieldValidatorBuilder {
+  public static class StringFieldValidatorBuilder {
     private String fieldName = null;
     private Function<String, String> validators = UnaryOperator.identity();
 
@@ -49,7 +49,7 @@ public class StringFieldValidator extends FieldValidator<String> {
     public StringFieldValidatorBuilder shouldNotBeNull() {
       this.validators = this.validators.andThen(value -> {
         if (Objects.isNull(value)) {
-          throw new IllegalArgumentException(String.format("%s must not be null.", this.fieldName));
+          throw new ValidationException(String.format("%s must not be null.", this.fieldName));
         }
         return value;
       });
@@ -59,7 +59,7 @@ public class StringFieldValidator extends FieldValidator<String> {
     public StringFieldValidatorBuilder shouldNotBeBlank() {
       this.validators = this.validators.andThen(value -> {
         if (Objects.nonNull(value) && StringUtils.isBlank(value)) {
-          throw new IllegalArgumentException(String.format("%s must not be blank, value: %s", this.fieldName, value));
+          throw new ValidationException(String.format("%s must not be blank, value: %s", this.fieldName, value));
         }
         return value;
       });
@@ -69,9 +69,31 @@ public class StringFieldValidator extends FieldValidator<String> {
     public StringFieldValidatorBuilder shouldNotBeLongerThan(int maxLength) {
       this.validators = this.validators.andThen(value -> {
         if (Objects.nonNull(value) && value.length() > maxLength) {
-          throw new IllegalArgumentException(
+          throw new ValidationException(
               String.format("%s must not be longer than %d characters, current value is %s long",
                   this.fieldName, maxLength, value.length()));
+        }
+        return value;
+      });
+      return this;
+    }
+
+    public StringFieldValidatorBuilder withRegexValidator(String regex) {
+      this.validators = this.validators.andThen(value -> {
+        if (!value.matches(regex)) {
+          throw new ValidationException(
+              String.format("%s must match regular expression %s, current value: %s",
+                  this.fieldName, regex, value));
+        }
+        return value;
+      });
+      return this;
+    }
+
+    public StringFieldValidatorBuilder withCustomValidator(Function<String, Boolean> validator, String message) {
+      this.validators = this.validators.andThen(value -> {
+        if (!validator.apply(value)) {
+          throw new ValidationException(message);
         }
         return value;
       });

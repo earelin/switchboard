@@ -16,7 +16,6 @@
 
 package uk.co.telegraph.switchboard.application;
 
-import org.mapstruct.factory.Mappers;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-import uk.co.telegraph.switchboard.application.mappers.ContextMapper;
 import uk.co.telegraph.switchboard.domain.Application;
 import uk.co.telegraph.switchboard.domain.ContextsAggregator;
 import uk.co.telegraph.switchboard.domain.ObjectDoesNotExists;
@@ -43,14 +41,12 @@ public class ContextController {
 
   private final ApplicationRepository applicationRepository;
   private final ContextsAggregatorRepository contextsAggregatorRepository;
-  private final ContextMapper contextMapper;
 
   public ContextController(
       ApplicationRepository applicationRepository,
       ContextsAggregatorRepository contextsAggregatorRepository) {
     this.applicationRepository = applicationRepository;
     this.contextsAggregatorRepository = contextsAggregatorRepository;
-    this.contextMapper = Mappers.getMapper(ContextMapper.class);
   }
 
 //  @GetMapping
@@ -97,6 +93,6 @@ public class ContextController {
         .orElseThrow(() -> new ResponseStatusException(
             HttpStatus.NOT_FOUND, String.format("Application %s not found.", applicationId)
         ));
-    return new ContextsAggregator(application);
+    return new ContextsAggregator();
   }
 }

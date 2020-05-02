@@ -17,44 +17,51 @@
 package uk.co.telegraph.switchboard.domain;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
-import org.apache.commons.lang3.StringUtils;
+import lombok.ToString;
+import uk.co.telegraph.switchboard.domain.validation.StringFieldValidator;
 
 /** Context aggregator. */
+@ToString
 public class ContextsAggregator {
-  private Application application;
-  private Set<String> contexts = new HashSet<>();
 
-  public ContextsAggregator(Application application) {
-    this.application = application;
+  private final StringFieldValidator contextNameValidator;
+  private final StringFieldValidator removeContextNameValidator;
+
+  private final Set<String> contexts;
+
+  public ContextsAggregator() {
+    this(new HashSet<>());
+  }
+
+  public ContextsAggregator(Set<String> contexts) {
+    this.contexts = new HashSet<>(contexts);
+
+    this.contextNameValidator = StringFieldValidator.builder()
+        .fieldName("Context name")
+        .shouldNotBeNull()
+        .shouldNotBeBlank()
+        .withRegexValidator("^[a-zA-Z0-9\\-]*$")
+        .withCustomValidator(
+            value -> !this.contexts.contains(value),
+            "Current value does already exists")
+        .build();
+
+    this.removeContextNameValidator = StringFieldValidator.builder()
+        .fieldName("Context name")
+        .shouldNotBeNull()
+        .shouldNotBeBlank()
+        .withRegexValidator("^[a-zA-Z0-9\\-]*$")
+        .build();
   }
 
   public void addContext(String name) {
-    if (Objects.isNull(name)) {
-      throw new NullPointerException("Not allowed null value on context name");
-    }
-
-    if (StringUtils.isBlank(name)) {
-      throw new IllegalArgumentException("Not allowed empty string value on context name");
-    }
-
-    if (contexts.contains(name)) {
-      throw new ObjectAlreadyExistsInAggregate(
-          String.format("A context with the name %s already exists", name));
-    }
-
+    contextNameValidator.apply(name);
     contexts.add(name);
   }
 
-  public boolean containsContext(String name) {
-    return contexts.contains(name);
-  }
-
   public void removeContext(String name) {
-    if (Objects.isNull(name)) {
-      throw new NullPointerException("Could not remove a null context");
-    }
+    removeContextNameValidator.apply(name);
 
     if (!contexts.contains(name)) {
       throw new ObjectDoesNotExists(String.format("A context with name %s does not exists", name));
@@ -63,19 +70,7 @@ public class ContextsAggregator {
     contexts.remove(name);
   }
 
-  public Application getApplication() {
-    return this.application;
-  }
-
-  void setApplication(Application application) {
-    this.application = application;
-  }
-
   public Set<String> getContexts() {
     return Set.copyOf(this.contexts);
-  }
-
-  void setContexts(Set<String> contexts) {
-    this.contexts = contexts;
   }
 }

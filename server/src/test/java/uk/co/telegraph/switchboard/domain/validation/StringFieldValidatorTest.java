@@ -33,7 +33,7 @@ class StringFieldValidatorTest {
         .build();
 
     assertThatThrownBy(() -> stringFieldValidator.apply(null))
-        .isInstanceOf(IllegalArgumentException.class);
+        .isInstanceOf(ValidationException.class);
   }
 
   @ParameterizedTest
@@ -57,7 +57,7 @@ class StringFieldValidatorTest {
         .build();
 
     assertThatThrownBy(() -> stringFieldValidator.apply(name))
-        .isInstanceOf(IllegalArgumentException.class);
+        .isInstanceOf(ValidationException.class);
   }
 
   @Test
@@ -105,6 +105,40 @@ class StringFieldValidatorTest {
         .build();
 
     assertThatThrownBy(() -> stringFieldValidator.apply(name))
-        .isInstanceOf(IllegalArgumentException.class);
+        .isInstanceOf(ValidationException.class);
+  }
+
+  @Test
+  void should_throw_error_from_custom_validator() {
+    StringFieldValidator stringFieldValidator = StringFieldValidator.builder()
+        .fieldName("name")
+        .withCustomValidator(value -> "abc".equals(value), "test error message")
+        .build();
+
+    assertThatThrownBy(() -> stringFieldValidator.apply("abcd"))
+        .isInstanceOf(ValidationException.class)
+        .hasMessage("test error message");
+  }
+
+  @Test
+  void should_throw_error_from_regex_validator() {
+    StringFieldValidator stringFieldValidator = StringFieldValidator.builder()
+        .fieldName("name")
+        .withRegexValidator("^[A-Za-z0-9//-]*$")
+        .build();
+
+    assertThatThrownBy(() -> stringFieldValidator.apply("abc_123"))
+        .isInstanceOf(ValidationException.class);
+  }
+
+  @Test
+  void should_not_throw_error_from_regex_validator() {
+    StringFieldValidator stringFieldValidator = StringFieldValidator.builder()
+        .fieldName("name")
+        .withRegexValidator("^[A-Za-z0-9//-]*$")
+        .build();
+
+    assertThatCode(() -> stringFieldValidator.apply("abc-123"))
+        .doesNotThrowAnyException();
   }
 }

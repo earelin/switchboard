@@ -21,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import uk.co.telegraph.switchboard.domain.validation.ValidationException;
 
 class ApplicationTest {
 
@@ -50,13 +51,13 @@ class ApplicationTest {
   @Test
   void should_not_allow_to_construct_with_a_blank_id() {
     assertThatThrownBy(() -> new Application("  ", APPLICATION_NAME, APPLICATION_SECRET))
-        .isInstanceOf(IllegalArgumentException.class);
+        .isInstanceOf(ValidationException.class);
   }
 
   @Test
   void should_not_allow_to_construct_with_a_null_id() {
     assertThatThrownBy(() -> new Application(null, APPLICATION_NAME, APPLICATION_SECRET))
-        .isInstanceOf(IllegalArgumentException.class);
+        .isInstanceOf(ValidationException.class);
   }
 
   @Test
@@ -66,19 +67,19 @@ class ApplicationTest {
                     "000-125c12a7-bf9a-4795-b673-564f9d9e369c",
                     APPLICATION_NAME,
                     APPLICATION_SECRET))
-        .isInstanceOf(IllegalArgumentException.class);
+        .isInstanceOf(ValidationException.class);
   }
 
   @Test
   void should_not_allow_to_construct_with_a_blank_name() {
     assertThatThrownBy(() -> new Application(APPLICATION_ID, "   ", APPLICATION_SECRET))
-        .isInstanceOf(IllegalArgumentException.class);
+        .isInstanceOf(ValidationException.class);
   }
 
   @Test
   void should_not_allow_to_construct_with_a_null_name() {
     assertThatThrownBy(() -> new Application(APPLICATION_ID, null, APPLICATION_SECRET))
-        .isInstanceOf(IllegalArgumentException.class);
+        .isInstanceOf(ValidationException.class);
   }
 
   @Test
@@ -88,26 +89,26 @@ class ApplicationTest {
             APPLICATION_ID,
             "An amazing application that is improving our productivity a lot every day",
             APPLICATION_SECRET))
-        .isInstanceOf(IllegalArgumentException.class);
+        .isInstanceOf(ValidationException.class);
   }
 
   @Test
   void should_not_allow_to_construct_with_a_blank_secret() {
     assertThatThrownBy(() -> new Application(APPLICATION_ID, APPLICATION_NAME, "   "))
-        .isInstanceOf(IllegalArgumentException.class);
+        .isInstanceOf(ValidationException.class);
   }
 
   @Test
   void should_not_allow_to_construct_with_a_null_secret() {
     assertThatThrownBy(() -> new Application(APPLICATION_ID, APPLICATION_NAME, null))
-        .isInstanceOf(IllegalArgumentException.class);
+        .isInstanceOf(ValidationException.class);
   }
 
   @Test
   void should_not_allow_to_construct_with_a_secret_longer_than_16_chars() {
     assertThatThrownBy(
         () -> new Application(APPLICATION_ID, APPLICATION_NAME, "qR7yQdMEEZn7XsCUasD4g5"))
-        .isInstanceOf(IllegalArgumentException.class);
+        .isInstanceOf(ValidationException.class);
   }
 
   @Test
@@ -119,18 +120,20 @@ class ApplicationTest {
 
   @Test
   void should_not_allow_to_set_a_null_id() {
-    assertThatThrownBy(() -> application.setId(null)).isInstanceOf(IllegalArgumentException.class);
+    assertThatThrownBy(() -> application.setId(null))
+        .isInstanceOf(ValidationException.class);
   }
 
   @Test
   void should_not_allow_to_set_a_blank_id() {
-    assertThatThrownBy(() -> application.setId("   ")).isInstanceOf(IllegalArgumentException.class);
+    assertThatThrownBy(() -> application.setId("   "))
+        .isInstanceOf(ValidationException.class);
   }
 
   @Test
   void should_not_allow_to_set_an_id_longer_than_16_chars() {
     assertThatThrownBy(() -> application.setId("000-125c12a7-bf9a-4795-b673-564f9d9e369c"))
-        .isInstanceOf(IllegalArgumentException.class);
+        .isInstanceOf(ValidationException.class);
   }
 
   @Test
@@ -143,13 +146,13 @@ class ApplicationTest {
   @Test
   void should_not_allow_to_set_a_null_name() {
     assertThatThrownBy(() -> application.setName(null))
-        .isInstanceOf(IllegalArgumentException.class);
+        .isInstanceOf(ValidationException.class);
   }
 
   @Test
   void should_not_allow_to_set_a_blank_name() {
     assertThatThrownBy(() -> application.setName("  "))
-        .isInstanceOf(IllegalArgumentException.class);
+        .isInstanceOf(ValidationException.class);
   }
 
   @Test
@@ -157,7 +160,7 @@ class ApplicationTest {
     assertThatThrownBy(
         () -> application.setName(
             "An amazing application that is improving our productivity a lot every day"))
-        .isInstanceOf(IllegalArgumentException.class);
+        .isInstanceOf(ValidationException.class);
   }
 
   @Test
@@ -177,19 +180,19 @@ class ApplicationTest {
   @Test
   void should_not_allow_to_set_a_null_secret() {
     assertThatThrownBy(() -> application.setSecret(null))
-        .isInstanceOf(IllegalArgumentException.class);
+        .isInstanceOf(ValidationException.class);
   }
 
   @Test
   void should_not_allow_to_set_a_blank_secret() {
     assertThatThrownBy(() -> application.setSecret("  "))
-        .isInstanceOf(IllegalArgumentException.class);
+        .isInstanceOf(ValidationException.class);
   }
 
   @Test
   void should_not_allow_to_set_a_secret_longer_than_12_chars() {
     assertThatThrownBy(() -> application.setSecret("qR7yQdMEEZn7XsCUasD4g5"))
-        .isInstanceOf(IllegalArgumentException.class);
+        .isInstanceOf(ValidationException.class);
   }
 
   @Test

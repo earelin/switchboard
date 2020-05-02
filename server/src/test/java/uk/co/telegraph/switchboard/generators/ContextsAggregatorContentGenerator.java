@@ -24,8 +24,8 @@ public final class ContextsAggregatorContentGenerator {
   public static final String CONTEXT_PRODUCTION_NAME = "production";
   public static final String CONTEXT_STAGING_NAME = "staging";
 
-  public static ContextsAggregator getContextsAggregator(Application application) {
-    ContextsAggregator contextsAggregator = new ContextsAggregator(application);
+  public static ContextsAggregator getContextsAggregator() {
+    ContextsAggregator contextsAggregator = new ContextsAggregator();
     contextsAggregator.addContext(CONTEXT_PRODUCTION_NAME);
     contextsAggregator.addContext(CONTEXT_STAGING_NAME);
     return contextsAggregator;
