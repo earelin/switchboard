@@ -39,7 +39,6 @@ class SwitchboardApplicationEntityTests {
   }
 
   @Test
-  @Disabled
   void checkHealth() {
     given()
       .when()

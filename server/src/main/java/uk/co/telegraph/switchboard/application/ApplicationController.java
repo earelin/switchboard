@@ -36,8 +36,8 @@ import uk.co.telegraph.switchboard.application.dto.ApplicationCreateDto;
 import uk.co.telegraph.switchboard.application.dto.ApplicationDto;
 import uk.co.telegraph.switchboard.application.dto.PageDto;
 import uk.co.telegraph.switchboard.application.mappers.ApplicationDtoMapper;
-import uk.co.telegraph.switchboard.domain.model.Application;
 import uk.co.telegraph.switchboard.domain.factories.ApplicationFactory;
+import uk.co.telegraph.switchboard.domain.model.Application;
 import uk.co.telegraph.switchboard.domain.repositories.ApplicationRepository;
 
 @RestController
