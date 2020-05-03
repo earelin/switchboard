@@ -14,22 +14,13 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.generators;
+package uk.co.telegraph.switchboard.domain.repositories;
 
+import java.util.Optional;
 import uk.co.telegraph.switchboard.domain.model.ContextsAggregator;
 
-public final class ContextsAggregatorContentGenerator {
+public interface ContextsAggregatorRepository {
+  Optional<ContextsAggregator> getByApplicationId(String applicationId);
 
-  public static final String CONTEXT_PRODUCTION_NAME = "production";
-  public static final String CONTEXT_STAGING_NAME = "staging";
-
-  public static ContextsAggregator getContextsAggregator() {
-    ContextsAggregator contextsAggregator = new ContextsAggregator();
-    contextsAggregator.addContext(CONTEXT_PRODUCTION_NAME);
-    contextsAggregator.addContext(CONTEXT_STAGING_NAME);
-    return contextsAggregator;
-  }
-
-  private ContextsAggregatorContentGenerator() {
-  }
+  ContextsAggregator save(ContextsAggregator contextsAggregator);
 }

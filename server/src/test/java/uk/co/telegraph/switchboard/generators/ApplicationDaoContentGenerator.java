@@ -16,20 +16,14 @@
 
 package uk.co.telegraph.switchboard.generators;
 
-import uk.co.telegraph.switchboard.domain.model.ContextsAggregator;
+import java.util.List;
+import uk.co.telegraph.switchboard.infrastructure.repository.dao.ApplicationDao;
 
-public final class ContextsAggregatorContentGenerator {
+public final class ApplicationDaoContentGenerator {
 
-  public static final String CONTEXT_PRODUCTION_NAME = "production";
-  public static final String CONTEXT_STAGING_NAME = "staging";
-
-  public static ContextsAggregator getContextsAggregator() {
-    ContextsAggregator contextsAggregator = new ContextsAggregator();
-    contextsAggregator.addContext(CONTEXT_PRODUCTION_NAME);
-    contextsAggregator.addContext(CONTEXT_STAGING_NAME);
-    return contextsAggregator;
+  public List<ApplicationDao> generateSet() {
+    return null;
   }
 
-  private ContextsAggregatorContentGenerator() {
-  }
+  private ApplicationDaoContentGenerator() {}
 }

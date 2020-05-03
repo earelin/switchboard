@@ -14,22 +14,23 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.generators;
+package uk.co.telegraph.switchboard.infrastructure.repository.memory;
 
+import java.util.Optional;
+import org.springframework.stereotype.Repository;
 import uk.co.telegraph.switchboard.domain.model.ContextsAggregator;
+import uk.co.telegraph.switchboard.domain.repositories.ContextsAggregatorRepository;
 
-public final class ContextsAggregatorContentGenerator {
+@Repository
+public class ContextsAggregatorInMemoryRepository implements ContextsAggregatorRepository {
 
-  public static final String CONTEXT_PRODUCTION_NAME = "production";
-  public static final String CONTEXT_STAGING_NAME = "staging";
-
-  public static ContextsAggregator getContextsAggregator() {
-    ContextsAggregator contextsAggregator = new ContextsAggregator();
-    contextsAggregator.addContext(CONTEXT_PRODUCTION_NAME);
-    contextsAggregator.addContext(CONTEXT_STAGING_NAME);
-    return contextsAggregator;
+  @Override
+  public Optional<ContextsAggregator> getByApplicationId(String applicationId) {
+    return Optional.empty();
   }
 
-  private ContextsAggregatorContentGenerator() {
+  @Override
+  public ContextsAggregator save(ContextsAggregator contextsAggregator) {
+    return null;
   }
 }

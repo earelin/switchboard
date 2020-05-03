@@ -26,9 +26,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import uk.co.telegraph.switchboard.Integration;
-import uk.co.telegraph.switchboard.domain.Application;
-import uk.co.telegraph.switchboard.repositories.ApplicationRepository;
-import uk.co.telegraph.switchboard.repositories.UserGroupAggregatorRepository;
+import uk.co.telegraph.switchboard.domain.model.Application;
+import uk.co.telegraph.switchboard.domain.repositories.ApplicationRepository;
+import uk.co.telegraph.switchboard.domain.repositories.UserGroupAggregatorRepository;
 
 @Integration
 @WebMvcTest(UserGroupController.class)

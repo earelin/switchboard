@@ -28,10 +28,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-import uk.co.telegraph.switchboard.domain.ContextsAggregator;
-import uk.co.telegraph.switchboard.domain.ObjectDoesNotExists;
-import uk.co.telegraph.switchboard.repositories.ApplicationRepository;
-import uk.co.telegraph.switchboard.repositories.ContextsAggregatorRepository;
+import uk.co.telegraph.switchboard.domain.model.ContextsAggregator;
+import uk.co.telegraph.switchboard.domain.model.ObjectDoesNotExists;
+import uk.co.telegraph.switchboard.domain.repositories.ApplicationRepository;
+import uk.co.telegraph.switchboard.domain.repositories.ContextsAggregatorRepository;
 
 @RestController
 @RequestMapping(

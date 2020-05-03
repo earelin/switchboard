@@ -28,9 +28,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import uk.co.telegraph.switchboard.domain.UserGroup;
-import uk.co.telegraph.switchboard.repositories.ApplicationRepository;
-import uk.co.telegraph.switchboard.repositories.UserGroupAggregatorRepository;
+import uk.co.telegraph.switchboard.domain.model.UserGroup;
+import uk.co.telegraph.switchboard.domain.repositories.ApplicationRepository;
+import uk.co.telegraph.switchboard.domain.repositories.UserGroupAggregatorRepository;
 
 /**
  * User group controller.

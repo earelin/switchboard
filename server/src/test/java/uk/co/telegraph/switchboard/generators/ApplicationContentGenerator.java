@@ -22,7 +22,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.List;
 import uk.co.telegraph.switchboard.application.dto.ApplicationDto;
-import uk.co.telegraph.switchboard.domain.Application;
+import uk.co.telegraph.switchboard.domain.model.Application;
 
 public final class ApplicationContentGenerator {
 

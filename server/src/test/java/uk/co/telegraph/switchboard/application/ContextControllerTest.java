@@ -37,9 +37,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
 import uk.co.telegraph.switchboard.Integration;
-import uk.co.telegraph.switchboard.domain.Application;
-import uk.co.telegraph.switchboard.repositories.ApplicationRepository;
-import uk.co.telegraph.switchboard.repositories.ContextsAggregatorRepository;
+import uk.co.telegraph.switchboard.domain.model.Application;
+import uk.co.telegraph.switchboard.domain.repositories.ApplicationRepository;
+import uk.co.telegraph.switchboard.domain.repositories.ContextsAggregatorRepository;
 
 @Integration
 @WebMvcTest(ContextController.class)

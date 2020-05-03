@@ -17,7 +17,6 @@
 package uk.co.telegraph.switchboard.application;
 
 import javax.validation.Valid;
-import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -36,10 +35,10 @@ import org.springframework.web.server.ResponseStatusException;
 import uk.co.telegraph.switchboard.application.dto.ApplicationCreateDto;
 import uk.co.telegraph.switchboard.application.dto.ApplicationDto;
 import uk.co.telegraph.switchboard.application.dto.PageDto;
-import uk.co.telegraph.switchboard.application.mappers.ApplicationMapper;
-import uk.co.telegraph.switchboard.domain.Application;
-import uk.co.telegraph.switchboard.factories.ApplicationFactory;
-import uk.co.telegraph.switchboard.repositories.ApplicationRepository;
+import uk.co.telegraph.switchboard.application.mappers.ApplicationDtoMapper;
+import uk.co.telegraph.switchboard.domain.model.Application;
+import uk.co.telegraph.switchboard.domain.factories.ApplicationFactory;
+import uk.co.telegraph.switchboard.domain.repositories.ApplicationRepository;
 
 @RestController
 @RequestMapping(
@@ -52,14 +51,16 @@ public class ApplicationController {
 
   private final ApplicationFactory applicationFactory;
   private final ApplicationRepository applicationRepository;
-  private final ApplicationMapper applicationMapper;
+  private final ApplicationDtoMapper applicationDtoMapper;
   private final SortablePageableBuilder pageableBuilder;
 
   public ApplicationController(
-      ApplicationFactory applicationFactory, ApplicationRepository applicationRepository) {
+      ApplicationFactory applicationFactory,
+      ApplicationRepository applicationRepository,
+      ApplicationDtoMapper applicationDtoMapper) {
     this.applicationFactory = applicationFactory;
     this.applicationRepository = applicationRepository;
-    this.applicationMapper = Mappers.getMapper(ApplicationMapper.class);
+    this.applicationDtoMapper = applicationDtoMapper;
     this.pageableBuilder = new SortablePageableBuilder("name");
   }
 
@@ -73,7 +74,7 @@ public class ApplicationController {
 
     Application savedApplication = applicationRepository.save(application);
 
-    return applicationMapper.domainToDto(savedApplication);
+    return applicationDtoMapper.domainToDto(savedApplication);
   }
 
   @GetMapping
@@ -91,7 +92,7 @@ public class ApplicationController {
     }
 
     Page<Application> applicationPage = applicationRepository.getPagedList(pageable);
-    return applicationMapper.domainPageToDto(applicationPage);
+    return applicationDtoMapper.domainPageToDto(applicationPage);
   }
 
   @GetMapping("/{id}")
@@ -103,7 +104,7 @@ public class ApplicationController {
                 () -> new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
                     String.format(APPLICATION_NOT_FOUND_MESSAGE, id)));
-    return applicationMapper.domainToDto(application);
+    return applicationDtoMapper.domainToDto(application);
   }
 
   @DeleteMapping("/{id}")
@@ -125,9 +126,9 @@ public class ApplicationController {
                 () -> new ResponseStatusException(
                     HttpStatus.NOT_FOUND, String.format(APPLICATION_NOT_FOUND_MESSAGE, id)));
 
-    applicationMapper.updateDomainFromDto(request, application);
+    applicationDtoMapper.updateDomainFromDto(request, application);
     Application savedApplication = applicationRepository.save(application);
 
-    return applicationMapper.domainToDto(savedApplication);
+    return applicationDtoMapper.domainToDto(savedApplication);
   }
 }
