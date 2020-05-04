@@ -111,7 +111,6 @@ dependencies {
     transitive = false
   }
   spotbugsPlugins "com.h3xstream.findsecbugs:findsecbugs-plugin:${findsecbugsVersion}"
-  spotbugsPlugins "com.mebigfatguy.fb-contrib:fb-contrib:${findBugsContribVersion}"
 
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   testImplementation "io.rest-assured:rest-assured-all:${restAssuredVersion}"
