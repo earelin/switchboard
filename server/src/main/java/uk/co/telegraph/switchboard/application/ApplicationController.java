@@ -72,9 +72,9 @@ public class ApplicationController {
         applicationFactory.createApplication(
             applicationData.getName(), applicationData.getDescription());
 
-    Application savedApplication = applicationRepository.save(application);
+    applicationRepository.save(application);
 
-    return applicationDtoMapper.domainToDto(savedApplication);
+    return applicationDtoMapper.domainToDto(application);
   }
 
   @GetMapping
@@ -127,8 +127,8 @@ public class ApplicationController {
                     HttpStatus.NOT_FOUND, String.format(APPLICATION_NOT_FOUND_MESSAGE, id)));
 
     applicationDtoMapper.updateDomainFromDto(request, application);
-    Application savedApplication = applicationRepository.save(application);
+    applicationRepository.save(application);
 
-    return applicationDtoMapper.domainToDto(savedApplication);
+    return applicationDtoMapper.domainToDto(application);
   }
 }

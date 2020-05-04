@@ -14,8 +14,25 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.infrastructure.repository.dao.mapping;
+package uk.co.telegraph.switchboard.domain.model.rules;
 
-public interface ApplicationDaoMapping {
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import uk.co.telegraph.switchboard.domain.model.ClientInfo;
 
+public class AndRule implements Rule {
+
+  private final Set<Rule> rules;
+
+  public AndRule(Rule...rules) {
+    this.rules = new HashSet<>(Arrays.asList(rules));
+  }
+
+  public boolean isEnabledForClient(ClientInfo clientInfo) {
+    return rules.stream()
+        .map(rule -> rule.isEnabledForClient(clientInfo))
+        .reduce(Boolean::logicalAnd)
+        .orElse(false);
+  }
 }

@@ -18,7 +18,6 @@ package uk.co.telegraph.switchboard.application;
 
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -86,7 +85,6 @@ class ApplicationControllerTest {
     application.setDescription(APPLICATION_DESCRIPTION);
     when(applicationFactory.createApplication(APPLICATION_NAME, APPLICATION_DESCRIPTION))
         .thenReturn(application);
-    when(applicationRepository.save(any())).then(returnsFirstArg());
 
     ApplicationCreateDto request =
         new ApplicationCreateDto(APPLICATION_NAME, APPLICATION_DESCRIPTION);
@@ -192,7 +190,6 @@ class ApplicationControllerTest {
     Application application = new Application(APPLICATION_ID, APPLICATION_NAME, APPLICATION_SECRET);
     application.setDescription(APPLICATION_DESCRIPTION);
     when(applicationRepository.getById(APPLICATION_ID)).thenReturn(Optional.of(application));
-    when(applicationRepository.save(any())).then(returnsFirstArg());
 
     ApplicationCreateDto request =
         new ApplicationCreateDto(APPLICATION_UPDATED_NAME, APPLICATION_UPDATED_DESCRIPTION);

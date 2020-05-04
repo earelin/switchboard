@@ -20,53 +20,57 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import uk.co.telegraph.switchboard.domain.model.Application;
 import uk.co.telegraph.switchboard.domain.repositories.ApplicationRepository;
 import uk.co.telegraph.switchboard.infrastructure.repository.dao.ApplicationDao;
+import uk.co.telegraph.switchboard.infrastructure.repository.dao.mapping.ApplicationDaoMapper;
 
 @Repository
 public class ApplicationInMemoryRepository implements ApplicationRepository {
 
+  private final ApplicationDaoMapper applicationDaoMapper;
   private final Map<String, ApplicationDao> applications;
 
-  public ApplicationInMemoryRepository() {
-    applications = new ConcurrentHashMap<>();
-  }
-
-  public ApplicationInMemoryRepository(Collection<ApplicationDao> applicationsSet) {
-    Map<String, ApplicationDao> applicationsMap = applicationsSet.stream()
-        .collect(Collectors.toMap(
-            application -> application.getId(),
-            application -> application));
-    applications = new ConcurrentHashMap<>(applicationsMap);
+  public ApplicationInMemoryRepository(ApplicationDaoMapper applicationDaoMapper) {
+    this.applicationDaoMapper = applicationDaoMapper;
+    this.applications = new ConcurrentHashMap<>();
   }
 
   @Override
   public Optional<Application> getById(String id) {
+    Optional<ApplicationDao> applicationDao = Optional.ofNullable(applications.get(id));
+    if (applicationDao.isPresent()) {
+      Application application = applicationDaoMapper.daoToDomain(applicationDao.get());
+      return Optional.of(application);
+    }
     return Optional.empty();
   }
 
   @Override
-  public Application save(Application application) {
-    return null;
+  public void save(Application application) {
+    ApplicationDao applicationDao = applicationDaoMapper.domainToDao(application);
+    applications.put(applicationDao.getId(), applicationDao);
   }
 
   @Override
   public void removeById(String id) {
-
+    applications.remove(id);
   }
 
   @Override
   public boolean existsById(String id) {
-    return false;
+    return applications.containsKey(id);
   }
 
   @Override
   public Page<Application> getPagedList(Pageable pageable) {
     return null;
+  }
+
+  public void saveAll(Collection<Application> applications) {
+    applications.forEach(this::save);
   }
 }

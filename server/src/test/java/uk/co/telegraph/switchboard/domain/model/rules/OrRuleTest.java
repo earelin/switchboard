@@ -27,9 +27,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import uk.co.telegraph.switchboard.domain.model.ClientInfo;
 
 @ExtendWith(MockitoExtension.class)
-class OrOperatorTest {
+class OrRuleTest {
 
-  private OrOperator orOperator;
+  private OrRule orRule;
 
   @Mock
   private Rule firstRule;
@@ -42,7 +42,7 @@ class OrOperatorTest {
 
   @BeforeEach
   void setUp() {
-    orOperator = new OrOperator(firstRule, secondRule);
+    orRule = new OrRule(firstRule, secondRule);
   }
 
   @Test
@@ -52,7 +52,7 @@ class OrOperatorTest {
     when(secondRule.isEnabledForClient(clientInfo))
         .thenReturn(true);
 
-    assertThat(orOperator.isEnabledForClient(clientInfo))
+    assertThat(orRule.isEnabledForClient(clientInfo))
         .isTrue();
   }
 
@@ -63,7 +63,7 @@ class OrOperatorTest {
     when(secondRule.isEnabledForClient(clientInfo))
         .thenReturn(true);
 
-    assertThat(orOperator.isEnabledForClient(clientInfo))
+    assertThat(orRule.isEnabledForClient(clientInfo))
         .isTrue();
   }
 
@@ -74,7 +74,7 @@ class OrOperatorTest {
     when(secondRule.isEnabledForClient(clientInfo))
         .thenReturn(false);
 
-    assertThat(orOperator.isEnabledForClient(clientInfo))
+    assertThat(orRule.isEnabledForClient(clientInfo))
         .isFalse();
   }
 }

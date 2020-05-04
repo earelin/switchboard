@@ -16,41 +16,63 @@
 
 package uk.co.telegraph.switchboard.infrastructure.repository.memory;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static uk.co.telegraph.switchboard.generators.ApplicationContentGenerator.APPLICATION_ID;
+import static uk.co.telegraph.switchboard.generators.ApplicationContentGenerator.getApplication;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.mapstruct.factory.Mappers;
+import uk.co.telegraph.switchboard.domain.model.Application;
+import uk.co.telegraph.switchboard.infrastructure.repository.dao.mapping.ApplicationDaoMapper;
 
 class ApplicationInMemoryRepositoryTest {
 
+  private ApplicationDaoMapper applicationDaoMapper = Mappers.getMapper(ApplicationDaoMapper.class);
   private ApplicationInMemoryRepository applicationRepository;
 
   @BeforeEach
   void setUp() {
-    applicationRepository = new ApplicationInMemoryRepository();
+    applicationRepository = new ApplicationInMemoryRepository(applicationDaoMapper);
   }
 
   @Test
-  @Disabled
   void should_create_and_return_one_application() {
+    Application application = getApplication();
 
+    applicationRepository.save(application);
+
+    assertThat(applicationRepository.getById(APPLICATION_ID))
+        .isPresent()
+        .get()
+        .isEqualTo(application);
   }
 
   @Test
-  @Disabled
-  void should_create_and_remove_one_application() {
+  void should_remove_one_application() {
+    Application application = getApplication();
+    applicationRepository.save(application);
 
+    applicationRepository.removeById(application.getId());
+
+    assertThat(applicationRepository.getById(APPLICATION_ID))
+        .isNotPresent();
   }
 
   @Test
-  @Disabled
   void should_return_true_if_an_application_exists() {
+    Application application = getApplication();
+    applicationRepository.save(application);
 
+    assertThat(applicationRepository.existsById(APPLICATION_ID))
+        .isTrue();
   }
 
   @Test
-  @Disabled
   void should_return_false_if_an_application_does_not_exists() {
-
+    assertThat(applicationRepository.existsById(APPLICATION_ID))
+        .isFalse();
   }
 
   @Test

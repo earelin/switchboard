@@ -28,9 +28,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import uk.co.telegraph.switchboard.domain.model.ClientInfo;
 
 @ExtendWith(MockitoExtension.class)
-class AndOperatorTest {
+class AndRuleTest {
 
-  private AndOperator andOperator;
+  private AndRule andRule;
 
   @Mock
   private Rule firstRule;
@@ -43,7 +43,7 @@ class AndOperatorTest {
 
   @BeforeEach
   void setUp() {
-    andOperator = new AndOperator(firstRule, secondRule);
+    andRule = new AndRule(firstRule, secondRule);
   }
 
   @Test
@@ -54,9 +54,9 @@ class AndOperatorTest {
     when(secondRule.isEnabledForClient(clientInfo))
         .thenReturn(true);
 
-    andOperator = new AndOperator(rules);
+    andRule = new AndRule(rules);
 
-    assertThat(andOperator.isEnabledForClient(clientInfo))
+    assertThat(andRule.isEnabledForClient(clientInfo))
         .isTrue();
   }
 
@@ -67,7 +67,7 @@ class AndOperatorTest {
     when(secondRule.isEnabledForClient(clientInfo))
         .thenReturn(true);
 
-    assertThat(andOperator.isEnabledForClient(clientInfo))
+    assertThat(andRule.isEnabledForClient(clientInfo))
         .isTrue();
   }
 
@@ -78,7 +78,7 @@ class AndOperatorTest {
     when(secondRule.isEnabledForClient(clientInfo))
         .thenReturn(true);
 
-    assertThat(andOperator.isEnabledForClient(clientInfo))
+    assertThat(andRule.isEnabledForClient(clientInfo))
         .isFalse();
   }
 

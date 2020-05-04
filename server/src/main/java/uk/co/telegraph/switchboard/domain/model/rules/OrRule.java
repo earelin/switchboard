@@ -21,11 +21,11 @@ import java.util.HashSet;
 import java.util.Set;
 import uk.co.telegraph.switchboard.domain.model.ClientInfo;
 
-public class OrOperator implements Rule {
+public class OrRule implements Rule {
 
   private final Set<Rule> rules;
 
-  public OrOperator(Rule...rules) {
+  public OrRule(Rule...rules) {
     this.rules = new HashSet<>(Arrays.asList(rules));
   }
 
