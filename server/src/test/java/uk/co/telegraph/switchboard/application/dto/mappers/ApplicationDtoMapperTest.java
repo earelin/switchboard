@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.application.mappers;
+package uk.co.telegraph.switchboard.application.dto.mappers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

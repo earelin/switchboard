@@ -14,23 +14,27 @@
  * limitations under the License.
  */
 
-package uk.co.telegraph.switchboard.infrastructure.repository.dao.mapping;
+package uk.co.telegraph.switchboard.application.dto.mappers;
 
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.springframework.data.domain.Page;
+import uk.co.telegraph.switchboard.application.dto.ApplicationCreateDto;
+import uk.co.telegraph.switchboard.application.dto.ApplicationDto;
+import uk.co.telegraph.switchboard.application.dto.PageDto;
 import uk.co.telegraph.switchboard.domain.model.Application;
-import uk.co.telegraph.switchboard.infrastructure.repository.dao.ApplicationDao;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
-public interface ApplicationDaoMapper {
-  default Application daoToDomain(ApplicationDao applicationDao) {
-    Application application = new Application(
-        applicationDao.getId(),
-        applicationDao.getName(),
-        applicationDao.getSecret());
-    application.setDescription(applicationDao.getDescription());
-    return application;
-  }
+public interface ApplicationDtoMapper {
+  ApplicationDto domainToDto(Application application);
 
-  ApplicationDao domainToDao(Application application);
+  @Mapping(target = "secret", ignore = true)
+  void updateDomainFromDto(
+      ApplicationCreateDto applicationCreateDto, @MappingTarget Application application);
+
+  default PageDto<ApplicationDto> domainPageToDto(Page<Application> domainPage) {
+    return new PageDto<>(domainPage.map(this::domainToDto));
+  }
 }

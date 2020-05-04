@@ -26,7 +26,7 @@ import org.springframework.stereotype.Repository;
 import uk.co.telegraph.switchboard.domain.model.Application;
 import uk.co.telegraph.switchboard.domain.repositories.ApplicationRepository;
 import uk.co.telegraph.switchboard.infrastructure.repository.dao.ApplicationDao;
-import uk.co.telegraph.switchboard.infrastructure.repository.dao.mapping.ApplicationDaoMapper;
+import uk.co.telegraph.switchboard.infrastructure.repository.dao.mappers.ApplicationDaoMapper;
 
 @Repository
 public class ApplicationInMemoryRepository implements ApplicationRepository {

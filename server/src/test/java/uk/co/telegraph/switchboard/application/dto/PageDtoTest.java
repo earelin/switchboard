@@ -17,7 +17,7 @@
 package uk.co.telegraph.switchboard.application.dto;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static uk.co.telegraph.switchboard.generators.ApplicationContentGenerator.getApplicationDtoList;
+import static uk.co.telegraph.switchboard.generators.ApplicationContentGenerator.generateApplicationDtoList;
 
 import java.io.FileNotFoundException;
 import java.util.List;
@@ -40,7 +40,7 @@ class PageDtoTest {
 
   @BeforeEach
   void setUp() throws FileNotFoundException {
-    applicationDtoList = getApplicationDtoList();
+    applicationDtoList = generateApplicationDtoList();
     Pageable pageable = PageRequest.of(PAGE_NUMBER, PAGE_SIZE);
     Page<ApplicationDto> page = new PageImpl<>(applicationDtoList, pageable, TOTAL_ELEMENTS);
 

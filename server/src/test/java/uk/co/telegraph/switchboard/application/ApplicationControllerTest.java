@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static uk.co.telegraph.switchboard.generators.ApplicationContentGenerator.getApplicationList;
+import static uk.co.telegraph.switchboard.generators.ApplicationContentGenerator.generateApplicationList;
 
 import com.google.gson.Gson;
 import io.restassured.http.ContentType;
@@ -45,7 +45,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import uk.co.telegraph.switchboard.Integration;
 import uk.co.telegraph.switchboard.application.dto.ApplicationCreateDto;
-import uk.co.telegraph.switchboard.application.mappers.ApplicationDtoMapper;
+import uk.co.telegraph.switchboard.application.dto.mappers.ApplicationDtoMapper;
 import uk.co.telegraph.switchboard.domain.factories.ApplicationFactory;
 import uk.co.telegraph.switchboard.domain.model.Application;
 import uk.co.telegraph.switchboard.domain.repositories.ApplicationRepository;
@@ -244,7 +244,7 @@ class ApplicationControllerTest {
   @Test
   void should_return_application_list() throws Exception {
     Page<Application> applications =
-        new PageImpl<>(getApplicationList(), PageRequest.of(2, 10), 30);
+        new PageImpl<>(generateApplicationList(), PageRequest.of(2, 10), 30);
     when(applicationRepository.getPagedList(any())).thenReturn(applications);
 
     mockMvc

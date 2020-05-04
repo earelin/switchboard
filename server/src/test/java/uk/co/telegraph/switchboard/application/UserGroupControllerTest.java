@@ -16,7 +16,7 @@
 
 package uk.co.telegraph.switchboard.application;
 
-import static uk.co.telegraph.switchboard.generators.ApplicationContentGenerator.getApplication;
+import static uk.co.telegraph.switchboard.generators.ApplicationContentGenerator.generateApplication;
 
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,7 +50,7 @@ class UserGroupControllerTest {
 
   @Test
   void should_return_an_existing_application_user_groups() {
-    Application application = getApplication();
+    Application application = generateApplication();
 
   }
 

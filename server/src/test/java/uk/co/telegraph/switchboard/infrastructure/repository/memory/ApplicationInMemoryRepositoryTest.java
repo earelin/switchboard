@@ -18,14 +18,14 @@ package uk.co.telegraph.switchboard.infrastructure.repository.memory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.telegraph.switchboard.generators.ApplicationContentGenerator.APPLICATION_ID;
-import static uk.co.telegraph.switchboard.generators.ApplicationContentGenerator.getApplication;
+import static uk.co.telegraph.switchboard.generators.ApplicationContentGenerator.generateApplication;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import uk.co.telegraph.switchboard.domain.model.Application;
-import uk.co.telegraph.switchboard.infrastructure.repository.dao.mapping.ApplicationDaoMapper;
+import uk.co.telegraph.switchboard.infrastructure.repository.dao.mappers.ApplicationDaoMapper;
 
 class ApplicationInMemoryRepositoryTest {
 
@@ -39,7 +39,7 @@ class ApplicationInMemoryRepositoryTest {
 
   @Test
   void should_create_and_return_one_application() {
-    Application application = getApplication();
+    Application application = generateApplication();
 
     applicationRepository.save(application);
 
@@ -51,7 +51,7 @@ class ApplicationInMemoryRepositoryTest {
 
   @Test
   void should_remove_one_application() {
-    Application application = getApplication();
+    Application application = generateApplication();
     applicationRepository.save(application);
 
     applicationRepository.removeById(application.getId());
@@ -62,7 +62,7 @@ class ApplicationInMemoryRepositoryTest {
 
   @Test
   void should_return_true_if_an_application_exists() {
-    Application application = getApplication();
+    Application application = generateApplication();
     applicationRepository.save(application);
 
     assertThat(applicationRepository.existsById(APPLICATION_ID))

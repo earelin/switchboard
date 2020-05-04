@@ -23,7 +23,7 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static uk.co.telegraph.switchboard.generators.ApplicationContentGenerator.getApplication;
+import static uk.co.telegraph.switchboard.generators.ApplicationContentGenerator.generateApplication;
 import static uk.co.telegraph.switchboard.generators.ContextsAggregatorContentGenerator.getContextsAggregator;
 
 import io.restassured.http.ContentType;
@@ -63,7 +63,7 @@ class ContextControllerTest {
 
   @Test
   void should_return_contexts_list_for_an_existing_application_context() {
-    Application application = getApplication();
+    Application application = generateApplication();
     when(contextsAggregatorRepository.getByApplicationId(application.getId()))
         .thenReturn(Optional.of(getContextsAggregator()));
 
@@ -78,7 +78,7 @@ class ContextControllerTest {
 
   @Test
   void should_return_empty_contexts_list_for_an_existing_application_without_contexts() {
-    Application application = getApplication();
+    Application application = generateApplication();
     when(applicationRepository.getById(application.getId()))
         .thenReturn(Optional.of(application));
     when(contextsAggregatorRepository.getByApplicationId(application.getId()))
@@ -111,7 +111,7 @@ class ContextControllerTest {
 
   @Test
   void should_create_a_context_for_an_existing_application() {
-    Application application = getApplication();
+    Application application = generateApplication();
     when(applicationRepository.getById(application.getId()))
         .thenReturn(Optional.of(application));
     when(contextsAggregatorRepository.getByApplicationId(application.getId()))
@@ -131,7 +131,7 @@ class ContextControllerTest {
 
   @Test
   void should_create_a_context_for_an_existing_application_without_aggregator() {
-    Application application = getApplication();
+    Application application = generateApplication();
     when(applicationRepository.getById(application.getId()))
         .thenReturn(Optional.of(application));
     when(contextsAggregatorRepository.getByApplicationId(application.getId()))
@@ -165,7 +165,7 @@ class ContextControllerTest {
 
   @Test
   void should_delete_a_context() {
-    Application application = getApplication();
+    Application application = generateApplication();
     when(applicationRepository.getById(application.getId()))
         .thenReturn(Optional.of(application));
     when(contextsAggregatorRepository.getByApplicationId(application.getId()))
@@ -184,7 +184,7 @@ class ContextControllerTest {
 
   @Test
   void should_return_not_found_if_try_to_delete_a_not_existing_context() {
-    Application application = getApplication();
+    Application application = generateApplication();
     when(applicationRepository.getById(application.getId()))
         .thenReturn(Optional.of(application));
     when(contextsAggregatorRepository.getByApplicationId(application.getId()))
@@ -203,7 +203,7 @@ class ContextControllerTest {
 
   @Test
   void should_return_not_found_if_try_to_delete_a_context_for_a_not_existing_application() {
-    Application application = getApplication();
+    Application application = generateApplication();
     when(applicationRepository.getById(NOT_EXISTING_APPLICATION_ID))
         .thenReturn(Optional.empty());
 
