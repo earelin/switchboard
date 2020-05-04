@@ -22,7 +22,9 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class ApplicationDao {
-
   @EqualsAndHashCode.Include
   private String id;
+  private String name;
+  private String description;
+  private String secret;
 }

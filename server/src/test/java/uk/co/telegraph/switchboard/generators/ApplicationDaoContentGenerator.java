@@ -16,13 +16,28 @@
 
 package uk.co.telegraph.switchboard.generators;
 
+import static uk.co.telegraph.switchboard.generators.DataUtils.fileAsString;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
 import java.util.List;
 import uk.co.telegraph.switchboard.infrastructure.repository.dao.ApplicationDao;
 
 public final class ApplicationDaoContentGenerator {
 
-  public List<ApplicationDao> generateSet() {
-    return null;
+  private static final String APPLICATIONS_JSON = "applications.json";
+  private static final ObjectMapper objectMapper = new ObjectMapper();
+
+
+  public static List<ApplicationDao> generateList() throws IOException {
+    String applicationsJson = fileAsString("data/applications.json");
+    return objectMapper.readValue(applicationsJson,
+        new TypeReference<List<ApplicationDao>>() {});
+  }
+
+  public static ApplicationDao generate() throws IOException {
+    return generateList().get(0);
   }
 
   private ApplicationDaoContentGenerator() {}

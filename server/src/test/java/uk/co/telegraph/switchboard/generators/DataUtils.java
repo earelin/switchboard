@@ -16,27 +16,18 @@
 
 package uk.co.telegraph.switchboard.generators;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micrometer.core.instrument.util.IOUtils;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
-import java.util.Objects;
 
-public final class ContentGenerator {
+public final class DataUtils {
 
   private static final ObjectMapper mapper = new ObjectMapper();
 
-  public static Map<String, Object> jsonFileToMap(String resourceFilePath) throws IOException {
-    String json = fileAsString(resourceFilePath);
-    return mapper.readValue(json, new TypeReference<Map<String, Object>>() {});
-  }
-
   public static String fileAsString(String resourceFilePath) throws IOException {
     return IOUtils.toString(
-        Objects.requireNonNull(
-            ContentGenerator.class.getClassLoader().getResource(resourceFilePath)),
+        DataUtils.class.getClassLoader().getResource(resourceFilePath).openStream(),
         StandardCharsets.UTF_8);
   }
 }

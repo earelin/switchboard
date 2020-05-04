@@ -17,6 +17,8 @@
 package uk.co.telegraph.switchboard.infrastructure.repository.memory;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 class ApplicationInMemoryRepositoryTest {
 
@@ -25,5 +27,35 @@ class ApplicationInMemoryRepositoryTest {
   @BeforeEach
   void setUp() {
     applicationRepository = new ApplicationInMemoryRepository();
+  }
+
+  @Test
+  @Disabled
+  void should_create_and_return_one_application() {
+
+  }
+
+  @Test
+  @Disabled
+  void should_create_and_remove_one_application() {
+
+  }
+
+  @Test
+  @Disabled
+  void should_return_true_if_an_application_exists() {
+
+  }
+
+  @Test
+  @Disabled
+  void should_return_false_if_an_application_does_not_exists() {
+
+  }
+
+  @Test
+  @Disabled
+  void should_return_applications_first_page() {
+
   }
 }

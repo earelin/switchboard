@@ -16,13 +16,14 @@
 
 package uk.co.telegraph.switchboard.infrastructure.repository.dao;
 
+import java.util.Set;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class ContextsAggregatorDao {
-
   @EqualsAndHashCode.Include
   private String id;
+  private Set<String> contexts;
 }

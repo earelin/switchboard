@@ -19,12 +19,11 @@ package uk.co.telegraph.switchboard.infrastructure.repository.dao;
 import java.util.Set;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import uk.co.telegraph.switchboard.domain.model.UserGroup;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class UserGroupAggregatorDao {
+public class UserGroupDao {
   @EqualsAndHashCode.Include
-  private String id;
-  private Set<UserGroup> userGroups;
+  private String name;
+  private Set<String> users;
 }
