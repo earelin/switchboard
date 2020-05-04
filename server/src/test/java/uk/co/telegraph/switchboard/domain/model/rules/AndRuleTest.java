@@ -54,7 +54,7 @@ class AndRuleTest {
     when(secondRule.isEnabledForClient(clientInfo))
         .thenReturn(true);
 
-    andRule = new AndRule(rules);
+    andRule = new AndRule(rules.toArray(Rule[]::new));
 
     assertThat(andRule.isEnabledForClient(clientInfo))
         .isTrue();
